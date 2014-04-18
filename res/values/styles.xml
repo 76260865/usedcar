@@ -15,21 +15,17 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:editTextStyle">@android:style/Widget.EditText</item>
     </style>
-    
-    <style name="tab_item">
-        <item name="android:gravity">center_horizontal</item>  
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@null</item>         
-        <item name="android:drawablePadding">5dip</item>
-        <item name="android:layout_weight">1.0</item>
-        <item name="android:background">@drawable/home_btn_bg</item>
-        
-        <item name="android:textSize">10.0dip</item>
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:ellipsize">marquee</item>       
-        <item name="android:singleLine">true</item>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@drawable/icon_top_bg</item>
+        <item name="android:titleTextStyle">@style/myTheme.ActionBar.Text</item>
     </style>
-    
+
+    <style name="myTheme.ActionBar.Text" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 </resources>

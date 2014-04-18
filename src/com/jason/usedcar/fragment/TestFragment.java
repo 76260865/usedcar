@@ -1,4 +1,4 @@
-package com.jason.usedcar;
+package com.jason.usedcar.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.jason.usedcar.fragment.BaseFragment;
+import com.jason.usedcar.R;
+import com.jason.usedcar.R.layout;
 import com.jason.usedcar.presenter.TestFragmentPresenter;
 import com.jason.usedcar.presenter.TestFragmentPresenter.CallButtonUi;
 

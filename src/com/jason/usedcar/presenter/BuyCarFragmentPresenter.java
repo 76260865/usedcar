@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -18,8 +17,8 @@ import com.jason.usedcar.interfaces.Ui;
 /**
  * Logic for call buttons.
  */
-public class TestFragmentPresenter extends
-        Presenter<TestFragmentPresenter.CallButtonUi> {
+public class BuyCarFragmentPresenter extends
+        Presenter<BuyCarFragmentPresenter.CallButtonUi> {
 
     public void login(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);

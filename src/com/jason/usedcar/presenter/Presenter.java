@@ -7,35 +7,35 @@ import com.jason.usedcar.interfaces.Ui;
  */
 public abstract class Presenter<U extends Ui> {
 
-	private U mUi;
+    private U mUi;
 
-	/**
-	 * Called after the UI view has been created. That is when
-	 * fragment.onViewCreated() is called.
-	 * 
-	 * @param ui
-	 *            The Ui implementation that is now ready to be used.
-	 */
-	public void onUiReady(U ui) {
-		mUi = ui;
-	}
+    /**
+     * Called after the UI view has been created. That is when
+     * fragment.onViewCreated() is called.
+     * 
+     * @param ui
+     *            The Ui implementation that is now ready to be used.
+     */
+    public void onUiReady(U ui) {
+        mUi = ui;
+    }
 
-	/**
-	 * Called when the UI view is destroyed in Fragment.onDestroyView().
-	 */
-	public final void onUiDestroy(U ui) {
-		onUiUnready(ui);
-		mUi = null;
-	}
+    /**
+     * Called when the UI view is destroyed in Fragment.onDestroyView().
+     */
+    public final void onUiDestroy(U ui) {
+        onUiUnready(ui);
+        mUi = null;
+    }
 
-	/**
-	 * To be overriden by Presenter implementations. Called when the fragment is
-	 * being destroyed but before ui is set to null.
-	 */
-	public void onUiUnready(U ui) {
-	}
+    /**
+     * To be overriden by Presenter implementations. Called when the fragment is
+     * being destroyed but before ui is set to null.
+     */
+    public void onUiUnready(U ui) {
+    }
 
-	public U getUi() {
-		return mUi;
-	}
+    public U getUi() {
+        return mUi;
+    }
 }

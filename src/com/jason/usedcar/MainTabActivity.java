@@ -9,18 +9,24 @@ import android.widget.ImageView;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+import com.jason.usedcar.fragment.BuyCarFragment;
+import com.jason.usedcar.fragment.TestFragment;
+
 public class MainTabActivity extends FragmentActivity {
     private FragmentTabHost mTabHost;
 
     private LayoutInflater layoutInflater;
 
-    private Class<?> fragmentArray[] = { TestFragment.class, TestFragment.class,
-            TestFragment.class, TestFragment.class, TestFragment.class };
+    private Class<?> fragmentArray[] = { BuyCarFragment.class,
+            TestFragment.class, TestFragment.class, TestFragment.class,
+            TestFragment.class };
 
-    private int mImageViewArray[] = { R.drawable.tab_home_btn, R.drawable.tab_message_btn,
-            R.drawable.tab_selfinfo_btn, R.drawable.tab_square_btn, R.drawable.tab_more_btn };
+    private int mImageViewArray[] = { R.drawable.tab_buy_car_btn,
+            R.drawable.tab_sell_car_btn, R.drawable.tab_shop_car_btn,
+            R.drawable.tab_personal_car_btn, R.drawable.tab_more_car_btn };
 
-    private String mTextviewArray[] = { "Home", "Home", "Home", "Home", "More" };
+    private String mTextviewArray[] = { "BuyCar", "ShoppingChart", "SellCar",
+            "PersonalCenter", "More" };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +37,7 @@ public class MainTabActivity extends FragmentActivity {
 
     private void initView() {
         layoutInflater = LayoutInflater.from(this);
-
+View j = findViewById(android.R.id.tabhost);
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 

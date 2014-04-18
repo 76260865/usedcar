@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MyCustomTab02</string>
+    <string name="app_name">二手车</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="buy_car_text">我要买车</string>
 
 </resources>
