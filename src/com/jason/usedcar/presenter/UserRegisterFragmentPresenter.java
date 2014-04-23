@@ -5,7 +5,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -30,25 +29,9 @@ public class UserRegisterFragmentPresenter extends
     public void registerUser(final Context context, final User user) {
         RequestQueue queue = Volley.newRequestQueue(context);
         Log.d(TAG, " HttpUtil.SIGINON_URI:" + HttpUtil.SIGINON_URI);
+
         StringRequest postRequest = new StringRequest(Request.Method.POST,
-                HttpUtil.SIGINON_URI, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Gson gson = new Gson();
-                        Result result = gson.fromJson(response, Result.class);
-                        if (result.isExecutionResult()) {
-                            getUi().onUserRegistered();
-                        } else {
-                            Toast.makeText(context, result.getMessage(),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, error.toString());
-                    }
-                }) {
+                HttpUtil.SIGINON_URI, mResponseListener, mErrorListener) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
@@ -76,6 +59,25 @@ public class UserRegisterFragmentPresenter extends
 
         queue.add(postRequest);
     }
+
+    private Response.Listener<String> mResponseListener = new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+            Gson gson = new Gson();
+            Result result = gson.fromJson(response, Result.class);
+            if (result.isExecutionResult()) {
+                getUi().onUserRegistered();
+            } else {
+            }
+        }
+    };
+
+    private Response.ErrorListener mErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.d(TAG, error.toString());
+        }
+    };
 
     public interface CallButtonUi extends Ui {
         void onUserRegistered();
