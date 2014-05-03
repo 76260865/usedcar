@@ -66,40 +66,41 @@ public final class R {
         public static final int xianjian04=0x7f02002a;
     }
     public static final class id {
-        public static final int action_settings=0x7f080021;
+        public static final int action_settings=0x7f080022;
         public static final int btn_download=0x7f08000e;
-        public static final int btn_register=0x7f08001b;
+        public static final int btn_register=0x7f08001c;
         public static final int button1=0x7f080005;
         public static final int checkBox1=0x7f080006;
-        public static final int chk_accept=0x7f08001e;
-        public static final int chk_accept_rule=0x7f08001a;
+        public static final int chk_accept=0x7f08001f;
+        public static final int chk_accept_rule=0x7f08001b;
         public static final int editText1=0x7f080002;
         public static final int editText2=0x7f080004;
-        public static final int edit_dealer_addr=0x7f080014;
-        public static final int edit_dealer_name=0x7f080013;
-        public static final int edit_pwd=0x7f080018;
-        public static final int edit_pwd_confirm=0x7f080019;
-        public static final int edit_register_phone=0x7f080011;
-        public static final int edit_repwd=0x7f08001d;
-        public static final int edit_validate_code=0x7f080012;
-        public static final int imageview=0x7f08000f;
+        public static final int edit_dealer_addr=0x7f080015;
+        public static final int edit_dealer_name=0x7f080014;
+        public static final int edit_pwd=0x7f080019;
+        public static final int edit_pwd_confirm=0x7f08001a;
+        public static final int edit_register_phone=0x7f080012;
+        public static final int edit_repwd=0x7f08001e;
+        public static final int edit_validate_code=0x7f080013;
+        public static final int imageview=0x7f080010;
         public static final int img=0x7f08000b;
         public static final int info=0x7f08000d;
-        public static final int listView1=0x7f08000a;
+        public static final int listCar=0x7f08000a;
         public static final int pager=0x7f080000;
-        public static final int radio_4s_resturant=0x7f080017;
-        public static final int radio_second_company=0x7f080016;
-        public static final int rdgp_dealer_type=0x7f080015;
-        public static final int realtabcontent=0x7f08001f;
-        public static final int section_label=0x7f08001c;
+        public static final int progressBar1=0x7f08000f;
+        public static final int radio_4s_resturant=0x7f080018;
+        public static final int radio_second_company=0x7f080017;
+        public static final int rdgp_dealer_type=0x7f080016;
+        public static final int realtabcontent=0x7f080020;
+        public static final int section_label=0x7f08001d;
         public static final int textView1=0x7f080001;
         public static final int textView2=0x7f080003;
         public static final int textView3=0x7f080007;
         public static final int textView4=0x7f080008;
         public static final int textView5=0x7f080009;
-        public static final int textview=0x7f080020;
+        public static final int textview=0x7f080021;
         public static final int title=0x7f08000c;
-        public static final int txt_register_phone=0x7f080010;
+        public static final int txt_register_phone=0x7f080011;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -107,16 +108,17 @@ public final class R {
         public static final int activity_user_login=0x7f030002;
         public static final int buy_car_fragment_layout=0x7f030003;
         public static final int buy_car_item_layout=0x7f030004;
-        public static final int fragment_1=0x7f030005;
-        public static final int fragment_2=0x7f030006;
-        public static final int fragment_3=0x7f030007;
-        public static final int fragment_4=0x7f030008;
-        public static final int fragment_5=0x7f030009;
-        public static final int fragment_dealer_register_layout=0x7f03000a;
-        public static final int fragment_main_dummy=0x7f03000b;
-        public static final int fragment_user_register_layout=0x7f03000c;
-        public static final int main_tab_layout=0x7f03000d;
-        public static final int tab_item_view=0x7f03000e;
+        public static final int footer_loading_layout=0x7f030005;
+        public static final int fragment_1=0x7f030006;
+        public static final int fragment_2=0x7f030007;
+        public static final int fragment_3=0x7f030008;
+        public static final int fragment_4=0x7f030009;
+        public static final int fragment_5=0x7f03000a;
+        public static final int fragment_dealer_register_layout=0x7f03000b;
+        public static final int fragment_main_dummy=0x7f03000c;
+        public static final int fragment_user_register_layout=0x7f03000d;
+        public static final int main_tab_layout=0x7f03000e;
+        public static final int tab_item_view=0x7f03000f;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -139,6 +141,7 @@ public final class R {
         public static final int txt_dealer_addr=0x7f050011;
         public static final int txt_dealer_name=0x7f050010;
         public static final int txt_forgot_pwd=0x7f050009;
+        public static final int txt_loading_str=0x7f050016;
         public static final int txt_pwd=0x7f050005;
         public static final int txt_register=0x7f050008;
         public static final int txt_register_phone=0x7f05000b;

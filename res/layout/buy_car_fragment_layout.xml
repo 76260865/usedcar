@@ -12,13 +12,12 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/icon_search"
         android:ems="10" >
-
     </EditText>
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/listCar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent" >
     </ListView>
 
 </LinearLayout>

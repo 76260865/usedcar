@@ -23,5 +23,6 @@
     <string name="rbtn_4s_store">4S店</string>
     <string name="tab_user_register">用户注册</string>
     <string name="tab_dealer_register">经销商注册</string>
+    <string name="txt_loading_str">加载中...</string>
 
 </resources>
