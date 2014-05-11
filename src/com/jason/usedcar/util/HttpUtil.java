@@ -8,6 +8,15 @@ public class HttpUtil {
     /**
      * 经销商注册地址
      */
-    public static final String DEALER_REGISTER_URI = URI
-            .concat("reselleSignon.json");
+    public static final String DEALER_REGISTER_URI = URI.concat("reselleSignon.json");
+
+    /**
+     * 登录地址
+     */
+    public static final String LOGIN_URI = URI.concat("login.json");
+
+    /**
+     * 获取验证码地址
+     */
+    public static final String OBTAIN_CODE_URI = URI.concat("account/obtainCode");
 }

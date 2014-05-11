@@ -7,7 +7,7 @@
     <string name="buy_car_text">我要买车</string>
     <string name="txt_user_login_str">用户名</string>
     <string name="txt_pwd">密码</string>
-    <string name="btn_login_text">登录</string>
+    <string name="btn_login_text">login</string>
     <string name="chk_save_user_name_text">保存用户名</string>
     <string name="txt_register">注册</string>
     <string name="txt_forgot_pwd">找回密码</string>
@@ -24,5 +24,15 @@
     <string name="tab_user_register">用户注册</string>
     <string name="tab_dealer_register">经销商注册</string>
     <string name="txt_loading_str">加载中...</string>
+    <string name="btn_my_profile_text">我的资料</string>
+    <string name="btn_identification_text">身份认证</string>
+    <string name="btn_car_selling_text">出售中的车辆</string>
+    <string name="btn_my_favorate_text">我的收藏</string>
+    <string name="btn_records_for_buy_car_text">买车记录</string>
+    <string name="title_personal_center">个人中心</string>
+    <string name="tab_find_pwd_by_phone">手机找回</string>
+    <string name="tab_find_pwd_by_email">邮箱找回</string>
+    <string name="txt_shoping_car_str">购物车</string>
+    <string name="menu_shoping_car_str">购物车</string>
 
 </resources>

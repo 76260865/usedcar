@@ -2,9 +2,6 @@ package com.jason.usedcar;
 
 import java.util.Locale;
 
-import com.jason.usedcar.fragment.DealerRegisterFragment;
-import com.jason.usedcar.fragment.UserRegisterFragment;
-
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -15,7 +12,12 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
-public class RegisterActivity extends FragmentActivity implements ActionBar.TabListener {
+import com.jason.usedcar.fragment.DealerRegisterFragment;
+import com.jason.usedcar.fragment.FindPwdByEmailFragment;
+import com.jason.usedcar.fragment.FindPwdByPhoneFragment;
+import com.jason.usedcar.fragment.UserRegisterFragment;
+
+public class ForgotPwdActivity extends FragmentActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -109,9 +111,9 @@ public class RegisterActivity extends FragmentActivity implements ActionBar.TabL
             // below) with the page number as its lone argument.
             Fragment fragment = null;
             if (position == 0) {
-                fragment = new UserRegisterFragment();
+                fragment = new FindPwdByPhoneFragment();
             } else {
-                fragment = new DealerRegisterFragment();
+                fragment = new FindPwdByEmailFragment();
             }
             Bundle args = new Bundle();
             return fragment;
@@ -128,9 +130,9 @@ public class RegisterActivity extends FragmentActivity implements ActionBar.TabL
             Locale l = Locale.getDefault();
             switch (position) {
             case 0:
-                return getString(R.string.tab_user_register).toUpperCase(l);
+                return getString(R.string.tab_find_pwd_by_phone).toUpperCase(l);
             case 1:
-                return getString(R.string.tab_dealer_register).toUpperCase(l);
+                return getString(R.string.tab_find_pwd_by_email).toUpperCase(l);
             }
             return null;
         }

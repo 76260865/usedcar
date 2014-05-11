@@ -87,7 +87,7 @@ public class BuyCarFragment extends
                         public void run() {
                             mListViewAdapter.count += 10;
                             mListViewAdapter.notifyDataSetChanged();
-                            mListCar.setSelection(mVisibleLastIndex - mVisibleItemCount + 1);
+//                            mListCar.setSelection(mVisibleLastIndex - mVisibleItemCount + 1);
                         }
                     }, 1000);
                 }
