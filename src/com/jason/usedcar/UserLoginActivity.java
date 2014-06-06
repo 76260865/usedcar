@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.google.gson.Gson;
 import com.jason.usedcar.interfaces.IJobListener;
 import com.jason.usedcar.model.Result;
 import com.jason.usedcar.util.HttpUtil;
+import com.jason.usedcar.util.UUIDUtil;
 
 public class UserLoginActivity extends Activity {
 
@@ -72,7 +74,7 @@ public class UserLoginActivity extends Activity {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("phoneOrEmail", mEditUserName.getText().toString());
                     params.put("password", mEditPwd.getText().toString());
-                    params.put("deviceId", "1");
+                    params.put("deviceId", UUIDUtil.getUUID(getPreferences(Context.MODE_PRIVATE)));
                     Log.d(TAG, "params is:" + params);
                     return params;
                 }
@@ -81,6 +83,8 @@ public class UserLoginActivity extends Activity {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Accept", "application/json");
+                    params.put("User-Agent", "UserCar/1.0 (iPhone; iOS 7.1; Scale/2.00)");
+                    params.put("deviceId", UUIDUtil.getUUID(getPreferences(Context.MODE_PRIVATE)));
                     Log.d(TAG, " getHeaders:" + params);
                     return params;
                 }
@@ -96,9 +100,12 @@ public class UserLoginActivity extends Activity {
             Log.d(TAG, " response:" + response);
             mResult = true;
             Gson gson = new Gson();
-            Result result = gson.fromJson(response, Result.class);
+            LoginResult result = gson.fromJson(response, LoginResult.class);
             if (result.isExecutionResult()) {
-
+                //±£´æuserID and accesstoken
+                UsedCarApplication application = (UsedCarApplication)getApplication();
+                application.accessToken = result.accessToken;
+                application.userId = result.userId;
             } else {
 
             }
@@ -119,6 +126,27 @@ public class UserLoginActivity extends Activity {
             }
         }
     };
+
+    private class LoginResult extends Result {
+        private String accessToken;
+        private int userId;
+
+        public String getAccessToken() {
+            return accessToken;
+        }
+
+        public void setAccessToken(String accessToken) {
+            this.accessToken = accessToken;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+    }
 
     // bellow code is for test:
     public boolean getResult() {

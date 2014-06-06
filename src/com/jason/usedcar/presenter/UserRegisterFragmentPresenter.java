@@ -67,7 +67,7 @@ public class UserRegisterFragmentPresenter extends
             Gson gson = new Gson();
             SingOnResult result = gson.fromJson(response, SingOnResult.class);
             if (result.isExecutionResult()) {
-                getUi().onUserRegistered();
+                getUi().onUserRegistered(result.accessToken, result.userId);
             } else {
             }
         }
@@ -129,7 +129,7 @@ public class UserRegisterFragmentPresenter extends
     public interface UserRegisterFragmentUi extends Ui {
         void onVerifyCodeObtained(String code);
 
-        void onUserRegistered();
+        void onUserRegistered(String accessToken, int userId);
     }
 
     private class ObtainCodeResult extends Result {
@@ -146,7 +146,7 @@ public class UserRegisterFragmentPresenter extends
 
     private class SingOnResult extends Result {
         private String accessToken;
-        private String userId;
+        private int userId;
 
         public String getAccessToken() {
             return accessToken;
@@ -156,11 +156,11 @@ public class UserRegisterFragmentPresenter extends
             this.accessToken = accessToken;
         }
 
-        public String getUserId() {
+        public int getUserId() {
             return userId;
         }
 
-        public void setUserId(String userId) {
+        public void setUserId(int userId) {
             this.userId = userId;
         }
     }

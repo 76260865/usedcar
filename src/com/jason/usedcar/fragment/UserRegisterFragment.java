@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jason.usedcar.R;
+import com.jason.usedcar.UsedCarApplication;
 import com.jason.usedcar.interfaces.IJobListener;
 import com.jason.usedcar.model.User;
 import com.jason.usedcar.presenter.UserRegisterFragmentPresenter;
@@ -81,9 +82,12 @@ public class UserRegisterFragment
     }
 
     @Override
-    public void onUserRegistered() {
+    public void onUserRegistered(String accessToken, int userId) {
         Log.d(TAG, "onUserRegistered");
         Toast.makeText(getActivity(), "onUserRegistered", Toast.LENGTH_LONG).show();
+        UsedCarApplication application = (UsedCarApplication) getActivity().getApplication();
+        application.accessToken = accessToken;
+        application.userId = userId;
     }
 
     @Override
