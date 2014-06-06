@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class AcessTokenUtil {
-    private static final String mPrivateKey = "dd4nfxp8";
+    public static final String mPrivateKey = "uja6snx21b";
 
     public static String MD5Encode(String str) throws NoSuchAlgorithmException {
         MessageDigest md5 = MessageDigest.getInstance("MD5");
