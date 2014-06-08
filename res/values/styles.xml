@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="Theme.AppCompat">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -30,5 +30,16 @@
 
     <style name="myTheme.ActionBar.editText" parent="@android:style/Widget.EditText">
         <item name="android:background">@android:drawable/edit_text</item>
+    </style>
+    <style name="Divider">
+        <item name="android:layout_width">1dip</item>
+        <item name="android:layout_height">1dip</item>
+        <item name="android:background">#D4D4D4</item>
+    </style>
+    <style name="Divider.Horizontal" parent="Divider">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <style name="Divider.Vertical" parent="Divider">
+        <item name="android:layout_height">match_parent</item>
     </style>
 </resources>

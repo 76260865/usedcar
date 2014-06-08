@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/white">
+    <ImageView
+            style="@style/register.icon"
+            android:src="@drawable/avatar_icon"/>
+    <View
+            style="@style/Divider"
+            android:layout_height="16dip"
+            android:layout_gravity="center_vertical"/>
+    <EditText
+            style="@style/register.account"
+            android:id="@+id/register_account"/>
+</LinearLayout>

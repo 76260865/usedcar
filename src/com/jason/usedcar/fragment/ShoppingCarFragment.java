@@ -17,7 +17,7 @@ import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter.CallButtonUi;
 public class ShoppingCarFragment extends
         BaseFragment<ShoppingCarFragmentPresenter, ShoppingCarFragmentPresenter.CallButtonUi>
         implements ShoppingCarFragmentPresenter.CallButtonUi {
-    private ListView mShppingCarListView;
+    private ListView mShoppingCarListView;
     private ShoppingCarListViewAdapter mAdapter;
 
     @Override
@@ -29,7 +29,7 @@ public class ShoppingCarFragment extends
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.shoping_car_fragment, null);
-        mShppingCarListView = (ListView) root.findViewById(R.id.list_shopping_car);
+        mShoppingCarListView = (ListView) root.findViewById(R.id.list_shopping_car);
         return root;
     }
 
@@ -39,7 +39,7 @@ public class ShoppingCarFragment extends
         getActivity().setTitle(R.string.txt_shoping_car_str);
 
         mAdapter = new ShoppingCarListViewAdapter();
-        mShppingCarListView.setAdapter(mAdapter);
+        mShoppingCarListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -65,8 +65,8 @@ public class ShoppingCarFragment extends
     }
 
     @Override
-    public void login(String reponse) {
-        Toast.makeText(getActivity(), reponse, Toast.LENGTH_LONG).show();
+    public void login(String response) {
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
 
     }
 

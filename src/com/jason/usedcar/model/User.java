@@ -1,76 +1,102 @@
 package com.jason.usedcar.model;
 
+import lombok.Data;
+
+@Data
 public class User {
-    private String phone;
-    private String phoneVerifyCode;
+
+    private String account;
+
+    private String verifyCode;
+
     private String nickname;
+
     private String email;
-    private boolean acceptTerm;
+
     private String password;
-    private String repassword;
+
+    private String confirmPassword;
+
+    private boolean acceptTerm;
+
     private int accountType;
 
-    public String getPhone() {
-        return phone;
+    protected User(Builder builder) {
+        setAccount(builder.account);
+        this.setVerifyCode(builder.verifyCode);
+        setNickname(builder.nickname);
+        setEmail(builder.email);
+        setPassword(builder.password);
+        setConfirmPassword(builder.confirmPassword);
+        setAcceptTerm(builder.acceptTerm);
+        setAccountType(builder.accountType);
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    public User() {}
 
-    public String getPhoneVerifyCode() {
-        return phoneVerifyCode;
-    }
+    public static class Builder {
 
-    public void setPhoneVerifyCode(String phoneVerifyCode) {
-        this.phoneVerifyCode = phoneVerifyCode;
-    }
+        private String account;
 
-    public String getNickname() {
-        return nickname;
-    }
+        private String verifyCode;
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+        private String nickname;
 
-    public String getEmail() {
-        return email;
-    }
+        private String email;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        private String password;
 
-    public boolean getAcceptTerm() {
-        return acceptTerm;
-    }
+        private String confirmPassword;
 
-    public void setAcceptTerm(boolean acceptTerm) {
-        this.acceptTerm = acceptTerm;
-    }
+        private boolean acceptTerm;
 
-    public String getPassword() {
-        return password;
-    }
+        private int accountType;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public Builder() {
+        }
 
-    public String getRepassword() {
-        return repassword;
-    }
+        public Builder account(String account) {
+            this.account = account;
+            return this;
+        }
 
-    public void setRepassword(String repassword) {
-        this.repassword = repassword;
-    }
+        public Builder verifyCode(String verifyCode) {
+            this.verifyCode = verifyCode;
+            return this;
+        }
 
-    public int getAccountType() {
-        return accountType;
-    }
+        public Builder nickname(String nickname) {
+            this.nickname = nickname;
+            return this;
+        }
 
-    public void setAccountType(int accountType) {
-        this.accountType = accountType;
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder confirmPassword(String confirmPassword) {
+            this.confirmPassword = confirmPassword;
+            return this;
+        }
+
+        public Builder acceptTerm(boolean acceptTerm) {
+            this.acceptTerm = acceptTerm;
+            return this;
+        }
+
+        public Builder accountType(int accountType) {
+            this.accountType = accountType;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

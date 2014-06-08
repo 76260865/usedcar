@@ -1,46 +1,45 @@
 package com.jason.usedcar.funtion.test;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Instrumentation.ActivityMonitor;
+import android.support.v4.app.FragmentActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.RegisterActivity;
-import com.jason.usedcar.UserLoginActivity;
 import com.jason.usedcar.interfaces.IJobListener;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
-public class UserLoginActivityTest extends ActivityInstrumentationTestCase2<UserLoginActivity> {
+public class UserLoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 
-    private UserLoginActivity mUserLoginActivity;
+    private LoginActivity mLoginActivity;
     private EditText mEditUserName;
     private EditText mEditUserPwd;
     private Button mBtnLogin;
     private TextView mTxtRegister;
 
     public UserLoginActivityTest() {
-        super(UserLoginActivity.class);
+        super(LoginActivity.class);
     }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        mUserLoginActivity = getActivity();
-        mEditUserName = (EditText) mUserLoginActivity
-                .findViewById(com.jason.usedcar.R.id.edit_user_name);
-        mEditUserPwd = (EditText) mUserLoginActivity.findViewById(com.jason.usedcar.R.id.edit_pwd);
-        mBtnLogin = (Button) mUserLoginActivity.findViewById(com.jason.usedcar.R.id.btn_login);
-        mTxtRegister = (TextView) mUserLoginActivity
-                .findViewById(com.jason.usedcar.R.id.txt_register);
+        mLoginActivity = getActivity();
+        mEditUserName = (EditText) mLoginActivity
+                .findViewById(com.jason.usedcar.R.id.login_account);
+        mEditUserPwd = (EditText) mLoginActivity.findViewById(com.jason.usedcar.R.id.login_password);
+        mBtnLogin = (Button) mLoginActivity.findViewById(com.jason.usedcar.R.id.login_login);
+        mTxtRegister = (TextView) mLoginActivity
+                .findViewById(com.jason.usedcar.R.id.login_register);
     }
 
     public void testPreconditions() {
-        assertNotNull("mUserLoginActivity is null", mUserLoginActivity);
+        assertNotNull("mLoginActivity is null", mLoginActivity);
         assertNotNull("mEditUserName is null", mEditUserName);
         assertNotNull("mEditUserPwd is null", mEditUserPwd);
         assertNotNull("mBtnLogin is null", mBtnLogin);
@@ -49,7 +48,7 @@ public class UserLoginActivityTest extends ActivityInstrumentationTestCase2<User
     public void testLogin() throws InterruptedException {
         // create CountDownLatch for which the test can wait.
         final CountDownLatch latch = new CountDownLatch(1);
-        mUserLoginActivity.setListener(new IJobListener() {
+        mLoginActivity.setListener(new IJobListener() {
 
             @Override
             public void executionDone() {
@@ -69,7 +68,7 @@ public class UserLoginActivityTest extends ActivityInstrumentationTestCase2<User
         getInstrumentation().waitForIdleSync();
         boolean await = latch.await(30, TimeUnit.SECONDS);
         assertTrue(await);
-        assertTrue("Login Failed", mUserLoginActivity.getResult());
+        assertTrue("Login Failed", mLoginActivity.getResult());
     }
 
     public void testRegister() {
@@ -84,7 +83,7 @@ public class UserLoginActivityTest extends ActivityInstrumentationTestCase2<User
         assertEquals("Monitor for RegisterActivity has not been called", 1,
                 activityMonitor.getHits());
         assertEquals("Activity is of wrong type", RegisterActivity.class,
-                registerActivity.getClass());
+            ((FragmentActivity) registerActivity).getClass());
 
         // Remove the ActivityMonitor
         getInstrumentation().removeMonitor(activityMonitor);

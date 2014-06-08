@@ -1,21 +1,19 @@
 package com.jason.usedcar;
 
-import java.util.Locale;
-
-import com.jason.usedcar.fragment.DealerRegisterFragment;
-import com.jason.usedcar.fragment.UserRegisterFragment;
-
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import com.jason.usedcar.fragment.ResellerRegisterFragment;
+import com.jason.usedcar.fragment.RegisterFragment;
+import java.util.Locale;
 
-public class RegisterActivity extends FragmentActivity implements ActionBar.TabListener {
+public class RegisterActivity extends ActionBarActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -25,7 +23,7 @@ public class RegisterActivity extends FragmentActivity implements ActionBar.TabL
      * intensive, it may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -38,7 +36,7 @@ public class RegisterActivity extends FragmentActivity implements ActionBar.TabL
         setContentView(R.layout.activity_main);
 
         // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create the adapter that will return a fragment for each of the three
@@ -109,9 +107,9 @@ public class RegisterActivity extends FragmentActivity implements ActionBar.TabL
             // below) with the page number as its lone argument.
             Fragment fragment = null;
             if (position == 0) {
-                fragment = new UserRegisterFragment();
+                fragment = new RegisterFragment();
             } else {
-                fragment = new DealerRegisterFragment();
+                fragment = new ResellerRegisterFragment();
             }
             Bundle args = new Bundle();
             return fragment;

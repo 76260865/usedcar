@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jason.usedcar.R;
-import com.jason.usedcar.R.layout;
 import com.jason.usedcar.presenter.TestFragmentPresenter;
 import com.jason.usedcar.presenter.TestFragmentPresenter.CallButtonUi;
 
@@ -39,8 +38,8 @@ public class TestFragment extends
     }
 
     @Override
-    public void login(String reponse) {
-        Toast.makeText(getActivity(), reponse, Toast.LENGTH_LONG).show();
+    public void login(String response) {
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
 
     }
 }

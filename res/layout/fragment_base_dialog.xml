@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_bg"
+        android:orientation="vertical">
+    <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dip"
+            android:text="温馨提示"
+            android:textColor="#6F6F6F"
+            android:textSize="18sp"/>
+    <TextView
+            android:id="@+id/dialog_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dip"
+            android:layout_below="@id/dialog_title"
+            android:textColor="#156BFF"
+            android:textSize="16sp"/>
+    <View
+            style="@style/Divider.Horizontal"
+            android:id="@+id/dialog_divider"
+            android:layout_below="@id/dialog_content"/>
+    <Button
+            android:id="@+id/dialog_button_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_divider"
+            android:background="@drawable/rect_bg2"
+            android:text="知道了"
+            android:textColor="#156BFF"
+            android:textSize="18sp"/>
+</RelativeLayout>

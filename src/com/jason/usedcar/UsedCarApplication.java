@@ -7,7 +7,7 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
-import com.jason.usedcar.util.AcessTokenUtil;
+import com.jason.usedcar.util.AccessTokenUtil;
 
 public class UsedCarApplication extends Application {
     public static final String TAG = "UsedCarApplication";
@@ -16,10 +16,10 @@ public class UsedCarApplication extends Application {
 
     public int userId;
 
-    public String getEncriptedToken() {
+    public String getEncryptedToken() {
         try {
-            String MD5EncodeString = AcessTokenUtil.MD5Encode(accessToken
-                    + AcessTokenUtil.mPrivateKey + SystemClock.currentThreadTimeMillis());
+            String MD5EncodeString = AccessTokenUtil.MD5Encode(accessToken
+                    + AccessTokenUtil.mPrivateKey + SystemClock.currentThreadTimeMillis());
             String encryptString = MD5EncodeString + userId + "&"
                     + SystemClock.currentThreadTimeMillis();
             return Base64.encodeToString(encryptString.getBytes(), Base64.DEFAULT);

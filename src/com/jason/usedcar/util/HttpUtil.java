@@ -1,57 +1,65 @@
 package com.jason.usedcar.util;
 
 public class HttpUtil {
-    public static final String URI = "http://www.2soce.com:8080/";
 
-    public static final String SIGINON_URI = URI.concat("signon.json");
+    public static final String DOMAIN_URI = "http://www.2soce.com:8080/";
+
+    public static final String IP_URI = "http://112.124.62.114:8080/";
+
+    public static final String URI = IP_URI;
 
     /**
-     * ������ע���ַ
+     * 买家注册地址
      */
-    public static final String DEALER_REGISTER_URI = URI.concat("reselleSignon.json");
+    public static final String SIGN_ON_URI = URI.concat("signon.json");
 
     /**
-     * ��¼��ַ
+     * 经销商注册地址
+     */
+    public static final String SIGN_ON_RESELLER_URI = URI.concat("reselleSignon.json");
+
+    /**
+     * 登录地址
      */
     public static final String LOGIN_URI = URI.concat("login.json");
 
     /**
-     * ��ȡ��֤���ַ
+     * 获取验证码地址
      */
     public static final String OBTAIN_CODE_URI = URI.concat("account/obtainCode");
 
     /**
-     * �ϴ�ͼƬ��ַ
+     * 上传图片地址
      */
     public static final String IMAGE_UPLOAD_URI = URI.concat("product/imageUpload.json");
 
     /**
-     * �������ֳ���ַ
+     * 发布二手车地址
      */
     public static final String PUBLISH_USED_CAR_URI = URI.concat("product/publishUsedCar.json");
 
     /**
-     * ��ѯ���ֳ���ַ
+     * 查询二手车地址
      */
     public static final String GET_USED_CAR_URI = URI.concat("product/getUsedCar.json");
 
     /**
-     * ɾ�����ֳ���ַ
+     * 删除二手车地址
      */
     public static final String DELETE_USED_CAR_URI = URI.concat("product/deleteusedcar.json");
 
     /**
-     * �޸������ַ
+     * 修改密码地址
      */
     public static final String UPDATE_PWD_URI = URI.concat("account/updatePassword.json");
 
     /**
-     * �鿴�û���Ϣ
+     * 查看用户信息
      */
     public static final String VIEW_USER_INFO_URI = URI.concat("account/viewUserInfo");
 
     /**
-     * �����û���Ϣ
+     * 更改用户信息
      */
     public static final String UPDATE_USER_INFO_URI = URI.concat("account/updateUserInfo");
 }

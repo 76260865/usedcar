@@ -1,20 +1,16 @@
 package com.jason.usedcar.funtion.test;
 
-import java.util.concurrent.CountDownLatch;
-
 import android.os.SystemClock;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
 import com.jason.usedcar.R;
 import com.jason.usedcar.RegisterActivity;
-import com.jason.usedcar.interfaces.IJobListener;
 import com.robotium.solo.Solo;
+import java.util.concurrent.CountDownLatch;
 
 public class RegisterActivityTest extends ActivityInstrumentationTestCase2<RegisterActivity> {
     private Solo mSolo;
@@ -38,13 +34,13 @@ public class RegisterActivityTest extends ActivityInstrumentationTestCase2<Regis
         mRegisterActivity = getActivity();
         mSolo = new Solo(getInstrumentation(), mRegisterActivity);
         mBtnObtainCode = (Button) mRegisterActivity
-                .findViewById(com.jason.usedcar.R.id.btn_obtain_code);
-        mEditPhone = (EditText) mRegisterActivity.findViewById(R.id.edit_register_phone);
-        mEditValidateCode = (EditText) mRegisterActivity.findViewById(R.id.edit_validate_code);
-        mEditPwd = (EditText) mRegisterActivity.findViewById(R.id.edit_pwd);
-        mEditRePwd = (EditText) mRegisterActivity.findViewById(R.id.edit_repwd);
-        mChkAcceptRule = (CheckBox) mRegisterActivity.findViewById(R.id.chk_accept);
-        mBtnRegister = (Button) mRegisterActivity.findViewById(R.id.btn_register);
+                .findViewById(com.jason.usedcar.R.id.register_obtain_code);
+        mEditPhone = (EditText) mRegisterActivity.findViewById(R.id.register_account);
+        mEditValidateCode = (EditText) mRegisterActivity.findViewById(R.id.register_verify_code);
+        mEditPwd = (EditText) mRegisterActivity.findViewById(R.id.register_password);
+        mEditRePwd = (EditText) mRegisterActivity.findViewById(R.id.register_password_confirm);
+        mChkAcceptRule = (CheckBox) mRegisterActivity.findViewById(R.id.register_agreement_check);
+        mBtnRegister = (Button) mRegisterActivity.findViewById(R.id.register_register);
     }
 
     public void testPreconditions() {
@@ -70,7 +66,7 @@ public class RegisterActivityTest extends ActivityInstrumentationTestCase2<Regis
         });
         getInstrumentation().waitForIdleSync();
 //        TouchUtils.clickView(this, mBtnRegister);
-//        assertTrue("onUserRegistered", mSolo.waitForText("onUserRegistered"));
+//        assertTrue("onRegistered", mSolo.waitForText("onRegistered"));
     }
 
     public void testRegisterUser() throws InterruptedException {
@@ -96,7 +92,7 @@ public class RegisterActivityTest extends ActivityInstrumentationTestCase2<Regis
         assertTrue("get validate code failed", ret);
         if (ret) {
             TouchUtils.clickView(this, mBtnRegister);
-//            assertTrue("onUserRegistered", mSolo.waitForText("onUserRegistered"));
+//            assertTrue("onRegistered", mSolo.waitForText("onRegistered"));
         }
     }
 
