@@ -3,7 +3,8 @@ package com.jason.usedcar.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class AcessTokenUtil {
+public class AccessTokenUtil {
+
     public static final String mPrivateKey = "uja6snx21b";
 
     public static String MD5Encode(String str) throws NoSuchAlgorithmException {

@@ -7,11 +7,12 @@
     <string name="buy_car_text">我要买车</string>
     <string name="txt_user_login_str">用户名</string>
     <string name="txt_pwd">密码</string>
-    <string name="btn_login_text">login</string>
+    <string name="btn_login_text">登录</string>
     <string name="chk_save_user_name_text">保存用户名</string>
     <string name="txt_register">注册</string>
     <string name="txt_forgot_pwd">找回密码</string>
-    <string name="edit_input_phone_email_hint_text">请输入手机号注册邮箱</string>
+    <string name="hint_phone">手机号</string>
+    <string name="hint_password">请输入密码</string>
     <string name="txt_register_phone">注册手机号码</string>
     <string name="btn_get_validate_code_text">免费获取验证码</string>
     <string name="txt_validate_code">手机验证码</string>
@@ -23,7 +24,7 @@
     <string name="rbtn_4s_store">4S店</string>
     <string name="tab_user_register">用户注册</string>
     <string name="tab_dealer_register">经销商注册</string>
-    <string name="txt_loading_str">加载中...</string>
+    <string name="txt_loading_str">加载中@#8230;</string>
     <string name="btn_my_profile_text">我的资料</string>
     <string name="btn_identification_text">身份认证</string>
     <string name="btn_car_selling_text">出售中的车辆</string>
@@ -35,4 +36,15 @@
     <string name="txt_shoping_car_str">购物车</string>
     <string name="menu_shoping_car_str">购物车</string>
 
+    <string name="error_input_account">请输入手机号</string>
+    <string name="error_input_password">请输入密码</string>
+    <string name="error_input_confirm_password">请输入确认密码</string>
+    <string name="error_input_verify_code">请输入短信验证码</string>
+    <string name="error_input_agreement">同意并勾选服务条款"</string>
+    <string name="error_input_reseller_name">请输入经销商名车</string>
+    <string name="error_input_reseller_address">请输入经销商地址</string>
+    <string name="error_password_length">密码长度限制在%1$d-%2$d位</string>
+    <string name="error_password_not_equal">两次输入的密码不相同</string>
+    <string name="error_verify_code_incorrect">验证码不正确</string>
+    <string name="notice_obtain_code_multiple">请不要重复获取短信验证码</string>
 </resources>

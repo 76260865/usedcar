@@ -1,11 +1,6 @@
 package com.jason.usedcar.presenter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
-import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -14,6 +9,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.jason.usedcar.interfaces.Ui;
+import com.jason.usedcar.util.HttpUtil;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Logic for call buttons.
@@ -23,7 +21,7 @@ public class TestFragmentPresenter extends
 
     public void login(final Context context) {
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "http://112.124.62.114:8080/usedcar/login.json";
+        String url = HttpUtil.LOGIN_URI;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -57,8 +55,9 @@ public class TestFragmentPresenter extends
     }
 
     public interface CallButtonUi extends Ui {
+
         void setEnabled(boolean on);
 
-        void login(String reponse);
+        void login(String response);
     }
 }

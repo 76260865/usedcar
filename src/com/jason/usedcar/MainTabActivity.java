@@ -1,20 +1,19 @@
 package com.jason.usedcar;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-
 import com.jason.usedcar.fragment.BuyCarFragment;
 import com.jason.usedcar.fragment.PersonalCenterFragment;
 import com.jason.usedcar.fragment.ShoppingCarFragment;
 import com.jason.usedcar.fragment.TestFragment;
 
-public class MainTabActivity extends FragmentActivity {
+public class MainTabActivity extends ActionBarActivity {
     private FragmentTabHost mTabHost;
 
     private LayoutInflater layoutInflater;
