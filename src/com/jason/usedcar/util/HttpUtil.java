@@ -62,4 +62,9 @@ public class HttpUtil {
      * 更改用户信息
      */
     public static final String UPDATE_USER_INFO_URI = URI.concat("account/updateUserInfo");
+
+    /**
+     * 更改用户信息
+     */
+    public static final String RESET_PWD_BY_PHONE_URI = URI.concat("resetPasswordByPhone");
 }
