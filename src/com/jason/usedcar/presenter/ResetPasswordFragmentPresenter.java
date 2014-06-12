@@ -1,11 +1,7 @@
 package com.jason.usedcar.presenter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Context;
 import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
@@ -15,9 +11,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.ObtainCodeResult;
+import com.jason.usedcar.model.param.ResetPasswordByPhoneParam;
+import com.jason.usedcar.model.result.ObtainCodeResult;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter.ResetPasswordFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author t77yq @2014.06.08
@@ -31,21 +30,14 @@ public class ResetPasswordFragmentPresenter extends Presenter<ResetPasswordFragm
 
     private static final String TAG = "ResetPasswordFragmentPresenter";
 
-    public void resetPassword(Context context, final String principle, final String activeCode,
-            final String newPassword, final String confirmPassword) {
+    public void resetPassword(Context context, final ResetPasswordByPhoneParam resetPasswordByPhoneRequest) {
         Log.d(TAG, " resetPasswordByPhone:" + HttpUtil.RESET_PWD_BY_PHONE_URI);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST,
                 HttpUtil.RESET_PWD_BY_PHONE_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("principle", principle);
-                params.put("activeCode", activeCode);
-                params.put("newPassword", newPassword);
-                params.put("confirmPassword", confirmPassword);
-                Log.d(TAG, "RESET_PWD_BY_PHONE_URI params is:" + params);
-                return params;
+                return object2Map(resetPasswordByPhoneRequest);
             }
 
             @Override

@@ -15,6 +15,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.jason.usedcar.fragment.BaseDialogFragment;
 import com.jason.usedcar.interfaces.IJobListener;
+import com.jason.usedcar.model.param.LoginParam;
+import com.jason.usedcar.presenter.Presenter;
 import com.jason.usedcar.util.HttpUtil;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -90,16 +92,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
                 }
             }
         };
+        final LoginParam loginRequest = new LoginParam();
+        loginRequest.setPhoneOrEmail(account);
+        loginRequest.setPassword(password);
         StringRequest request = new StringRequest(Request.Method.POST,
             HttpUtil.LOGIN_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("phoneOrEmail", account);
-                params.put("password", password);
-                params.put("deviceId", "1");
-                Log.d(TAG, "params: " + params);
-                return params;
+                return Presenter.object2Map(loginRequest);
             }
 
             @Override

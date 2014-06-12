@@ -9,12 +9,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.jason.usedcar.constants.Parameters;
-import com.jason.usedcar.constants.Parameters.Register;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.ObtainCodeResult;
-import com.jason.usedcar.model.SignOnResult;
-import com.jason.usedcar.model.User;
+import com.jason.usedcar.model.param.ObtainCodeParam;
+import com.jason.usedcar.model.param.SignOnParam;
+import com.jason.usedcar.model.result.ObtainCodeResult;
+import com.jason.usedcar.model.result.SignOnResult;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
 
     private static final String TAG = RegisterFragmentPresenter.class.getSimpleName();
 
-    public void register(final Context context, final User user) {
+    public void register(final Context context, final SignOnParam param) {
         Log.d(TAG, " HttpUtil.SIGN_ON_URI:" + HttpUtil.SIGN_ON_URI);
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -58,9 +57,7 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
             requestUrl(), responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = buildParams(user);
-                Log.d(TAG, "params is:" + params);
-                return params;
+                return object2Map(param);
             }
 
             @Override
@@ -79,18 +76,7 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
         return HttpUtil.SIGN_ON_URI;
     }
 
-    protected Map<String, String> buildParams(User user) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(Register.ACCOUNT, user.getAccount());
-        params.put(Register.ACCOUNT_TYPE, Integer.toString(user.getAccountType()));
-        params.put(Register.VERIFY_CODE, user.getVerifyCode());
-        params.put(Register.AGREEMENT, Boolean.toString(user.isAcceptTerm()));
-        params.put(Register.PASSWORD, user.getPassword());
-        params.put(Register.CONFIRM_PASSWORD, user.getConfirmPassword());
-        return params;
-    }
-
-    public void obtainCode(Context context, final String phoneNumber, final String deviceId) {
+    public void obtainCode(Context context, final ObtainCodeParam param) {
         Log.d(TAG, " obtainCode URI:" + HttpUtil.OBTAIN_CODE_URI);
 
         Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -100,7 +86,7 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
                 Gson gson = new Gson();
                 ObtainCodeResult result = gson.fromJson(response, ObtainCodeResult.class);
                 if (result.isExecutionResult()) {
-                    getUi().onVerifyCodeRequested(result.getCode());
+                    getUi().onVerifyCodeRequested("0");
                 }
             }
         };
@@ -114,11 +100,7 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
             HttpUtil.OBTAIN_CODE_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put(Parameters.Register.PHONE, phoneNumber);
-                params.put(Parameters.Register.DEVICE_ID, deviceId);
-                Log.d(TAG, "obtainCode params is:" + params);
-                return params;
+                return object2Map(param);
             }
 
             @Override

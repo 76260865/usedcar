@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.jason.usedcar.R;
+import com.jason.usedcar.model.param.ObtainCodeParam;
 import com.jason.usedcar.presenter.ObtainCodeFragmentPresenter;
 import com.jason.usedcar.presenter.ObtainCodeFragmentPresenter.ObtainCodeFragmentUi;
 import com.jason.usedcar.view.ObtainCodeButton;
@@ -86,6 +87,8 @@ public class ObtainCodeFragment extends
 
     private void obtainCode() {
         String phoneNumber = String.valueOf(editPhoneNumber.getText());
-        getPresenter().obtainCode(getActivity(), phoneNumber, "");
+        ObtainCodeParam request = new ObtainCodeParam();
+        request.setPhoneNumber(phoneNumber);
+        getPresenter().obtainCode(getActivity(), request);
     }
 }

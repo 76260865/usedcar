@@ -10,9 +10,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.jason.usedcar.constants.Parameters;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.ObtainCodeResult;
+import com.jason.usedcar.model.param.ObtainCodeParam;
+import com.jason.usedcar.model.result.ObtainCodeResult;
 import com.jason.usedcar.presenter.ObtainCodeFragmentPresenter.ObtainCodeFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class ObtainCodeFragmentPresenter extends Presenter<ObtainCodeFragmentUi>
 
     private static final String TAG = ObtainCodeFragmentPresenter.class.getSimpleName();
 
-    public void obtainCode(Context context, final String phoneNumber, final String deviceId) {
+    public void obtainCode(Context context, final ObtainCodeParam obtainCodeParam) {
         Log.d(TAG, " obtainCode URI:" + HttpUtil.OBTAIN_CODE_URI);
 
         Listener<String> responseListener = new Listener<String>() {
@@ -40,7 +40,7 @@ public class ObtainCodeFragmentPresenter extends Presenter<ObtainCodeFragmentUi>
                 Gson gson = new Gson();
                 ObtainCodeResult result = gson.fromJson(response, ObtainCodeResult.class);
                 if (result.isExecutionResult()) {
-                    getUi().onCodeObtained(result.getCode());
+                    getUi().onCodeObtained("0");
                 }
             }
         };
@@ -54,11 +54,7 @@ public class ObtainCodeFragmentPresenter extends Presenter<ObtainCodeFragmentUi>
             HttpUtil.OBTAIN_CODE_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put(Parameters.Register.PHONE, phoneNumber);
-                params.put(Parameters.Register.DEVICE_ID, deviceId);
-                Log.d(TAG, "obtainCode params is:" + params);
-                return params;
+                return object2Map(obtainCodeParam);
             }
 
             @Override

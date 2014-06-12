@@ -4,16 +4,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import com.jason.usedcar.R;
-import com.jason.usedcar.constants.Parameters.Register;
-import com.jason.usedcar.model.Reseller;
-import com.jason.usedcar.model.User;
+import com.jason.usedcar.model.param.ResellerSignOnParam;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.Required;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ResellerRegisterFragment extends RegisterFragment {
 
@@ -45,24 +41,6 @@ public class ResellerRegisterFragment extends RegisterFragment {
             protected String requestUrl() {
                 return HttpUtil.SIGN_ON_RESELLER_URI;
             }
-
-            @Override
-            protected Map<String, String> buildParams(User user) {
-                Map<String, String> params = new HashMap<String, String>();
-                if (user instanceof Reseller) {
-                    Reseller reseller = (Reseller) user;
-                    params.put(Register.ACCOUNT, reseller.getAccount());
-                    params.put(Register.ACCOUNT_TYPE, Integer.toString(reseller.getAccountType()));
-                    params.put(Register.AGREEMENT, Boolean.toString(reseller.isAcceptTerm()));
-                    params.put(Register.PASSWORD, reseller.getPassword());
-                    params.put(Register.CONFIRM_PASSWORD, reseller.getConfirmPassword());
-                    params.put(Register.VERIFY_CODE, reseller.getVerifyCode());
-                    params.put(Register.RESELLER_NAME, reseller.getResellerName());
-                    params.put(Register.RESELLER_TYPE, String.valueOf(reseller.getResellerType()));
-                    params.put(Register.ADDRESS, reseller.getAddress());
-                }
-                return params;
-            }
         };
     }
 
@@ -79,12 +57,17 @@ public class ResellerRegisterFragment extends RegisterFragment {
         String resellerName = String.valueOf(editResellerName.getText());
         String resellerAddress = String.valueOf(editResellerAddress.getText());
         int checkedRadioId = radioResellerType.getCheckedRadioButtonId();
-        getPresenter().register(getActivity(), new Reseller.Builder()
-            .resellerName(resellerName).address(resellerAddress)
-            .resellerType(checkedRadioId == R.id.register_used_car_company ? 1 : 2)
-            .account(account).verifyCode(verifyCode).password(password)
-            .confirmPassword(confirmPassword).acceptTerm(checkAgreement.isChecked())
-            .nickname("nickname").accountType(2).build());
+        ResellerSignOnParam param = new ResellerSignOnParam();
+        param.setPhone(account);
+        param.setPassword(password);
+        param.setRepassword(confirmPassword);
+        param.setPhoneVerifyCode(verifyCode);
+        param.setResellerName(resellerName);
+        param.setAdress(resellerAddress);
+        param.setResellerType(checkedRadioId == R.id.register_used_car_company ? 1 : 2);
+        param.setAcceptTerm(true);
+        param.setAccountType(2);
+        getPresenter().register(getActivity(), param);
     }
 
     @Override
