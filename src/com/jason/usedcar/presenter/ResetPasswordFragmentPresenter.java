@@ -2,21 +2,18 @@ package com.jason.usedcar.presenter;
 
 import android.content.Context;
 import android.util.Log;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.jason.usedcar.http.StringPostRequest;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.model.param.ResetPasswordByPhoneParam;
 import com.jason.usedcar.model.result.ObtainCodeResult;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter.ResetPasswordFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author t77yq @2014.06.08
@@ -33,18 +30,11 @@ public class ResetPasswordFragmentPresenter extends Presenter<ResetPasswordFragm
     public void resetPassword(Context context, final ResetPasswordByPhoneParam param) {
         Log.d(TAG, " resetPasswordByPhone:" + HttpUtil.RESET_PWD_BY_PHONE_URI);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST,
+        StringRequest postRequest = new StringPostRequest(
                 HttpUtil.RESET_PWD_BY_PHONE_URI, responseListener, errorListener) {
             @Override
-            protected Map<String, String> getParams() {
-                return object2Map(param);
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                return headers;
+            protected Object data() {
+                return param;
             }
         };
 

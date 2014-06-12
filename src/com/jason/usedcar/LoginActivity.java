@@ -7,24 +7,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.jason.usedcar.fragment.BaseDialogFragment;
+import com.jason.usedcar.http.StringPostRequest;
 import com.jason.usedcar.interfaces.IJobListener;
 import com.jason.usedcar.model.param.LoginParam;
-import com.jason.usedcar.presenter.Presenter;
 import com.jason.usedcar.util.HttpUtil;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Required;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends ActionBarActivity implements OnClickListener, ValidationListener {
 
@@ -95,19 +91,11 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         final LoginParam param = new LoginParam();
         param.setPhoneOrEmail(account);
         param.setPassword(password);
-        StringRequest request = new StringRequest(Request.Method.POST,
+        StringRequest request = new StringPostRequest(
             HttpUtil.LOGIN_URI, responseListener, errorListener) {
             @Override
-            protected Map<String, String> getParams() {
-                return Presenter.object2Map(param);
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                Log.d(TAG, "headers: " + headers);
-                return headers;
+            protected Object data() {
+                return param;
             }
         };
         Volley.newRequestQueue(this).add(request);

@@ -2,13 +2,12 @@ package com.jason.usedcar.presenter;
 
 import android.content.Context;
 import android.util.Log;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.jason.usedcar.http.StringPostRequest;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.model.param.ObtainCodeParam;
 import com.jason.usedcar.model.param.SignOnParam;
@@ -16,8 +15,6 @@ import com.jason.usedcar.model.result.ObtainCodeResult;
 import com.jason.usedcar.model.result.SignOnResult;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Logic for call buttons.
@@ -53,18 +50,10 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
                 Log.d(TAG, error.toString());
             }
         };
-        StringRequest postRequest = new StringRequest(Request.Method.POST,
-            requestUrl(), responseListener, errorListener) {
+        StringRequest postRequest = new StringPostRequest(requestUrl(), responseListener, errorListener) {
             @Override
-            protected Map<String, String> getParams() {
-                return object2Map(param);
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                return headers;
+            protected Object data() {
+                return param;
             }
         };
 
@@ -96,18 +85,11 @@ public class RegisterFragmentPresenter extends Presenter<RegisterFragmentUi> {
                 Log.d(TAG, error.toString());
             }
         };
-        StringRequest postRequest = new StringRequest(Request.Method.POST,
-            HttpUtil.OBTAIN_CODE_URI, responseListener, errorListener) {
+        StringRequest postRequest = new StringPostRequest(HttpUtil.OBTAIN_CODE_URI,
+            responseListener, errorListener) {
             @Override
-            protected Map<String, String> getParams() {
-                return object2Map(param);
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                return headers;
+            protected Object data() {
+                return param;
             }
         };
 
