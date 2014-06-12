@@ -92,14 +92,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
                 }
             }
         };
-        final LoginParam loginRequest = new LoginParam();
-        loginRequest.setPhoneOrEmail(account);
-        loginRequest.setPassword(password);
+        final LoginParam param = new LoginParam();
+        param.setPhoneOrEmail(account);
+        param.setPassword(password);
         StringRequest request = new StringRequest(Request.Method.POST,
             HttpUtil.LOGIN_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                return Presenter.object2Map(loginRequest);
+                return Presenter.object2Map(param);
             }
 
             @Override

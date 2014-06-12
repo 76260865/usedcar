@@ -174,9 +174,9 @@ public class RegisterFragment extends
 
     protected void obtainCode() {
         String account = String.valueOf(editAccount.getText());
-        ObtainCodeParam request = new ObtainCodeParam();
-        request.setPhoneNumber(account);
-        getPresenter().obtainCode(getActivity(), request);
+        ObtainCodeParam param = new ObtainCodeParam();
+        param.setPhoneNumber(account);
+        getPresenter().obtainCode(getActivity(), param);
     }
 
     protected void register() {

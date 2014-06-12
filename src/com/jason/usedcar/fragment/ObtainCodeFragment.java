@@ -87,8 +87,8 @@ public class ObtainCodeFragment extends
 
     private void obtainCode() {
         String phoneNumber = String.valueOf(editPhoneNumber.getText());
-        ObtainCodeParam request = new ObtainCodeParam();
-        request.setPhoneNumber(phoneNumber);
-        getPresenter().obtainCode(getActivity(), request);
+        ObtainCodeParam param = new ObtainCodeParam();
+        param.setPhoneNumber(phoneNumber);
+        getPresenter().obtainCode(getActivity(), param);
     }
 }

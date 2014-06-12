@@ -153,11 +153,11 @@ public class ResetPasswordFragment extends
         String newPassword = String.valueOf(editNewPassword.getText());
         String confirmPassword = String.valueOf(editConfirmNewPassword.getText());
         String phoneNum = getArguments().getString(PHONE_NUMBER);
-        ResetPasswordByPhoneParam resetPasswordByPhoneRequest = new ResetPasswordByPhoneParam();
-        resetPasswordByPhoneRequest.setNewPassword(newPassword);
-        resetPasswordByPhoneRequest.setConfirmPassword(confirmPassword);
-        resetPasswordByPhoneRequest.setPrinciple(phoneNum);
-        resetPasswordByPhoneRequest.setActiveCode(verifyCode);
-        getPresenter().resetPassword(getActivity(), resetPasswordByPhoneRequest);
+        ResetPasswordByPhoneParam param = new ResetPasswordByPhoneParam();
+        param.setNewPassword(newPassword);
+        param.setConfirmPassword(confirmPassword);
+        param.setPrinciple(phoneNum);
+        param.setActiveCode(verifyCode);
+        getPresenter().resetPassword(getActivity(), param);
     }
 }

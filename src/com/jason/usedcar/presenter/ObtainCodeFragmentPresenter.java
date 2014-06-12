@@ -30,7 +30,7 @@ public class ObtainCodeFragmentPresenter extends Presenter<ObtainCodeFragmentUi>
 
     private static final String TAG = ObtainCodeFragmentPresenter.class.getSimpleName();
 
-    public void obtainCode(Context context, final ObtainCodeParam obtainCodeParam) {
+    public void obtainCode(Context context, final ObtainCodeParam param) {
         Log.d(TAG, " obtainCode URI:" + HttpUtil.OBTAIN_CODE_URI);
 
         Listener<String> responseListener = new Listener<String>() {
@@ -54,7 +54,7 @@ public class ObtainCodeFragmentPresenter extends Presenter<ObtainCodeFragmentUi>
             HttpUtil.OBTAIN_CODE_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                return object2Map(obtainCodeParam);
+                return object2Map(param);
             }
 
             @Override

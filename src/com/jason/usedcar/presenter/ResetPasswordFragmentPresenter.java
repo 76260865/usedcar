@@ -30,14 +30,14 @@ public class ResetPasswordFragmentPresenter extends Presenter<ResetPasswordFragm
 
     private static final String TAG = "ResetPasswordFragmentPresenter";
 
-    public void resetPassword(Context context, final ResetPasswordByPhoneParam resetPasswordByPhoneRequest) {
+    public void resetPassword(Context context, final ResetPasswordByPhoneParam param) {
         Log.d(TAG, " resetPasswordByPhone:" + HttpUtil.RESET_PWD_BY_PHONE_URI);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST,
                 HttpUtil.RESET_PWD_BY_PHONE_URI, responseListener, errorListener) {
             @Override
             protected Map<String, String> getParams() {
-                return object2Map(resetPasswordByPhoneRequest);
+                return object2Map(param);
             }
 
             @Override
