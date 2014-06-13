@@ -24,8 +24,8 @@ public class BuyCarFragment extends
     private View mFooterLoadingView;
     private ListViewAdapter mListViewAdapter = new ListViewAdapter();
     private final Handler mHandler = new Handler();
-    private int mVisibleItemCount = 0;// µ±Ç°´°¿Ú¿É¼ûÏî×ÜÊý
-    private int mVisibleLastIndex = 0; // ×îºóµÄ¿ÉÊÓÏîË÷Òý
+    private int mVisibleItemCount = 0;// ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ú¿É¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    private int mVisibleLastIndex = 0; // ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private int mCount = 41;
 
@@ -64,8 +64,8 @@ public class BuyCarFragment extends
     }
 
     @Override
-    public void login(String reponse) {
-        Toast.makeText(getActivity(), reponse, Toast.LENGTH_LONG).show();
+    public void login(String response) {
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
 
     }
 
@@ -73,11 +73,11 @@ public class BuyCarFragment extends
 
         @Override
         public void onScrollStateChanged(AbsListView view, int mScrollState) {
-            int itemsLastIndex = mListViewAdapter.getCount() - 1; // Êý¾Ý¼¯×îºóÒ»ÏîµÄË÷Òý
-            int lastIndex = itemsLastIndex + 1; // ¼ÓÉÏµ×²¿µÄloadMoreViewÏî
+            int itemsLastIndex = mListViewAdapter.getCount() - 1; // ï¿½ï¿½Ý¼ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            int lastIndex = itemsLastIndex + 1; // ï¿½ï¿½ï¿½Ïµ×²ï¿½ï¿½ï¿½loadMoreViewï¿½ï¿½
 
             /**
-             * µ±ListView»¬¶¯µ½×îºóÒ»Ìõ¼ÇÂ¼Ê±ÕâÊ±£¬ÎÒÃÇ»á¿´µ½ÒÑ¾­±»Ìí¼Óµ½ListViewµÄ"¼ÓÔØÏî"²¼¾Ö£¬ ÕâÊ±Ó¦¸Ã¼ÓÔØÊ£ÓàÊý¾Ý¡£
+             * ï¿½ï¿½ListViewï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Â¼Ê±ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Ç»á¿´ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ListViewï¿½ï¿½"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½Ö£ï¿½ ï¿½ï¿½Ê±Ó¦ï¿½Ã¼ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½Ý¡ï¿½
              */
             if (mVisibleLastIndex == lastIndex
                     && mScrollState == OnScrollListener.SCROLL_STATE_IDLE) {

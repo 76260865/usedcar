@@ -12,7 +12,7 @@ public abstract class Presenter<U extends Ui> {
     /**
      * Called after the UI view has been created. That is when
      * fragment.onViewCreated() is called.
-     * 
+     *
      * @param ui
      *            The Ui implementation that is now ready to be used.
      */

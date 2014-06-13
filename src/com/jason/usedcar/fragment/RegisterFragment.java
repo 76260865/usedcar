@@ -12,7 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
-import com.jason.usedcar.model.User;
+import com.jason.usedcar.model.param.ObtainCodeParam;
+import com.jason.usedcar.model.param.SignOnParam;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
 import com.jason.usedcar.view.ObtainCodeButton;
@@ -173,7 +174,9 @@ public class RegisterFragment extends
 
     protected void obtainCode() {
         String account = String.valueOf(editAccount.getText());
-        getPresenter().obtainCode(getActivity(), account, "1234");
+        ObtainCodeParam param = new ObtainCodeParam();
+        param.setPhoneNumber(account);
+        getPresenter().obtainCode(getActivity(), param);
     }
 
     protected void register() {
@@ -185,9 +188,13 @@ public class RegisterFragment extends
             BaseDialogFragment.newInstance(getString(R.string.error_verify_code_incorrect)).show(getFragmentManager());
             return;
         }
-        getPresenter().register(getActivity(), new User.Builder()
-            .account(account).verifyCode(verifyCode).password(password)
-            .confirmPassword(confirmPassword).acceptTerm(checkAgreement.isChecked())
-            .nickname("nickname").accountType(1).build());
+        SignOnParam param = new SignOnParam();
+        param.setPhone(account);
+        param.setPassword(password);
+        param.setRepassword(confirmPassword);
+        param.setPhoneVerifyCode(verifyCode);
+        param.setAccountType(1);
+        param.setAcceptTerm(true);
+        getPresenter().register(getActivity(), param);
     }
 }

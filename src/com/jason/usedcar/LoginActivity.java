@@ -8,19 +8,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.jason.usedcar.fragment.BaseDialogFragment;
 import com.jason.usedcar.interfaces.IJobListener;
+import com.jason.usedcar.model.param.LoginParam;
 import com.jason.usedcar.util.HttpUtil;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Required;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,46 +70,77 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         final String account = String.valueOf(editAccount.getText());
         final String password = String.valueOf(editPassword.getText());
         Log.d(TAG, " HttpUtil.LOGIN_URI:" + HttpUtil.LOGIN_URI);
-        Response.Listener<String> responseListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "response: " + response);
-                mResult = true;
-                //                    Gson gson = new Gson();
-                //                    Result result = gson.fromJson(response, Result.class);
-                if (mIJobListener != null) {
-                    mIJobListener.executionDone();
+        final LoginParam param = new LoginParam();
+        param.setPhoneOrEmail(account);
+        param.setPassword(password);
+        StringRequest request = new StringRequest(Method.POST, HttpUtil.LOGIN_URI,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d(TAG, "response: " + response);
+                    mResult = true;
+                    //                    Gson gson = new Gson();
+                    //                    Result result = gson.fromJson(response, Result.class);
+                    if (mIJobListener != null) {
+                        mIJobListener.executionDone();
+                    }
                 }
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mResult = true;
-                Log.d(TAG, error.toString());
-                if (mIJobListener != null) {
-                    mIJobListener.executionDone();
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mResult = true;
+                    Log.d(TAG, error.toString());
+                    if (mIJobListener != null) {
+                        mIJobListener.executionDone();
+                    }
                 }
-            }
-        };
-        StringRequest request = new StringRequest(Request.Method.POST,
-            HttpUtil.LOGIN_URI, responseListener, errorListener) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("phoneOrEmail", account);
-                params.put("password", password);
-                params.put("deviceId", "1");
-                Log.d(TAG, "params: " + params);
-                return params;
-            }
+            }) {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                Log.d(TAG, "headers: " + headers);
-                return headers;
+                return super.getHeaders();
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return object2Map(param);
+            }
+
+            private Map<String, String> object2Map(Object obj) {
+                return object2Map(obj, false);
+            }
+
+            private Map<String, String> object2Map(Object obj, boolean nullable) {
+                Map<String, String> result = new HashMap<String, String>();
+                if (obj == null) {
+                    return result;
+                }
+                java.lang.reflect.Method[] methods = obj.getClass().getMethods();
+                if (methods == null || methods.length == 0) {
+                    return result;
+                }
+                try {
+                    for (java.lang.reflect.Method method : methods) {
+                        String methodName = method.getName();
+                        if (methodName != null && methodName.length() > 3
+                            && methodName.startsWith("get") && !methodName.equals("getClass")) {
+                            Object value = method.invoke(obj, null);
+                            if (!nullable && value == null) {
+                                continue;
+                            }
+                            char[] fieldNameArray = methodName.substring(3).toCharArray();
+                            fieldNameArray[0] = Character.toLowerCase(fieldNameArray[0]);
+                            result.put(String.valueOf(fieldNameArray),
+                                (value == null) ? "" : String.valueOf(value));
+                        }
+                    }
+                } catch (InvocationTargetException e) {
+                    result.clear();
+                } catch (IllegalAccessException e) {
+                    result.clear();
+                }
+                return result;
             }
         };
         Volley.newRequestQueue(this).add(request);

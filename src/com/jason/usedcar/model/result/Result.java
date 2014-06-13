@@ -1,4 +1,4 @@
-package com.jason.usedcar.model;
+package com.jason.usedcar.model.result;
 
 import lombok.Data;
 

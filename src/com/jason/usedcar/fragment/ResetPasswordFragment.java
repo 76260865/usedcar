@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
+import com.jason.usedcar.model.param.ResetPasswordByPhoneParam;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter.ResetPasswordFragmentUi;
 import com.jason.usedcar.view.ObtainCodeButton;
@@ -152,7 +153,11 @@ public class ResetPasswordFragment extends
         String newPassword = String.valueOf(editNewPassword.getText());
         String confirmPassword = String.valueOf(editConfirmNewPassword.getText());
         String phoneNum = getArguments().getString(PHONE_NUMBER);
-        getPresenter().resetPassword(getActivity(), phoneNum, verifyCode, newPassword,
-                confirmPassword);
+        ResetPasswordByPhoneParam param = new ResetPasswordByPhoneParam();
+        param.setNewPassword(newPassword);
+        param.setConfirmPassword(confirmPassword);
+        param.setPrinciple(phoneNum);
+        param.setActiveCode(verifyCode);
+        getPresenter().resetPassword(getActivity(), param);
     }
 }
