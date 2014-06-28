@@ -1217,7 +1217,7 @@ containing a value of this type.
         public static final int activity_login=0x7f030018;
         public static final int activity_main=0x7f030019;
         public static final int activity_register=0x7f03001a;
-        public static final int buy_car_fragment_layout=0x7f03001b;
+        public static final int fragment_buy_car =0x7f03001b;
         public static final int buy_car_item_layout=0x7f03001c;
         public static final int footer_loading_layout=0x7f03001d;
         public static final int fragment_1=0x7f03001e;

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical" >
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/sale_car_filter_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/sale_car_filter_button"
+                android:layout_centerVertical="true"
+                android:minHeight="42dip"
+                android:layout_margin="10dip"
+                android:background="@drawable/sale_car_search_edit_bg"
+                android:drawableLeft="@drawable/icon_search"
+                android:textColor="#666666"/>
+        <Button
+                android:id="@+id/sale_car_filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="42dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dip"
+                android:background="@drawable/sale_car_search_button_bg"
+                android:text="@string/sale_car_filter"
+                android:textColor="@color/register_button_color_normal"/>
+    </RelativeLayout>
+    <View
+            style="@style/Divider.Horizontal"
+            android:visibility="visible"/>
+    <ListView
+            android:id="@+id/listCar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:divider="#666666"
+            android:dividerHeight="1px"/>
+</LinearLayout>

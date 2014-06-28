@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.jason.usedcar.R;
+import com.jason.usedcar.constants.Constants.ObtainCode;
 import com.jason.usedcar.model.param.ObtainCodeParam;
 import com.jason.usedcar.presenter.ObtainCodeFragmentPresenter;
 import com.jason.usedcar.presenter.ObtainCodeFragmentPresenter.ObtainCodeFragmentUi;
+import com.jason.usedcar.util.ViewFinder;
 import com.jason.usedcar.view.ObtainCodeButton;
 import com.jason.usedcar.view.ObtainCodeButton.OnClickLimitListener;
 import com.mobsandgeeks.saripaar.Rule;
@@ -32,8 +34,8 @@ public class ObtainCodeFragment extends
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_reset_password_obtain_code, container, false);
-        editPhoneNumber = (EditText) contentView.findViewById(R.id.reset_password_account);
-        buttonObtainCode = (ObtainCodeButton) contentView.findViewById(R.id.reset_password_obtain_code);
+        editPhoneNumber = ViewFinder.findViewById(contentView, R.id.reset_password_account);
+        buttonObtainCode = ViewFinder.findViewById(contentView, R.id.reset_password_obtain_code);
         buttonObtainCode.setOnClickListener(this);
         buttonObtainCode.setLimitListener(new OnClickLimitListener() {
             @Override
@@ -89,6 +91,7 @@ public class ObtainCodeFragment extends
         String phoneNumber = String.valueOf(editPhoneNumber.getText());
         ObtainCodeParam param = new ObtainCodeParam();
         param.setPhoneNumber(phoneNumber);
+        param.setType(ObtainCode.TYPE_RESET_PASSWORD);
         getPresenter().obtainCode(getActivity(), param);
     }
 }

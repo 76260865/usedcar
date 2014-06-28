@@ -1,37 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/button1"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_my_profile_text" />
-
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical" >
     <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_identification_text" />
-
+            android:id="@+id/info_center_my_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/btn_my_profile_text"
+            android:textColor="#444444"/>
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
     <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_car_selling_text" />
-
+            android:id="@+id/info_center_identify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/btn_identification_text"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
     <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_my_favorate_text" />
-
+            android:id="@+id/info_center_sale_car"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/btn_car_selling_text"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
     <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_records_for_buy_car_text" />
-
+            android:id="@+id/info_center_my_collect_cars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/btn_my_favorate_text"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+    <Button
+            android:id="@+id/info_center_bought_cars_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/btn_records_for_buy_car_text"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
 </LinearLayout>

@@ -35,7 +35,7 @@ public class ObtainCodeFragmentPresenter extends BasePresenter<ObtainCodeFragmen
                     Gson gson = new Gson();
                     ObtainCodeResult result = gson.fromJson(response, ObtainCodeResult.class);
                     if (result.isExecutionResult()) {
-                        getUi().onCodeObtained("0");
+                        getUi().onCodeObtained(result.getCode());
                     }
                 }
             },

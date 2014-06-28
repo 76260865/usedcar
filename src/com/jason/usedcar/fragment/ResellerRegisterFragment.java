@@ -1,6 +1,7 @@
 package com.jason.usedcar.fragment;
 
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import com.jason.usedcar.R;
@@ -8,6 +9,7 @@ import com.jason.usedcar.model.param.ResellerSignOnParam;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
 import com.jason.usedcar.util.HttpUtil;
+import com.jason.usedcar.util.ViewFinder;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.Required;
 
@@ -24,14 +26,16 @@ public class ResellerRegisterFragment extends RegisterFragment {
     @Override
     protected void bindViews(View contentView) {
         super.bindViews(contentView);
-        editResellerName = (EditText) contentView.findViewById(R.id.register_reseller_name);
-        editResellerAddress = (EditText) contentView.findViewById(R.id.register_reseller_address);
-        radioResellerType = (RadioGroup) contentView.findViewById(R.id.register_reseller_type);
+        ViewStub viewStub = ViewFinder.findViewById(contentView, R.id.reseller_info);
+        viewStub.inflate();
+        editResellerName = ViewFinder.findViewById(contentView, R.id.register_reseller_name);
+        editResellerAddress = ViewFinder.findViewById(contentView, R.id.register_reseller_address);
+        radioResellerType = ViewFinder.findViewById(contentView, R.id.register_reseller_type);
     }
 
     @Override
     protected int layout() {
-        return R.layout.fragment_reseller_register_layout;
+        return R.layout.fragment_register;
     }
 
     @Override
@@ -73,10 +77,6 @@ public class ResellerRegisterFragment extends RegisterFragment {
     @Override
     public RegisterFragmentUi getUi() {
         return this;
-    }
-
-    @Override
-    public void onVerifyCodeRequested(String code) {
     }
 
     @Override

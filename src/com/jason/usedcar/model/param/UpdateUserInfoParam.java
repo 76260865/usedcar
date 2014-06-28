@@ -9,7 +9,15 @@ public class UpdateUserInfoParam extends Param {
 
     private String realName;
 
+    private String email;
+
+    private boolean bindEmail;
+
     private boolean sex;
+
+    private String phone;
+
+    private boolean bindPhone;
 
     private String birthyear;
 

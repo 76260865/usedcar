@@ -12,10 +12,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
+import com.jason.usedcar.constants.Constants.ObtainCode;
 import com.jason.usedcar.model.param.ObtainCodeParam;
 import com.jason.usedcar.model.param.SignOnParam;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
+import com.jason.usedcar.util.ViewFinder;
 import com.jason.usedcar.view.ObtainCodeButton;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Rules;
@@ -87,18 +89,18 @@ public class RegisterFragment extends
     }
 
     protected int layout() {
-        return R.layout.fragment_user_register_layout;
+        return R.layout.fragment_register;
     }
 
     protected void bindViews(View contentView) {
-        editAccount = (EditText) contentView.findViewById(R.id.register_account);
-        editVerifyCode = (EditText) contentView.findViewById(R.id.register_verify_code);
-        editPassword = (EditText) contentView.findViewById(R.id.register_password);
-        editConfirmPassword = (EditText) contentView.findViewById(R.id.register_password_confirm);
-        checkAgreement = (CheckBox) contentView.findViewById(R.id.register_agreement_check);
-        buttonObtainCode = (ObtainCodeButton) contentView.findViewById(R.id.register_obtain_code);
+        editAccount = ViewFinder.findViewById(contentView, R.id.register_account);
+        editVerifyCode = ViewFinder.findViewById(contentView, R.id.register_verify_code);
+        editPassword = ViewFinder.findViewById(contentView, R.id.register_password);
+        editConfirmPassword = ViewFinder.findViewById(contentView, R.id.register_password_confirm);
+        checkAgreement = ViewFinder.findViewById(contentView, R.id.register_agreement_check);
+        buttonObtainCode = ViewFinder.findViewById(contentView, R.id.register_obtain_code);
         buttonObtainCode.setOnClickListener(this);
-        Button buttonRegister = (Button) contentView.findViewById(R.id.register_register);
+        Button buttonRegister = ViewFinder.findViewById(contentView, R.id.register_register);
         buttonRegister.setOnClickListener(this);
     }
 
@@ -176,6 +178,7 @@ public class RegisterFragment extends
         String account = String.valueOf(editAccount.getText());
         ObtainCodeParam param = new ObtainCodeParam();
         param.setPhoneNumber(account);
+        param.setType(ObtainCode.TYPE_REGISTER);
         getPresenter().obtainCode(getActivity(), param);
     }
 

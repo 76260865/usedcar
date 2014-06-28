@@ -9,17 +9,18 @@ import android.widget.ImageView;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import com.jason.usedcar.fragment.BuyCarFragment;
+import com.jason.usedcar.fragment.MoreFragment;
 import com.jason.usedcar.fragment.PersonalCenterFragment;
+import com.jason.usedcar.fragment.SellCarFragment;
 import com.jason.usedcar.fragment.ShoppingCarFragment;
-import com.jason.usedcar.fragment.TestFragment;
 
 public class MainTabActivity extends ActionBarActivity {
     private FragmentTabHost mTabHost;
 
     private LayoutInflater layoutInflater;
 
-    private Class<?> fragmentArray[] = { BuyCarFragment.class, TestFragment.class,
-            ShoppingCarFragment.class, PersonalCenterFragment.class, TestFragment.class };
+    private Class<?> fragmentArray[] = { BuyCarFragment.class, SellCarFragment.class,
+            ShoppingCarFragment.class, PersonalCenterFragment.class, MoreFragment.class };
 
     private int mImageViewArray[] = { R.drawable.tab_buy_car_btn, R.drawable.tab_sell_car_btn,
             R.drawable.tab_shop_car_btn, R.drawable.tab_personal_car_btn,

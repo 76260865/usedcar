@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExtendedTextView">
+        <attr name="prefix" format="string"/>
+        <attr name="prefixColor" format="color"/>
+        <attr name="prefixSize" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="IconEditText">
+        <attr name="src" format="integer|reference"/>
+        <attr name="editId" format="integer"/>
+        <attr name="inputType" format="string|reference"/>
+        <attr name="hint" format="string|reference"/>
+        <attr name="textColor" format="color|reference"/>
+        <attr name="textColorHint" format="color|reference"/>
+        <attr name="textSize" format="dimension|reference"/>
+    </declare-styleable>
+</resources>

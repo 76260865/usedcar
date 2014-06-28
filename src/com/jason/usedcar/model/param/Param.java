@@ -7,5 +7,5 @@ public class Param {
 
     private String accessToken;
 
-    private String deviceId;
+    private String deviceId =  android.os.Build.SERIAL;
 }
