@@ -7,5 +7,5 @@ public class ObtainCodeParam extends Param {
 
     private String phoneNumber;
 
-    private String type;
+    private int type;
 }

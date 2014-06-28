@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter.CallButtonUi;
+import com.jason.usedcar.util.ViewFinder;
 
 public class ShoppingCarFragment extends
         BaseFragment<ShoppingCarFragmentPresenter, ShoppingCarFragmentPresenter.CallButtonUi>
@@ -28,15 +29,15 @@ public class ShoppingCarFragment extends
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.shoping_car_fragment, null);
-        mShoppingCarListView = (ListView) root.findViewById(R.id.list_shopping_car);
-        return root;
+        View view = inflater.inflate(R.layout.shoping_car_fragment, null);
+        mShoppingCarListView = ViewFinder.findViewById(view, R.id.list_shopping_car);
+        return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(R.string.txt_shoping_car_str);
+        getActivity().setTitle(R.string.txt_shopping_car_str);
 
         mAdapter = new ShoppingCarListViewAdapter();
         mShoppingCarListView.setAdapter(mAdapter);

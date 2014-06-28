@@ -1,43 +1,74 @@
 package com.jason.usedcar.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.jason.usedcar.R;
+import com.jason.usedcar.adapter.SaleCarAdapter;
+import com.jason.usedcar.model.SaleCarModel;
+import com.jason.usedcar.model.param.PublishUsedCarParam;
 import com.jason.usedcar.presenter.BuyCarFragmentPresenter;
 import com.jason.usedcar.presenter.BuyCarFragmentPresenter.CallButtonUi;
+import com.jason.usedcar.util.ViewFinder;
+import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.annotation.Required;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BuyCarFragment extends
-        BaseFragment<BuyCarFragmentPresenter, BuyCarFragmentPresenter.CallButtonUi> implements
-        BuyCarFragmentPresenter.CallButtonUi {
-    private ListView mListCar;
+    BaseFragment<BuyCarFragmentPresenter, CallButtonUi> implements
+    CallButtonUi, OnClickListener {
+
     private View mFooterLoadingView;
-    private ListViewAdapter mListViewAdapter = new ListViewAdapter();
-    private final Handler mHandler = new Handler();
-    private int mVisibleItemCount = 0;// ��ǰ���ڿɼ�������
-    private int mVisibleLastIndex = 0; // ���Ŀ���������
+
+    private int mVisibleLastIndex = 0;
+
+    private SaleCarModel saleCarModel = new SaleCarModel();
 
     private int mCount = 41;
+
+    @Required(order = 1)
+    private TextView filterText;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getPresenter().login(getActivity());
-        View view = inflater.inflate(R.layout.buy_car_fragment_layout, null);
+        View view = inflater.inflate(R.layout.fragment_buy_car, container, false);
+        filterText = ViewFinder.findViewById(view, R.id.sale_car_filter_text);
+        filterText.setOnClickListener(this);
+        ViewFinder.findViewById(view, R.id.sale_car_filter_button).setOnClickListener(this);
+        ListView saleCarlList = ViewFinder.findViewById(view, R.id.listCar);
         mFooterLoadingView = inflater.inflate(R.layout.footer_loading_layout, null);
-        mListCar = (ListView) view.findViewById(R.id.listCar);
-        mListCar.addFooterView(mFooterLoadingView);
-        mListCar.setAdapter(mListViewAdapter);
-        mListCar.setOnScrollListener(mOnScrollListener);
+        saleCarlList.addFooterView(mFooterLoadingView);
+        saleCarlList.setAdapter(new SaleCarAdapter(getActivity(), saleCarModel));
+        saleCarlList.setOnScrollListener(mOnScrollListener);
+        saleCarlList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getPresenter().clickItem(getActivity(), saleCarModel.get(position));
+            }
+        });
         return view;
     }
 
@@ -45,12 +76,48 @@ public class BuyCarFragment extends
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.buy_car_text);
+        List<PublishUsedCarParam> data = new ArrayList<PublishUsedCarParam>(20);
+        for (int i = 0; i < 20; i++) {
+            PublishUsedCarParam param = new PublishUsedCarParam();
+            param.setListPrice(1000 + i);
+            param.setOdometer(2032 + 10 * i);
+            param.setPurchaseDate(String.valueOf(System.currentTimeMillis()));
+            data.add(param);
+        }
+        saleCarModel.setData(data);
+        saleCarModel.notifyDataSetInvalidated();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_buy_car, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_search:
+                SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+                searchView.setOnQueryTextListener(new OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        getPresenter().filterCar(getActivity(), s);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                });
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void setEnabled(boolean on) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -65,73 +132,71 @@ public class BuyCarFragment extends
 
     @Override
     public void login(String response) {
-        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
-
     }
 
     private OnScrollListener mOnScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrollStateChanged(AbsListView view, int mScrollState) {
-            int itemsLastIndex = mListViewAdapter.getCount() - 1; // ��ݼ����һ�������
-            int lastIndex = itemsLastIndex + 1; // ���ϵײ���loadMoreView��
-
-            /**
-             * ��ListView���������һ����¼ʱ��ʱ�����ǻῴ���Ѿ�����ӵ�ListView��"������"���֣� ��ʱӦ�ü���ʣ����ݡ�
-             */
-            if (mVisibleLastIndex == lastIndex
-                    && mScrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-                if (mListViewAdapter.count <= mCount) {
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mListViewAdapter.count += 10;
-                            mListViewAdapter.notifyDataSetChanged();
-//                            mListCar.setSelection(mVisibleLastIndex - mVisibleItemCount + 1);
+            int itemsLastIndex = saleCarModel.size() - 1;
+            int lastIndex = itemsLastIndex + 1;
+            if (mScrollState == OnScrollListener.SCROLL_STATE_IDLE
+                && !saleCarModel.isLoading()
+                && mVisibleLastIndex == lastIndex
+                && saleCarModel.size() <= mCount) {
+                saleCarModel.setLoading(true);
+                view.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<PublishUsedCarParam> data = new ArrayList<PublishUsedCarParam>(20);
+                        for (int i = 0; i < 20; i++) {
+                            PublishUsedCarParam param = new PublishUsedCarParam();
+                            param.setListPrice(1000 + i);
+                            param.setOdometer(2032 + 10 * i);
+                            param.setPurchaseDate(String.valueOf(System.currentTimeMillis()));
+                            data.add(param);
                         }
-                    }, 1000);
-                }
+                        saleCarModel.add(data);
+                        saleCarModel.setLoading(false);
+                        saleCarModel.notifyDataSetInvalidated();
+                    }
+                }, 1000);
             }
         }
 
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                int totalItemCount) {
-            mVisibleItemCount = visibleItemCount;
-            mVisibleLastIndex = firstVisibleItem + mVisibleItemCount - 1;
-            if (mListViewAdapter.count > mCount) {
-                mListCar.removeFooterView(mFooterLoadingView);
+            int totalItemCount) {
+            mVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
+            if (saleCarModel.size() > mCount) {
+                mFooterLoadingView.findViewById(R.id.loading_more_no_data).setVisibility(View.VISIBLE);
+                mFooterLoadingView.findViewById(R.id.loading_more_progress).setVisibility(View.GONE);
             }
         }
     };
 
-    class ListViewAdapter extends BaseAdapter {
-        int count = 10;
-
-        public int getCount() {
-            return count;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sale_car_filter_text:
+                break;
+            case R.id.sale_car_filter_button:
+                getValidator().validate();
+                break;
         }
+    }
 
-        public Object getItem(int position) {
-            return position;
-        }
+    @Override
+    public void onValidationSucceeded() {
+        getPresenter().filterCar(getActivity(), String.valueOf(filterText.getText()));
+    }
 
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View view, ViewGroup parent) {
-            TextView mTextView;
-            if (view == null) {
-                mTextView = new TextView(getActivity());
-            } else {
-                mTextView = (TextView) view;
-            }
-            mTextView.setText("Item " + position);
-            mTextView.setTextSize(20f);
-            mTextView.setGravity(Gravity.CENTER);
-            mTextView.setHeight(60);
-            return mTextView;
+    @Override
+    public void onValidationFailed(View view, Rule<?> rule) {
+        switch (view.getId()) {
+            case R.id.sale_car_filter_text:
+                Toast.makeText(getActivity(), "请选择筛选条件", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

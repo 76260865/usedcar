@@ -5,6 +5,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.StringRequest;
+import com.jason.usedcar.config.DeviceInfo;
 import com.jason.usedcar.interfaces.Ui;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -21,7 +22,10 @@ public class BasePresenter<U extends Ui> extends Presenter<U> {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                return super.getHeaders();
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("User-Agent", DeviceInfo.USER_AGENT);
+                return headers;
             }
 
             @Override

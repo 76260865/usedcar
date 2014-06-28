@@ -65,7 +65,7 @@ public class RegisterFragmentPresenter extends BasePresenter<RegisterFragmentUi>
                     Gson gson = new Gson();
                     ObtainCodeResult result = gson.fromJson(response, ObtainCodeResult.class);
                     if (result.isExecutionResult()) {
-                        getUi().onVerifyCodeRequested("0");
+                        getUi().onVerifyCodeRequested(result.getCode());
                     }
                 }
             },

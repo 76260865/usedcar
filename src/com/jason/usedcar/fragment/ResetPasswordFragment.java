@@ -14,6 +14,7 @@ import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.model.param.ResetPasswordByPhoneParam;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter.ResetPasswordFragmentUi;
+import com.jason.usedcar.util.ViewFinder;
 import com.jason.usedcar.view.ObtainCodeButton;
 import com.jason.usedcar.view.ObtainCodeButton.OnClickLimitListener;
 import com.mobsandgeeks.saripaar.Rule;
@@ -61,9 +62,8 @@ public class ResetPasswordFragment extends
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_reset_password_set_new_password,
                 container, false);
-        TextView textAccount = (TextView) contentView.findViewById(R.id.reset_password_account);
-        buttonObtainCode = (ObtainCodeButton) contentView
-                .findViewById(R.id.reset_password_obtain_code);
+        TextView textAccount = ViewFinder.findViewById(contentView, R.id.reset_password_account);
+        buttonObtainCode = ViewFinder.findViewById(contentView, R.id.reset_password_obtain_code);
         buttonObtainCode.setLimitListener(new OnClickLimitListener() {
             @Override
             public void onClickLimited() {
@@ -71,11 +71,10 @@ public class ResetPasswordFragment extends
                         Toast.LENGTH_SHORT).show();
             }
         });
-        editVerifyCode = (EditText) contentView.findViewById(R.id.reset_password_verify_code);
-        editNewPassword = (EditText) contentView.findViewById(R.id.reset_password_new_password);
-        editConfirmNewPassword = (EditText) contentView
-                .findViewById(R.id.reset_password_confirm_password);
-        Button buttonResetPassword = (Button) contentView.findViewById(R.id.reset_password_confirm);
+        editVerifyCode = ViewFinder.findViewById(contentView, R.id.reset_password_verify_code);
+        editNewPassword = ViewFinder.findViewById(contentView, R.id.reset_password_new_password);
+        editConfirmNewPassword = ViewFinder.findViewById(contentView, R.id.reset_password_confirm_password);
+        Button buttonResetPassword = ViewFinder.findViewById(contentView, R.id.reset_password_confirm);
         buttonResetPassword.setOnClickListener(this);
         Bundle args = getArguments();
         if (args != null) {

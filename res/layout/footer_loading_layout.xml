@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center" >
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+            android:id="@+id/loading_more_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:layout_gravity="center"
+            android:gravity="center" >
+        <ProgressBar
+                android:id="@+id/loading_more_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <TextView
+                android:id="@+id/loading_more_progress_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_loading_str" />
+    </LinearLayout>
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/txt_loading_str" />
-
-</LinearLayout>
+            android:id="@+id/loading_more_no_data"
+            android:layout_width="wrap_content"
+            android:layout_height="48dip"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/txt_no_more_data"
+            android:visibility="gone"/>
+</FrameLayout>

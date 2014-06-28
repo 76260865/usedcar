@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical" >
+    <Button
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="购物指南"
+            android:textColor="#444444"/>
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+    <Button
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="贷款保险"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+    <Button
+            android:id="@+id/sale_car"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="认证二手车"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+    <Button
+            android:id="@+id/my_collect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="关于我们"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+    <Button
+            android:id="@+id/bought_car_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="意见反馈"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+    <Button
+            android:id="@+id/bought_car_history2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="检查更新"
+            android:textColor="#444444" />
+    <View
+            style="@style/Divider.Horizontal"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"/>
+</LinearLayout>

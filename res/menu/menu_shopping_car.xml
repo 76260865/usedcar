@@ -1,9 +1,11 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:car="http://schemas.android.com/apk/res/com.jason.usedcar">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:title="@string/menu_shoping_car_str"/>
-
+            android:id="@+id/action_add_car"
+            android:title="@string/menu_shopping_add"
+            car:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/action_edit_car"
+            android:title="@string/menu_shopping_edit"
+            car:showAsAction="ifRoom"/>
 </menu>

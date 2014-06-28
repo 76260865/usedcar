@@ -98,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void insertBands(ArrayList<Brand> brands) {
-        String sql = "INSTER INTO " + CarTablesInfo.CarBrand.TABLE_NAME + " (" + CarBrand.BRAND_ID
+        String sql = "INSERT INTO " + CarTablesInfo.CarBrand.TABLE_NAME + " (" + CarBrand.BRAND_ID
                 + "," + CarBrand.BRAND_NAME + ") VALUES (?,?)";
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
@@ -118,7 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void insertProvinces(ArrayList<Province> provinces) {
-        String sql = "INSTER INTO " + CarTablesInfo.CarProvince.TABLE_NAME + " ("
+        String sql = "INSERT INTO " + CarTablesInfo.CarProvince.TABLE_NAME + " ("
                 + CarProvince.PROVINCE_ID + "," + CarProvince.PROVINCE_NAME + ") VALUES (?,?)";
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();

@@ -7,7 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-
+import android.content.Intent;
+import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
@@ -15,6 +16,7 @@ import com.jason.usedcar.db.DBHelper;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.model.db.Brand;
 import com.jason.usedcar.model.db.Province;
+import com.jason.usedcar.model.param.PublishUsedCarParam;
 import com.jason.usedcar.presenter.BuyCarFragmentPresenter.CallButtonUi;
 import com.jason.usedcar.util.HttpUtil;
 
@@ -36,6 +38,16 @@ public class BuyCarFragmentPresenter extends BasePresenter<CallButtonUi> {
                         // error
                     }
                 }));
+    }
+
+    public void clickItem(Context context, PublishUsedCarParam param) {
+        if (param != null) {
+            context.startActivity(new Intent());
+        }
+    }
+
+    public void filterCar(Context context, String filter) {
+        Toast.makeText(context, "filter " + filter, Toast.LENGTH_SHORT).show();
     }
 
     public interface CallButtonUi extends Ui {
