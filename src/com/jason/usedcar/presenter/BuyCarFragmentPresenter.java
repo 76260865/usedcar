@@ -78,7 +78,7 @@ public class BuyCarFragmentPresenter extends BasePresenter<CallButtonUi> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        DBHelper.getInstance(context).insertBands(brands);
+        DBHelper.getInstance(context).insertBrands(brands);
     }
 
     private void updateProvinceInfos(Context context, JSONObject object) {

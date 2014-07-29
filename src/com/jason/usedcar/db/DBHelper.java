@@ -3,6 +3,7 @@ package com.jason.usedcar.db;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -97,7 +98,23 @@ public class DBHelper extends SQLiteOpenHelper {
         createAllTables(db);
     }
 
-    public void insertBands(ArrayList<Brand> brands) {
+    public boolean isBrandsInited() {
+        boolean ret = false;
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(CarTablesInfo.CarBrand.TABLE_NAME, CarTablesInfo.CarBrand.PROJECTION,
+                    null, null, null, null, null);
+            ret = cursor.getCount() > 0;
+        } catch (SQLException e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            cursor.close();
+        }
+        return ret;
+    }
+
+    public void insertBrands(ArrayList<Brand> brands) {
         String sql = "INSERT INTO " + CarTablesInfo.CarBrand.TABLE_NAME + " (" + CarBrand.BRAND_ID
                 + "," + CarBrand.BRAND_NAME + ") VALUES (?,?)";
         SQLiteDatabase db = getWritableDatabase();

@@ -67,4 +67,19 @@ public class HttpUtil {
      * 更改用户信息
      */
     public static final String RESET_PWD_BY_PHONE_URI = URI.concat("resetPasswordByPhone");
+
+    /**
+     * 获取汽车品牌
+     */
+    public static final String GET_BRANDS_URI = URI.concat("/product/getBrands.json");
+
+    /**
+     * 获取汽车车系
+     */
+    public static final String GET_SERIERS_URI = URI.concat("/product/getSeries.json");
+
+    /**
+     * 获取汽车车系
+     */
+    public static final String GET_MODELS_URI = URI.concat("/product/getModels.json");
 }

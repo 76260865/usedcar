@@ -38,6 +38,7 @@ public class SaleCarAdapter extends BaseAdapter {
             }
         });
     }
+
     @Override
     public int getCount() {
         return model == null ? 0 : model.size();
@@ -64,9 +65,12 @@ public class SaleCarAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }
         PublishUsedCarParam param = getItem(position);
-        viewHolder.preSaleText.setText(context.getString(R.string.sale_car_pre_sale_price, param.getListPrice()));
-        viewHolder.mileageText.setText(context.getString(R.string.sale_car_mileage, param.getOdometer()));
-        viewHolder.buyTimeText.setText(context.getString(R.string.sale_car_buy_time, param.getPurchaseDate()));
+        viewHolder.preSaleText.setText(context.getString(R.string.sale_car_pre_sale_price,
+                param.getListPrice()));
+        viewHolder.mileageText.setText(context.getString(R.string.sale_car_mileage,
+                param.getOdometer()));
+        viewHolder.buyTimeText.setText(context.getString(R.string.sale_car_buy_time,
+                param.getPurchaseDate()));
         return convertView;
     }
 }
