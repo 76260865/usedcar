@@ -131,7 +131,28 @@ public class DBHelper extends SQLiteOpenHelper {
         return ret;
     }
 
-    public void insertBrands(List<Brand> brands) {
+    public ArrayList<Brand> getBrands() {
+    	ArrayList<Brand> brands = new ArrayList<Brand>();
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(CarTablesInfo.CarBrand.TABLE_NAME, CarTablesInfo.CarBrand.PROJECTION,
+                    null, null, null, null, null);
+            while(cursor.moveToNext()) {
+            	Brand brand = new Brand();
+            	brand.setBrandId(cursor.getInt(CarTablesInfo.CarBrand.INDEX_BRAND_ID));
+            	brand.setBrandName(cursor.getString(CarTablesInfo.CarBrand.INDEX_BRAND_NAME));
+            	brands.add(brand);
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            cursor.close();
+        }
+    	return brands;
+    }
+
+    public void insertBrands(ArrayList<Brand> brands) {
         String sql = "INSERT INTO " + CarTablesInfo.CarBrand.TABLE_NAME + " (" + CarBrand.BRAND_ID
                 + "," + CarBrand.BRAND_NAME + ") VALUES (?,?)";
         SQLiteDatabase db = getWritableDatabase();
@@ -140,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
             for (Brand brand : brands) {
                 SQLiteStatement sqlListStatement = db.compileStatement(sql);
                 sqlListStatement.bindAllArgsAsStrings(new String[] {
-                        String.valueOf(brand.getBrandId()), brand.getName() });
+                        String.valueOf(brand.getBrandId()), brand.getBrandName() });
                 sqlListStatement.executeInsert();
             }
             db.setTransactionSuccessful();
@@ -149,23 +170,6 @@ public class DBHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
-    }
-
-    public List<Brand> getBrands() {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + CarBrand.TABLE_NAME, null);
-        List<Brand> brandList = new ArrayList<Brand>();
-        if (cursor != null && cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            do {
-                Brand brand = new Brand();
-                brand.setBrandId(cursor.getInt(cursor.getColumnIndex(CarBrand.BRAND_ID)));
-                brand.setName(cursor.getString(cursor.getColumnIndex(CarBrand.BRAND_NAME)));
-                brandList.add(brand);
-            } while (cursor.moveToNext());
-            cursor.close();
-        }
-        return brandList;
     }
 
     public boolean isProvincesInit() {

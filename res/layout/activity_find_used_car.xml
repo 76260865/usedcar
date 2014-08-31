@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/txt_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_brands"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txt_seriers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="车系"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txt_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="价格"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txt_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="车龄"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/txt_miles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="里程"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

@@ -56,7 +56,7 @@ public class ModelsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO add the Model layout, viewholder and implement the event
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_shopping_car_layout,
+			convertView = mInflater.inflate(R.layout.brands_item_layout,
 					parent, false);
 		}
 		SaleCarViewHolder viewHolder = (SaleCarViewHolder) convertView.getTag();

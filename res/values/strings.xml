@@ -75,4 +75,5 @@
     <string name="history_order_pay_time">下单日期: %1$s</string>
     <string name="history_order_state">订单状态: %1$s</string>
     <string name="version">检查更新  当前版本号:%s</string>
+    <string name="txt_brands">品牌:</string>
 </resources>

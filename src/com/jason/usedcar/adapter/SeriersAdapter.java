@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.jason.usedcar.R;
-import com.jason.usedcar.adapter.holder.SaleCarViewHolder;
+import com.jason.usedcar.adapter.holder.BrandChooseViewHolder;
 import com.jason.usedcar.model.UsedCarModel;
 import com.jason.usedcar.model.data.Series;
 
@@ -56,21 +56,17 @@ public class SeriersAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO add the seriers layout, viewholder and implement the event
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_shopping_car_layout,
+			convertView = mInflater.inflate(R.layout.brands_item_layout,
 					parent, false);
 		}
-		SaleCarViewHolder viewHolder = (SaleCarViewHolder) convertView.getTag();
+		BrandChooseViewHolder viewHolder = (BrandChooseViewHolder) convertView
+				.getTag();
 		if (viewHolder == null) {
-			viewHolder = new SaleCarViewHolder(convertView);
+			viewHolder = new BrandChooseViewHolder(convertView);
 			convertView.setTag(viewHolder);
 		}
 		Series param = getItem(position);
-		// viewHolder.preSalePriceText.setText(context.getString(
-		// R.string.sale_car_pre_sale_price, param.getListPrice()));
-		// viewHolder.mileageText.setText(context.getString(
-		// R.string.sale_car_mileage, param.getOdometer()));
-		// viewHolder.buyTimeText.setText(context.getString(
-		// R.string.sale_car_buy_time, param.getPurchaseDate()));
+		viewHolder.txtBrandName.setText(param.getSeriesName());
 		return convertView;
 	}
 }

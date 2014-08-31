@@ -83,4 +83,6 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowCloseOnTouchOutside">false</item>
     </style>
+     <style name="Dialog_Fullscreen"> 
+    </style>  
 </resources>

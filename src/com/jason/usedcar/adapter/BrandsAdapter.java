@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.jason.usedcar.R;
-import com.jason.usedcar.adapter.holder.SaleCarViewHolder;
+import com.jason.usedcar.adapter.holder.BrandChooseViewHolder;
 import com.jason.usedcar.model.UsedCarModel;
 import com.jason.usedcar.model.data.Brand;
 
-public class BrandsAdapter extends BaseAdapter {
+public class BrandsAdapter extends BaseAdapter implements
+		StickyListHeadersAdapter {
 
 	private Context mContext;
 
@@ -49,28 +52,53 @@ public class BrandsAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return 0;
+		return position;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_shopping_car_layout,
+			convertView = mInflater.inflate(R.layout.brands_item_layout,
 					parent, false);
 		}
-		SaleCarViewHolder viewHolder = (SaleCarViewHolder) convertView.getTag();
+		BrandChooseViewHolder viewHolder = (BrandChooseViewHolder) convertView
+				.getTag();
 		if (viewHolder == null) {
-			viewHolder = new SaleCarViewHolder(convertView);
+			viewHolder = new BrandChooseViewHolder(convertView);
 			convertView.setTag(viewHolder);
 		}
 		Brand param = getItem(position);
-        viewHolder.carNameText.setText(param.getName());
-		// viewHolder.preSalePriceText.setText(context.getString(
-		// R.string.sale_car_pre_sale_price, param.getListPrice()));
-		// viewHolder.mileageText.setText(context.getString(
-		// R.string.sale_car_mileage, param.getOdometer()));
-		// viewHolder.buyTimeText.setText(context.getString(
-		// R.string.sale_car_buy_time, param.getPurchaseDate()));
+		viewHolder.txtBrandName.setText(param.getBrandName().substring(1,
+				param.getBrandName().length() - 1));
 		return convertView;
+	}
+
+	@Override
+	public long getHeaderId(int position) {
+		return getItem(position).getBrandName().subSequence(0, 1).charAt(0);
+	}
+
+	@Override
+	public View getHeaderView(int position, View convertView, ViewGroup parent) {
+		HeaderViewHolder mHeaderHolder;
+		if (convertView == null) {
+			mHeaderHolder = new HeaderViewHolder();
+			convertView = mInflater.inflate(R.layout.header, parent, false);
+			mHeaderHolder.mTextView = (TextView) convertView
+					.findViewById(R.id.text1);
+			convertView.setTag(mHeaderHolder);
+		} else {
+			mHeaderHolder = (HeaderViewHolder) convertView.getTag();
+		}
+
+		String headerText = ""
+				+ getItem(position).getBrandName().subSequence(0, 1).charAt(0);
+		mHeaderHolder.mTextView.setText(headerText);
+
+		return convertView;
+	}
+
+	public static class HeaderViewHolder {
+		public TextView mTextView;
 	}
 }
