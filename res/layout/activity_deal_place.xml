@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+    <ListView
+        android:id="@+id/listProvince"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rect_normal"
+        android:choiceMode="singleChoice"
+        android:listSelector="#FD760B"
+        tools:background="@drawable/rect"
+        tools:listitem="@layout/text_item_1"/>
+    <ListView
+        android:id="@+id/listCity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rect_normal"
+        android:choiceMode="singleChoice"
+        android:listSelector="#FD760B"
+        android:visibility="gone"
+        tools:layout_marginLeft="100dip"
+        tools:background="@drawable/rect"
+        tools:listitem="@layout/text_item_1"
+        tools:visibility="visible"/>
+    <ListView
+        android:id="@+id/listCounty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rect_normal"
+        android:listSelector="#FD760B"
+        android:visibility="gone"
+        tools:layout_marginLeft="200dip"
+        tools:background="@drawable/rect"
+        tools:listitem="@layout/text_item_1"
+        tools:visibility="visible"/>
+</FrameLayout>

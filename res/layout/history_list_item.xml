@@ -8,9 +8,9 @@
     <ImageView
             android:id="@+id/car_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dip"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/xianjian02"/>
     <TextView
             android:id="@+id/history_car_info"
             android:layout_width="match_parent"

@@ -32,9 +32,9 @@
     <string name="txt_no_more_data">没有更多数据</string>
     <string name="btn_my_profile_text">我的资料</string>
     <string name="btn_identification_text">身份认证</string>
-    <string name="btn_car_selling_text">出售中的车辆</string>
+    <string name="btn_car_selling_text">账户资金</string>
     <string name="btn_my_favorate_text">我的收藏</string>
-    <string name="btn_records_for_buy_car_text">买车记录</string>
+    <string name="btn_records_for_buy_car_text">买卖记录</string>
     <string name="title_personal_center">个人中心</string>
     <string name="tab_find_pwd_by_phone">手机找回</string>
     <string name="tab_find_pwd_by_email">邮箱找回</string>
@@ -55,12 +55,13 @@
     <string name="error_verify_code_incorrect">验证码不正确</string>
     <string name="notice_obtain_code_multiple">请不要重复获取短信验证码</string>
 
+    <string name="sale_car_name">商品名称: %1$s</string>
     <string name="sale_car_pre_sale_price">预售价格: %1$.2f万</string>
     <string name="sale_car_mileage">行驶里程: %1$.2f万公里</string>
     <string name="sale_car_buy_time">首次购买时间: %1$s</string>
     <string name="sale_car_filter">筛选</string>
     <!-- Change password -->
-    <string name="change_password_bind_phone">绑定手机: %1$s</string>
+    <string name="change_password_bind_phone">绑定手机:  %1$s</string>
 
 
     <!-- History -->
@@ -73,4 +74,5 @@
     <string name="history_order_price">订单金额: %1$s元</string>
     <string name="history_order_pay_time">下单日期: %1$s</string>
     <string name="history_order_state">订单状态: %1$s</string>
+    <string name="version">检查更新  当前版本号:%s</string>
 </resources>

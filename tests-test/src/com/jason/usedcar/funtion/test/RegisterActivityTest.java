@@ -33,8 +33,8 @@ public class RegisterActivityTest extends ActivityInstrumentationTestCase2<Regis
 
         mRegisterActivity = getActivity();
         mSolo = new Solo(getInstrumentation(), mRegisterActivity);
-        mBtnObtainCode = (Button) mRegisterActivity
-                .findViewById(com.jason.usedcar.R.id.register_obtain_code);
+        //mBtnObtainCode = (Button) mRegisterActivity
+        //        .getView(R.id.register_obtain_code);
         mEditPhone = (EditText) mRegisterActivity.findViewById(R.id.register_account);
         mEditValidateCode = (EditText) mRegisterActivity.findViewById(R.id.register_verify_code);
         mEditPwd = (EditText) mRegisterActivity.findViewById(R.id.register_password);

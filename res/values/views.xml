@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="register.edit" parent="">
+    <style name="EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:background">@null</item>
+        <item name="android:background">@drawable/edit_text</item>
         <item name="android:ems">10</item>
-        <item name="android:padding">10dip</item>
+        <item name="android:padding">16dip</item>
         <item name="android:textColor">#134EFD</item>
-        <item name="android:textColorHint">#D4D4D4</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">#c4c4c4</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">20sp</item>
     </style>
-    <style name="register.account" parent="register.edit">
-        <item name="android:hint">@string/hint_phone</item>
-        <item name="android:inputType">phone</item>
+    <style name="Phone.EditText" parent="EditText">
+        <item name="android:hint">手机号码</item>
     </style>
-    <style name="register.password" parent="register.edit">
-        <item name="android:hint">@string/hint_password</item>
-    </style>
-
     <style name="register.agreement" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/chk_confirm_condition</item>
         <item name="android:textColor">#333333</item>
     </style>
-    <style name="register.button" parent="">
+    <style name="Button">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/register_button_bg</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:text">@string/txt_register</item>
+        <item name="android:layout_height">56dip</item>
+        <item name="android:background">@drawable/btn</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="Confirm.Button" parent="Button">
+        <item name="android:text">确认</item>
     </style>
     <style name="Info.Item" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@null</item>
+        <item name="android:background">@drawable/edit_bg</item>
+        <item name="android:drawablePadding">10dip</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">16dip</item>
+        <item name="android:paddingBottom">16dip</item>
+        <item name="android:paddingLeft">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Info.Item2" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:drawablePadding">10dip</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingTop">16dip</item>
@@ -44,5 +56,17 @@
         <item name="android:paddingRight">10dip</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Details.Item" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">10dip</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:paddingRight">6dip</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingBottom">2dip</item>
+        <item name="android:textColor">#5B5B5B</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

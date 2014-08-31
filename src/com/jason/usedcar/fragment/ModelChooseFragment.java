@@ -1,10 +1,15 @@
 package com.jason.usedcar.fragment;
 
+import com.jason.usedcar.R;
+import com.jason.usedcar.RestClient;
+import com.jason.usedcar.model.Model;
+import com.jason.usedcar.model.data.CarModel;
+import com.jason.usedcar.model.data.Series;
+import com.jason.usedcar.request.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
+import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,22 +24,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.jason.usedcar.R;
 import com.jason.usedcar.adapter.ModelsAdapter;
-import com.jason.usedcar.adapter.SeriersAdapter;
-import com.jason.usedcar.config.DeviceInfo;
+
 import com.jason.usedcar.db.DBHelper;
 import com.jason.usedcar.model.UsedCarModel;
-import com.jason.usedcar.model.db.Model;
-import com.jason.usedcar.model.db.Series;
-import com.jason.usedcar.util.HttpUtil;
+
+import retrofit.*;
 
 public class ModelChooseFragment extends DialogFragment {
 	private static final String TAG = "ModelChooseFragment";
@@ -44,7 +39,7 @@ public class ModelChooseFragment extends DialogFragment {
 
 	private DBHelper mDbHelper;
 
-	private UsedCarModel<Model> mModelsModel = new UsedCarModel<Model>();
+	private UsedCarModel<CarModel> mModelsModel = new UsedCarModel<CarModel>();
 
 	private ModelsAdapter mAdapter;
 
@@ -81,27 +76,18 @@ public class ModelChooseFragment extends DialogFragment {
 	}
 
 	private void initSeriers() {
-		StringRequest request = new StringRequest(Method.POST,
-				HttpUtil.GET_SERIERS_URI, mResponseListener, mErrorListener) {
+        new RestClient().getSeries(new SeriesRequest(), new Callback<List<Series>>() {
+            @Override
+            public void success(final List<Series> modelList, final retrofit.client.Response response) {
+                //mModelsModel.add(modelList);
+                mAdapter.notifyDataSetChanged();
+            }
 
-			@Override
-			public Map<String, String> getHeaders() throws AuthFailureError {
-				Map<String, String> headers = new HashMap<String, String>();
-				headers.put("Accept", "application/json");
-				headers.put("User-Agent", DeviceInfo.USER_AGENT);
-				return headers;
-			}
+            @Override
+            public void failure(final RetrofitError error) {
 
-			@Override
-			protected Map<String, String> getParams() throws AuthFailureError {
-				Map<String, String> map = new HashMap<String, String>();
-				map.put("accessToken", "accessToken");
-				// TODO: add the accessToken and deviceId
-				return map;
-			}
-		};
-		RequestQueue queue = Volley.newRequestQueue(getActivity());
-		queue.add(request);
+            }
+        });
 	}
 
 	@Override
@@ -126,39 +112,4 @@ public class ModelChooseFragment extends DialogFragment {
 		});
 		return view;
 	}
-
-	private Response.Listener<String> mResponseListener = new Response.Listener<String>() {
-
-		@Override
-		public void onResponse(String response) {
-			ArrayList<Model> seriersList = new ArrayList<Model>();
-			try {
-				JSONObject object = new JSONObject(response);
-				Iterator<String> iterator = object.keys();
-				while (iterator.hasNext()) {
-					String key = iterator.next();
-					Model model = new Model();
-					model.setModelId(Integer.valueOf(key));
-					model.setModelName(object.getString(key));
-					seriersList.add(model);
-				}
-			} catch (NumberFormatException e) {
-				Log.e(TAG, e.getMessage());
-			} catch (JSONException e) {
-				Log.e(TAG, e.getMessage());
-			}
-
-			mModelsModel.add(seriersList);
-			mAdapter.notifyDataSetChanged();
-		}
-
-	};
-
-	private Response.ErrorListener mErrorListener = new Response.ErrorListener() {
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			// error
-			Log.e(TAG, error.getMessage());
-		}
-	};
 }

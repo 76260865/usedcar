@@ -1,17 +1,17 @@
 package com.jason.usedcar.presenter;
 
 import android.content.Context;
-import android.util.Log;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
+import android.support.v4.app.Fragment;
+import com.jason.usedcar.*;
+import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.param.ResetPasswordByPhoneParam;
-import com.jason.usedcar.model.result.ObtainCodeResult;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.request.ResetPasswordByPhoneRequest;
+import com.jason.usedcar.response.*;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter.ResetPasswordFragmentUi;
-import com.jason.usedcar.util.HttpUtil;
+import retrofit.*;
+import retrofit.client.*;
+import retrofit.client.Response;
 
 /**
  * @author t77yq @2014.06.08
@@ -25,25 +25,38 @@ public class ResetPasswordFragmentPresenter extends BasePresenter<ResetPasswordF
 
     private static final String TAG = "ResetPasswordFragmentPresenter";
 
-    public void resetPassword(Context context, final ResetPasswordByPhoneParam param) {
-        Log.d(TAG, " resetPasswordByPhone:" + HttpUtil.RESET_PWD_BY_PHONE_URI);
-        Volley.newRequestQueue(context).add(createPostRequest(HttpUtil.RESET_PWD_BY_PHONE_URI, param,
-            new Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d(TAG, "mObtainCodeResponseListener:response" + response);
-                    Gson gson = new Gson();
-                    ObtainCodeResult result = gson.fromJson(response, ObtainCodeResult.class);
-                    if (result.isExecutionResult()) {
-                        getUi().onPasswordReset();
-                    }
+    public void resetPassword(Fragment fragment, final ResetPasswordByPhoneRequest param) {
+        final LoadingFragment loadingFragment = new LoadingFragment();
+        loadingFragment.show(fragment.getFragmentManager());
+        new RestClient().resetPasswordByPhone(param, new Callback<PasswordResponse>() {
+            @Override
+            public void success(final PasswordResponse response, final retrofit.client.Response response2) {
+                loadingFragment.dismiss();
+                if (response.isExecutionResult()) {
+                    getUi().onPasswordReset();
                 }
-            },
-            new ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, error.toString());
-                }
-            }));
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
+    }
+
+    public void obtainCode(Fragment fragment, ObtainCodeRequest request) {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取手机验证码&38230;");
+        loadingFragment.show(fragment.getFragmentManager());
+        new RestClient().obtainCode(request, new Callback<ObtainCodeResponse>() {
+            @Override
+            public void success(final ObtainCodeResponse response, final Response response2) {
+                loadingFragment.dismiss();
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
     }
 }

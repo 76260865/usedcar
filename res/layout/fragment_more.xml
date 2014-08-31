@@ -1,74 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:support="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical" >
-    <Button
-            android:id="@+id/info"
+        android:background="#EFEFEF"
+        android:scrollbars="none">
+    <android.support.v7.internal.widget.LinearLayoutICS
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="购物指南"
-            android:textColor="#444444"/>
-    <View
-            style="@style/Divider.Horizontal"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"/>
-    <Button
-            android:id="@+id/id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="贷款保险"
-            android:textColor="#444444" />
-    <View
-            style="@style/Divider.Horizontal"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"/>
-    <Button
-            android:id="@+id/sale_car"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="认证二手车"
-            android:textColor="#444444" />
-    <View
-            style="@style/Divider.Horizontal"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"/>
-    <Button
-            android:id="@+id/my_collect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="关于我们"
-            android:textColor="#444444" />
-    <View
-            style="@style/Divider.Horizontal"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"/>
-    <Button
-            android:id="@+id/bought_car_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="意见反馈"
-            android:textColor="#444444" />
-    <View
-            style="@style/Divider.Horizontal"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"/>
-    <Button
-            android:id="@+id/bought_car_history2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="检查更新"
-            android:textColor="#444444" />
-    <View
-            style="@style/Divider.Horizontal"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"/>
-</LinearLayout>
+            android:orientation="vertical"
+            support:divider="@drawable/divider_h"
+            support:showDividers="middle" >
+        <Button
+                android:id="@+id/buttonDailyNews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="每日新闻"
+                android:textColor="#444444"/>
+        <Button
+                android:id="@+id/buttonSecuredTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="担保交易"
+                android:textColor="#444444"/>
+        <Button
+                android:id="@+id/buttonShoppingGuide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="购物指南"
+                android:textColor="#444444"/>
+        <Button
+                android:id="@+id/buttonVehicleInsurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="车辆保险"
+                android:textColor="#444444" />
+        <Button
+                android:id="@+id/buttonUsedCarLoan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="二手车贷款"
+                android:textColor="#444444" />
+        <Button
+                android:id="@+id/buttonAuthenticate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="认证二手车"
+                android:textColor="#444444" />
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="6dip"
+                android:visibility="invisible"/>
+        <Button
+                android:id="@+id/buttonAboutUs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="关于我们"
+                android:textColor="#444444" />
+        <Button
+                android:id="@+id/buttonFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector"
+                android:drawableRight="@drawable/arrow"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:text="意见反馈"
+                android:textColor="#444444" />
+        <LinearLayout
+                android:id="@+id/Version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:addStatesFromChildren="true"
+                android:background="@drawable/selector"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip">
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:gravity="left|center_vertical"
+                    android:text="检查更新"
+                    android:textColor="#444444" />
+            <TextView
+                    android:id="@+id/textCurrentVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dip"
+                    android:background="@android:color/transparent"
+                    android:drawableRight="@drawable/arrow"
+                    android:gravity="left|center_vertical"
+                    android:textColor="#444444"
+                    tools:text="当前版本号: v1.0"
+                    />
+        </LinearLayout>
+        <View
+                android:layout_width="0dip"
+                android:layout_height="0dip"
+                android:visibility="invisible"/>
+    </android.support.v7.internal.widget.LinearLayoutICS>
+</ScrollView>

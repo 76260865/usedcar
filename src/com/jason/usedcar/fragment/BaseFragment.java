@@ -1,7 +1,7 @@
 package com.jason.usedcar.fragment;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 
 import android.view.View;
 import com.jason.usedcar.interfaces.Ui;
@@ -13,6 +13,8 @@ import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 /**
  * Parent for all fragments that use Presenters and Ui design.
  */
+
+@SuppressWarnings("unchecked")
 public abstract class BaseFragment<T extends Presenter<U>, U extends Ui> extends Fragment implements ValidationListener {
 
     private Validator validator;
@@ -66,5 +68,9 @@ public abstract class BaseFragment<T extends Presenter<U>, U extends Ui> extends
 
     @Override
     public void onValidationFailed(View view, Rule<?> rule) {
+    }
+
+    protected static <V extends View> V getView(View view, int id) {
+        return (V) view.findViewById(id);
     }
 }

@@ -11,9 +11,9 @@ import org.apache.http.util.EncodingUtils;
 import android.content.Context;
 
 /**
- * class name£ºFileService<BR>
- * class description£ºandroidÎÄ¼şµÄÒ»Ğ©¶ÁÈ¡²Ù×÷<BR>
- * PS£º <BR>
+ * class nameï¼šFileService<BR>
+ * class descriptionï¼šandroidæ–‡ä»¶çš„ä¸€äº›è¯»å–æ“ä½œ<BR>
+ * PSï¼š <BR>
  */
 public class FileService {
     private Context context;
@@ -22,7 +22,7 @@ public class FileService {
         this.context = c;
     }
 
-    // ¶ÁÈ¡sdÖĞµÄÎÄ¼ş
+    // è¯»å–sdä¸­çš„æ–‡ä»¶
     public String readSDCardFile(String path) throws IOException {
         File file = new File(path);
         FileInputStream fis = new FileInputStream(file);
@@ -30,59 +30,59 @@ public class FileService {
         return result;
     }
 
-    // ÔÚresÄ¿Â¼ÏÂ½¨Á¢Ò»¸öraw×ÊÔ´ÎÄ¼ş¼Ğ£¬ÕâÀïµÄÎÄ¼şÖ»ÄÜ¶Á²»ÄÜĞ´Èë¡£¡£¡£
+    // åœ¨resç›®å½•ä¸‹å»ºç«‹ä¸€ä¸ªrawèµ„æºæ–‡ä»¶å¤¹ï¼Œè¿™é‡Œçš„æ–‡ä»¶åªèƒ½è¯»ä¸èƒ½å†™å…¥ã€‚ã€‚ã€‚
     public String readRawFile(int fileId) throws IOException {
-        // È¡µÃÊäÈëÁ÷
+        // å–å¾—è¾“å…¥æµ
         InputStream is = context.getResources().openRawResource(fileId);
-        String result = streamRead(is);// ·µ»ØÒ»¸ö×Ö·û´®
+        String result = streamRead(is);// è¿”å›ä¸€ä¸ªå­—ç¬¦ä¸²
         return result;
     }
 
     private String streamRead(InputStream is) throws IOException {
-        int buffersize = is.available();// È¡µÃÊäÈëÁ÷µÄ×Ö½Ú³¤¶È
+        int buffersize = is.available();// å–å¾—è¾“å…¥æµçš„å­—èŠ‚é•¿åº¦
         byte buffer[] = new byte[buffersize];
-        is.read(buffer);// ½«Êı¾İ¶ÁÈëÊı×é
-        is.close();// ¶ÁÈ¡Íê±ÏºóÒª¹Ø±ÕÁ÷¡£
-        String result = EncodingUtils.getString(buffer, "UTF-8");// ÉèÖÃÈ¡µÃµÄÊı¾İ±àÂë£¬·ÀÖ¹ÂÒÂë
+        is.read(buffer);// å°†æ•°æ®è¯»å…¥æ•°ç»„
+        is.close();// è¯»å–å®Œæ¯•åè¦å…³é—­æµã€‚
+        String result = EncodingUtils.getString(buffer, "UTF-8");// è®¾ç½®å–å¾—çš„æ•°æ®ç¼–ç ï¼Œé˜²æ­¢ä¹±ç 
         return result;
     }
 
-    // ÔÚassetsÎÄ¼ş¼ĞÏÂµÄÎÄ¼ş£¬Í¬ÑùÊÇÖ»ÄÜ¶ÁÈ¡²»ÄÜĞ´Èë
+    // åœ¨assetsæ–‡ä»¶å¤¹ä¸‹çš„æ–‡ä»¶ï¼ŒåŒæ ·æ˜¯åªèƒ½è¯»å–ä¸èƒ½å†™å…¥
     public String readAssetsFile(String filename) throws IOException {
-        // È¡µÃÊäÈëÁ÷
+        // å–å¾—è¾“å…¥æµ
         InputStream is = context.getResources().getAssets().open(filename);
-        String result = streamRead(is);// ·µ»ØÒ»¸ö×Ö·û´®
+        String result = streamRead(is);// è¿”å›ä¸€ä¸ªå­—ç¬¦ä¸²
         return result;
     }
 
-    // Íùsd¿¨ÖĞĞ´ÈëÎÄ¼ş
+    // å¾€sdå¡ä¸­å†™å…¥æ–‡ä»¶
     public void writeSDCardFile(String path, byte[] buffer) throws IOException {
         File file = new File(path);
         FileOutputStream fos = new FileOutputStream(file);
-        fos.write(buffer);// Ğ´ÈëbufferÊı×é¡£Èç¹ûÏëĞ´ÈëÒ»Ğ©¼òµ¥µÄ×Ö·û£¬¿ÉÒÔ½«String.getBytes()ÔÙĞ´ÈëÎÄ¼ş;
+        fos.write(buffer);// å†™å…¥bufferæ•°ç»„ã€‚å¦‚æœæƒ³å†™å…¥ä¸€äº›ç®€å•çš„å­—ç¬¦ï¼Œå¯ä»¥å°†String.getBytes()å†å†™å…¥æ–‡ä»¶;
         fos.close();
     }
 
-    // ½«ÎÄ¼şĞ´ÈëÓ¦ÓÃµÄdata/dataµÄfilesÄ¿Â¼ÏÂ
+    // å°†æ–‡ä»¶å†™å…¥åº”ç”¨çš„data/dataçš„filesç›®å½•ä¸‹
     public void writeDateFile(String fileName, byte[] buffer) throws Exception {
         byte[] buf = fileName.getBytes("iso8859-1");
         fileName = new String(buf, "utf-8");
-        // Context.MODE_PRIVATE£ºÎªÄ¬ÈÏ²Ù×÷Ä£Ê½£¬´ú±í¸ÃÎÄ¼şÊÇË½ÓĞÊı¾İ£¬Ö»ÄÜ±»Ó¦ÓÃ±¾Éí·ÃÎÊ£¬ÔÚ¸ÃÄ£Ê½ÏÂ£¬Ğ´ÈëµÄÄÚÈİ»á¸²¸ÇÔ­ÎÄ¼şµÄÄÚÈİ£¬Èç¹ûÏë°ÑĞÂĞ´ÈëµÄÄÚÈİ×·¼Óµ½Ô­ÎÄ¼şÖĞ¡£¿ÉÒÔÊ¹ÓÃContext.MODE_APPEND
-        // Context.MODE_APPEND£ºÄ£Ê½»á¼ì²éÎÄ¼şÊÇ·ñ´æÔÚ£¬´æÔÚ¾ÍÍùÎÄ¼ş×·¼ÓÄÚÈİ£¬·ñÔò¾Í´´½¨ĞÂÎÄ¼ş¡£
-        // Context.MODE_WORLD_READABLEºÍContext.MODE_WORLD_WRITEABLEÓÃÀ´¿ØÖÆÆäËûÓ¦ÓÃÊÇ·ñÓĞÈ¨ÏŞ¶ÁĞ´¸ÃÎÄ¼ş¡£
-        // MODE_WORLD_READABLE£º±íÊ¾µ±Ç°ÎÄ¼ş¿ÉÒÔ±»ÆäËûÓ¦ÓÃ¶ÁÈ¡£»MODE_WORLD_WRITEABLE£º±íÊ¾µ±Ç°ÎÄ¼ş¿ÉÒÔ±»ÆäËûÓ¦ÓÃĞ´Èë¡£
-        // Èç¹ûÏ£ÍûÎÄ¼ş±»ÆäËûÓ¦ÓÃ¶ÁºÍĞ´£¬¿ÉÒÔ´«Èë£º
+        // Context.MODE_PRIVATEï¼šä¸ºé»˜è®¤æ“ä½œæ¨¡å¼ï¼Œä»£è¡¨è¯¥æ–‡ä»¶æ˜¯ç§æœ‰æ•°æ®ï¼Œåªèƒ½è¢«åº”ç”¨æœ¬èº«è®¿é—®ï¼Œåœ¨è¯¥æ¨¡å¼ä¸‹ï¼Œå†™å…¥çš„å†…å®¹ä¼šè¦†ç›–åŸæ–‡ä»¶çš„å†…å®¹ï¼Œå¦‚æœæƒ³æŠŠæ–°å†™å…¥çš„å†…å®¹è¿½åŠ åˆ°åŸæ–‡ä»¶ä¸­ã€‚å¯ä»¥ä½¿ç”¨Context.MODE_APPEND
+        // Context.MODE_APPENDï¼šæ¨¡å¼ä¼šæ£€æŸ¥æ–‡ä»¶æ˜¯å¦å­˜åœ¨ï¼Œå­˜åœ¨å°±å¾€æ–‡ä»¶è¿½åŠ å†…å®¹ï¼Œå¦åˆ™å°±åˆ›å»ºæ–°æ–‡ä»¶ã€‚
+        // Context.MODE_WORLD_READABLEå’ŒContext.MODE_WORLD_WRITEABLEç”¨æ¥æ§åˆ¶å…¶ä»–åº”ç”¨æ˜¯å¦æœ‰æƒé™è¯»å†™è¯¥æ–‡ä»¶ã€‚
+        // MODE_WORLD_READABLEï¼šè¡¨ç¤ºå½“å‰æ–‡ä»¶å¯ä»¥è¢«å…¶ä»–åº”ç”¨è¯»å–ï¼›MODE_WORLD_WRITEABLEï¼šè¡¨ç¤ºå½“å‰æ–‡ä»¶å¯ä»¥è¢«å…¶ä»–åº”ç”¨å†™å…¥ã€‚
+        // å¦‚æœå¸Œæœ›æ–‡ä»¶è¢«å…¶ä»–åº”ç”¨è¯»å’Œå†™ï¼Œå¯ä»¥ä¼ å…¥ï¼š
         // openFileOutput("output.txt", Context.MODE_WORLD_READABLE +
         // Context.MODE_WORLD_WRITEABLE);
-        FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_APPEND);// Ìí¼ÓÔÚÎÄ¼şºóÃæ
+        FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_APPEND);// æ·»åŠ åœ¨æ–‡ä»¶åé¢
         fos.write(buffer);
         fos.close();
     }
 
-    // ¶ÁÈ¡Ó¦ÓÃµÄdata/dataµÄfilesÄ¿Â¼ÏÂÎÄ¼şÊı¾İ
+    // è¯»å–åº”ç”¨çš„data/dataçš„filesç›®å½•ä¸‹æ–‡ä»¶æ•°æ®
     public String readDateFile(String fileName) throws Exception {
         FileInputStream fis = context.openFileInput(fileName);
-        String result = streamRead(fis);// ·µ»ØÒ»¸ö×Ö·û´®
+        String result = streamRead(fis);// è¿”å›ä¸€ä¸ªå­—ç¬¦ä¸²
         return result;
     }
 }

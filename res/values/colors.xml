@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="white">@android:color/white</color>
     <color name="stroke">#D3D3D3</color>
     <color name="obtain_code_button_color_normal">#DCDCDC</color>
     <color name="obtain_code_button_color_pressed">#156BFF</color>
-    <color name="register_button_color_normal">#156BFF</color>
+    <color name="register_button_color_normal">#66A440</color>
     <color name="register_button_color_pressed">#DCDCDC</color>
     <color name="notice_color">#6F6F6F</color>
+    <color name="button_stroke_color">#4D8E25</color>
+    <color name="button_start_color">#78b153</color>
+    <color name="button_end_color">#689948</color>
 </resources>

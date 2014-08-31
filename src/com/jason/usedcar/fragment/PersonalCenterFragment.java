@@ -6,21 +6,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import com.jason.usedcar.R;
+import com.jason.usedcar.fragment.BaseFragment;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.presenter.PersonalCenterFragmentPresenter;
-import com.jason.usedcar.util.ViewFinder;
 
 public class PersonalCenterFragment extends
-    BaseFragment<PersonalCenterFragmentPresenter, Ui> implements OnClickListener {
+        BaseFragment<PersonalCenterFragmentPresenter, Ui> implements OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal_center, container, false);
-        ViewFinder.findViewById(view, R.id.info_center_bought_cars_history).setOnClickListener(this);
-        ViewFinder.findViewById(view, R.id.info_center_identify).setOnClickListener(this);
-        ViewFinder.findViewById(view, R.id.info_center_my_collect_cars).setOnClickListener(this);
-        ViewFinder.findViewById(view, R.id.info_center_my_info).setOnClickListener(this);
-        ViewFinder.findViewById(view, R.id.info_center_sale_car).setOnClickListener(this);
+        getView(view, R.id.info_center_bought_cars_history).setOnClickListener(this);
+        getView(view, R.id.info_center_identify).setOnClickListener(this);
+        getView(view, R.id.info_center_my_collect_cars).setOnClickListener(this);
+        getView(view, R.id.info_center_my_info).setOnClickListener(this);
+        getView(view, R.id.info_center_sale_car).setOnClickListener(this);
         return view;
     }
 

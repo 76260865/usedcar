@@ -1,37 +1,45 @@
 package com.jason.usedcar.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.List;
 
 /**
  * @author t77yq @14-6-28.
  */
 public class ShoppingCarModel extends BaseModel {
 
-    @Getter @Setter ShoppingCar[] data;
+    private List<UsedCar> data;
 
     public ShoppingCarModel() {}
 
-    public ShoppingCarModel(ShoppingCar[] data) {
-        this.data = data;
+    public void add(List<UsedCar> cars) {
+        if (data == null) {
+            this.data = cars;
+        } else {
+            this.data.addAll(cars);
+        }
     }
 
-    public void add(ShoppingCar[] cars) {
+    public List<UsedCar> getData() {
+        return data;
+    }
+
+    public void setData(List<UsedCar> data) {
+        this.data = data;
     }
 
     @Override
     public boolean isEmpty() {
-        return data == null || data.length == 0;
+        return data == null || data.size() == 0;
     }
 
     public int size() {
-        return isEmpty() ? 0 : data.length;
+        return isEmpty() ? 0 : data.size();
     }
 
-    public ShoppingCar get(int position) {
+    public UsedCar get(int position) {
         if (isEmpty() || position < 0 || position >= size()) {
             return null;
         }
-        return data[position];
+        return data.get(position);
     }
 }

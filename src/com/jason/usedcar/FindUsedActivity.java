@@ -1,7 +1,5 @@
 package com.jason.usedcar;
 
-import android.support.v4.app.FragmentActivity;
-
 import com.jason.usedcar.fragment.BrandsChooseFragment.BrandsChooseDialogListener;
 import com.jason.usedcar.fragment.ModelChooseFragment.ModelChooseDialogListener;
 import com.jason.usedcar.fragment.SeriesChooseFragment.SeriersChooseDialogListener;
@@ -12,7 +10,7 @@ import com.jason.usedcar.fragment.SeriesChooseFragment.SeriersChooseDialogListen
  * @author Administrator
  * 
  */
-public class FindUsedActivity extends FragmentActivity implements
+public class FindUsedActivity extends BaseActivity implements
 		BrandsChooseDialogListener, SeriersChooseDialogListener,
 		ModelChooseDialogListener {
 

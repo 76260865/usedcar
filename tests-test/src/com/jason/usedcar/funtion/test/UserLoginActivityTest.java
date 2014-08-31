@@ -31,11 +31,11 @@ public class UserLoginActivityTest extends ActivityInstrumentationTestCase2<Logi
 
         mLoginActivity = getActivity();
         mEditUserName = (EditText) mLoginActivity
-                .findViewById(com.jason.usedcar.R.id.login_account);
-        mEditUserPwd = (EditText) mLoginActivity.findViewById(com.jason.usedcar.R.id.login_password);
-        mBtnLogin = (Button) mLoginActivity.findViewById(com.jason.usedcar.R.id.login_login);
+                .findViewById(com.jason.usedcar.R.id.login_edit_username);
+        mEditUserPwd = (EditText) mLoginActivity.findViewById(com.jason.usedcar.R.id.login_edit_password);
+        mBtnLogin = (Button) mLoginActivity.findViewById(com.jason.usedcar.R.id.login_btn_login);
         mTxtRegister = (TextView) mLoginActivity
-                .findViewById(com.jason.usedcar.R.id.login_register);
+                .findViewById(com.jason.usedcar.R.id.login_btn_register);
     }
 
     public void testPreconditions() {
