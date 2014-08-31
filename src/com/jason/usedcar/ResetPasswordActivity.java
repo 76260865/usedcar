@@ -1,13 +1,12 @@
 package com.jason.usedcar;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import com.jason.usedcar.fragment.ObtainCodeFragment;
 
 /**
  * @author t77yq @14-06-28.
  */
-public class ResetPasswordActivity extends ActionBarActivity {
+public class ResetPasswordActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

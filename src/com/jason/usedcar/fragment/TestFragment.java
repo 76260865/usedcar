@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jason.usedcar.R;
+import com.jason.usedcar.fragment.BaseFragment;
 import com.jason.usedcar.presenter.TestFragmentPresenter;
 import com.jason.usedcar.presenter.TestFragmentPresenter.CallButtonUi;
 
 public class TestFragment extends
-        BaseFragment<TestFragmentPresenter, TestFragmentPresenter.CallButtonUi>
+        BaseFragment<TestFragmentPresenter, CallButtonUi>
         implements TestFragmentPresenter.CallButtonUi {
 
     @Override

@@ -2,16 +2,10 @@ package com.jason.usedcar.model;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public class UsedCarModel<T> extends BaseModel {
-	@Getter
-	@Setter
+
 	private boolean loading;
 
-	@Getter
-	@Setter
 	private List<T> data;
 
 	public UsedCarModel() {
@@ -29,7 +23,23 @@ public class UsedCarModel<T> extends BaseModel {
 		}
 	}
 
-	@Override
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
+    }
+
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
+    }
+
+    @Override
 	public boolean isEmpty() {
 		return data == null || data.isEmpty();
 	}

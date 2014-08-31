@@ -8,11 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.jason.usedcar.R;
+import com.jason.usedcar.model.data.CarModel;
 import com.jason.usedcar.adapter.holder.SaleCarViewHolder;
 import com.jason.usedcar.model.UsedCarModel;
-import com.jason.usedcar.model.db.Brand;
-import com.jason.usedcar.model.db.Model;
-import com.jason.usedcar.model.db.Series;
 
 public class ModelsAdapter extends BaseAdapter {
 
@@ -20,9 +18,9 @@ public class ModelsAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 
-	private UsedCarModel<Model> mBrandModel;
+	private UsedCarModel<CarModel> mBrandModel;
 
-	public ModelsAdapter(Context context, UsedCarModel<Model> model) {
+	public ModelsAdapter(Context context, UsedCarModel<CarModel> model) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mBrandModel = model;
@@ -45,7 +43,7 @@ public class ModelsAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Model getItem(int position) {
+	public CarModel getItem(int position) {
 		return mBrandModel == null ? null : mBrandModel.get(position);
 	}
 
@@ -66,8 +64,8 @@ public class ModelsAdapter extends BaseAdapter {
 			viewHolder = new SaleCarViewHolder(convertView);
 			convertView.setTag(viewHolder);
 		}
-		Model param = getItem(position);
-		// viewHolder.preSaleText.setText(context.getString(
+        CarModel param = getItem(position);
+		// viewHolder.preSalePriceText.setText(context.getString(
 		// R.string.sale_car_pre_sale_price, param.getListPrice()));
 		// viewHolder.mileageText.setText(context.getString(
 		// R.string.sale_car_mileage, param.getOdometer()));

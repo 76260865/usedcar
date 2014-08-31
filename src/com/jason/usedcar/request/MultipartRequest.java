@@ -3,6 +3,7 @@ package com.jason.usedcar.request;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;

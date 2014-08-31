@@ -10,8 +10,7 @@ import android.widget.BaseAdapter;
 import com.jason.usedcar.R;
 import com.jason.usedcar.adapter.holder.SaleCarViewHolder;
 import com.jason.usedcar.model.UsedCarModel;
-import com.jason.usedcar.model.db.Brand;
-import com.jason.usedcar.model.db.Series;
+import com.jason.usedcar.model.data.Series;
 
 public class SeriersAdapter extends BaseAdapter {
 
@@ -66,7 +65,7 @@ public class SeriersAdapter extends BaseAdapter {
 			convertView.setTag(viewHolder);
 		}
 		Series param = getItem(position);
-		// viewHolder.preSaleText.setText(context.getString(
+		// viewHolder.preSalePriceText.setText(context.getString(
 		// R.string.sale_car_pre_sale_price, param.getListPrice()));
 		// viewHolder.mileageText.setText(context.getString(
 		// R.string.sale_car_mileage, param.getOdometer()));

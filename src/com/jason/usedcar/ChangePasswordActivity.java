@@ -1,90 +1,143 @@
 package com.jason.usedcar;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.jason.usedcar.util.ViewFinder;
+import com.jason.usedcar.constants.Constants;
+import com.jason.usedcar.constants.Constants.ObtainCode;
+import com.jason.usedcar.fragment.LoadingFragment;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.request.UpdatePasswordRequest;
+import com.jason.usedcar.response.*;
 import com.mobsandgeeks.saripaar.Rule;
-import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Required;
+import com.mobsandgeeks.saripaar.annotation.TextRule;
+import retrofit.*;
+import retrofit.client.Response;
 
 /**
- * Created by t77yq on 14-6-22.
+ * @author t77yq @2014-06-22.
  */
-public class ChangePasswordActivity extends ActionBarActivity implements ValidationListener, OnClickListener {
+public class ChangePasswordActivity extends BaseActivity {
 
-    @Required(order = 1)
+    @Required(order = 1000)
     private EditText verifyCodeEdit;
 
-    @Required(order = 2)
+    @Required(order = 2000)
     private EditText oldPasswordEdit;
 
-    @Password(order = 3)
+    @Password(order = 3000)
+    @TextRule(order = 3001, minLength = 6, maxLength = 15, message = Constants.Validator.MSG_PASSWORD_LENGTH)
     private EditText newPasswordEdit;
 
-    @Required(order = 4, message = "empty")
-    @ConfirmPassword(order = 5, message = "confirm")
+    @Required(order = 4000, message = "empty")
+    @ConfirmPassword(order = 4001, message = "confirm")
     private EditText confirmNewPasswordEdit;
-
-    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
-        TextView phoneText = ViewFinder.findViewById(this, R.id.change_password_bind_phone);
+        bindViews();
+    }
+
+    private void bindViews() {
+        final TextView phoneText = getView(R.id.change_password_text_phone);
         phoneText.setText(getString(R.string.change_password_bind_phone, getIntent().getStringExtra("phone")));
-        verifyCodeEdit = ViewFinder.findViewById(this, R.id.register_verify_code);
-        ViewFinder.findViewById(this, R.id.register_obtain_code).setOnClickListener(this);
-        oldPasswordEdit = ViewFinder.findViewById(this, R.id.change_password_old_password);
-        newPasswordEdit = ViewFinder.findViewById(this, R.id.change_password_new_password);
-        confirmNewPasswordEdit = ViewFinder.findViewById(this, R.id.change_password_new_password_confirm);
-        ViewFinder.findViewById(this, R.id.register_register).setOnClickListener(this);
-        validator = new Validator(this);
-        validator.setValidationListener(this);
+        verifyCodeEdit = getView(R.id.edit_verify_code);
+        oldPasswordEdit = getView(R.id.change_password_edit_old_password);
+        newPasswordEdit = getView(R.id.change_password_edit_new_password);
+        confirmNewPasswordEdit = getView(R.id.change_password_edit_new_password_confirm);
+        getView(R.id.btn_obtain_code).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                obtainCode();
+            }
+        });
+        getView(R.id.change_password_btn_ok).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validator.validate();
+            }
+        });
     }
 
     @Override
     public void onValidationSucceeded() {
+        changePassword();
     }
 
     @Override
     public void onValidationFailed(View view, Rule<?> rule) {
         switch (view.getId()) {
-            case R.id.register_verify_code:
-                Toast.makeText(getApplicationContext(), "还没填写验证码", Toast.LENGTH_SHORT).show();
+            case R.id.edit_verify_code:
+                MessageToast.makeText(getApplicationContext(), "还没填写验证码").show();
                 break;
-            case R.id.change_password_old_password:
-                Toast.makeText(getApplicationContext(), "还没填写旧密码", Toast.LENGTH_SHORT).show();
+            case R.id.change_password_edit_old_password:
+                MessageToast.makeText(getApplicationContext(), "还没填写旧密码").show();
                 break;
-            case R.id.change_password_new_password:
-                Toast.makeText(getApplicationContext(), "还没填写新密码", Toast.LENGTH_SHORT).show();
+            case R.id.change_password_edit_new_password:
+                MessageToast.makeText(getApplicationContext(), "还没填写新密码").show();
                 break;
-            case R.id.change_password_new_password_confirm:
+            case R.id.change_password_edit_new_password_confirm:
                 if (rule.getFailureMessage().equals("empty")) {
-                    Toast.makeText(getApplicationContext(), "还没填写确认密码", Toast.LENGTH_SHORT).show();
+                    MessageToast.makeText(getApplicationContext(), "还没填写确认密码").show();
                 } else if (rule.getFailureMessage().equals("confirm")) {
-                    Toast.makeText(getApplicationContext(), "确认密码与新密码不一致", Toast.LENGTH_SHORT).show();
+                    MessageToast.makeText(getApplicationContext(), "确认密码与新密码不一致").show();
                 }
                 break;
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.register_obtain_code:
-                break;
-            case R.id.register_register:
-                validator.validate();
-                break;
-        }
+    private void obtainCode() {
+        String phoneNumber = String.valueOf(getIntent().getStringExtra("phone"));
+        ObtainCodeRequest param = new ObtainCodeRequest();
+        param.setPhoneNumber(phoneNumber);
+        param.setType(ObtainCode.TYPE_VERIFY_ID);
+        obtainCode(param);
+    }
+
+    public void obtainCode(final ObtainCodeRequest param) {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取手机验证码&#8230;");
+        loadingFragment.show(getSupportFragmentManager());
+        new RestClient().obtainCode(param, new Callback<ObtainCodeResponse>() {
+            @Override
+            public void success(final ObtainCodeResponse response, final Response response2) {
+                loadingFragment.dismiss();
+                if (response.isExecutionResult()) {
+                    verifyCodeEdit.setTag(response.getCode());
+                }
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
+    }
+
+    private void changePassword() {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("");
+        loadingFragment.show(getSupportFragmentManager());
+        UpdatePasswordRequest updatePasswordRequest = new UpdatePasswordRequest();
+        updatePasswordRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
+        updatePasswordRequest.setOldPassword(String.valueOf(oldPasswordEdit.getText()));
+        updatePasswordRequest.setNewPassword(String.valueOf(newPasswordEdit.getText()));
+        updatePasswordRequest.setConfirmPassword(String.valueOf(confirmNewPasswordEdit.getText()));
+        new RestClient().updatePassword(updatePasswordRequest, new Callback<com.jason.usedcar.response.Response>() {
+            @Override
+            public void success(final com.jason.usedcar.response.Response response, final Response response2) {
+                loadingFragment.dismiss();
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
     }
 }

@@ -6,7 +6,8 @@
         android:background="@color/white"
         android:descendantFocusability="blocksDescendants"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="5dip">
     <ImageView
             android:id="@+id/img"
             android:layout_width="56dip"

@@ -6,20 +6,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.jason.usedcar.R;
+import com.jason.usedcar.RestClient;
+import com.jason.usedcar.adapter.ShoppingCarAdapter;
+import com.jason.usedcar.fragment.BaseFragment;
+import com.jason.usedcar.model.ShoppingCarModel;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter.CallButtonUi;
-import com.jason.usedcar.util.ViewFinder;
+import com.jason.usedcar.request.PagedRequest;
+import com.jason.usedcar.response.CarListResponse;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ShoppingCarFragment extends
-        BaseFragment<ShoppingCarFragmentPresenter, ShoppingCarFragmentPresenter.CallButtonUi>
+        BaseFragment<ShoppingCarFragmentPresenter, CallButtonUi>
         implements ShoppingCarFragmentPresenter.CallButtonUi {
+
     private ListView mShoppingCarListView;
-    private ShoppingCarListViewAdapter mAdapter;
+
+    private ShoppingCarModel shoppingCarModel = new ShoppingCarModel();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,18 +40,35 @@ public class ShoppingCarFragment extends
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.shoping_car_fragment, null);
-        mShoppingCarListView = ViewFinder.findViewById(view, R.id.list_shopping_car);
-        return view;
+        return inflater.inflate(R.layout.fragment_shoping_car, null);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.txt_shopping_car_str);
+        PagedRequest pagedRequest = new PagedRequest();
+        new RestClient().shoppingCarList(pagedRequest, new Callback<CarListResponse>() {
+            @Override
+            public void success(final CarListResponse response, final Response response2) {
+                if (response != null && response.isExecutionResult()) {
+                    shoppingCarModel.add(response.getUsedCars());
+                    shoppingCarModel.notifyDataSetInvalidated();
+                }
+            }
 
-        mAdapter = new ShoppingCarListViewAdapter();
-        mShoppingCarListView.setAdapter(mAdapter);
+            @Override
+            public void failure(final RetrofitError error) {
+                //
+            }
+        });
+    }
+
+    @Override
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mShoppingCarListView = getView(view, R.id.list_shopping_car);
+        mShoppingCarListView.setAdapter(new ShoppingCarAdapter(getActivity(), shoppingCarModel));
     }
 
     @Override
@@ -56,6 +84,7 @@ public class ShoppingCarFragment extends
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.menu_shopping_car, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -68,27 +97,5 @@ public class ShoppingCarFragment extends
     @Override
     public void login(String response) {
         Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
-
-    }
-
-    private class ShoppingCarListViewAdapter extends BaseAdapter {
-        int count = 10;
-
-        public int getCount() {
-            return count;
-        }
-
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View view, ViewGroup parent) {
-            return LayoutInflater.from(getActivity()).inflate(R.layout.item_shopping_car_layout,
-                    null);
-        }
     }
 }

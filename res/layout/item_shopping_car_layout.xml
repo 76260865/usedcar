@@ -1,46 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:descendantFocusability="afterDescendants"
-        android:padding="6dip">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rect">
     <ImageView
-            android:id="@+id/car_pic"
+        android:id="@+id/imageCarShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerInside"
+        android:src="@drawable/pic"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/pic" />
-    <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="6dip"
             android:layout_gravity="center_vertical"
             android:orientation="vertical" >
-        <TextView
-                android:id="@+id/pre_sale_price"
+            <TextView
+                android:id="@+id/textCarName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sale_car_pre_sale_price" />
-        <TextView
-                android:id="@+id/mileage"
+                android:textColor="#2B4FAD"
+                android:text="商品名称: 大众polo"/>
+            <TextView
+                android:id="@+id/textPreSalePrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="2dip"
-                android:paddingBottom="2dip"
-                android:text="@string/sale_car_mileage" />
-        <TextView
-                android:id="@+id/buy_time"
+                android:textColor="#5B5B5B"
+                tools:text="预售价格: 1.2万"/>
+            <TextView
+                android:id="@+id/textMileage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sale_car_buy_time" />
-    </LinearLayout>
-    <TextView
-            android:id="@+id/buy"
+                android:textColor="#5B5B5B"
+                tools:text="行驶里程: 2.5万公里"/>
+            <TextView
+                android:id="@+id/textBuyTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#5B5B5B"
+                tools:text="首次购买时间: 2010年12月"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/textPriceType"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="Button" />
+            android:layout_gravity="top|right"
+            android:padding="1dip"
+            android:textColor="#FB6D0B"
+            android:visibility="gone"
+            tools:text="一口价"
+            tools:visibility="visible"/>
+    </FrameLayout>
+    <ViewStub
+        android:id="@+id/stubCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dip"
+        android:inflatedId="@+id/checkBox"
+        android:layout="@layout/check"/>
 </LinearLayout>

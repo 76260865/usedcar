@@ -1,37 +1,27 @@
 package com.jason.usedcar;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.jason.usedcar.config.DeviceInfo;
-import com.jason.usedcar.model.param.UpdateUserInfoParam;
-import com.jason.usedcar.model.param.ViewUserInfoParam;
-import com.jason.usedcar.model.result.ViewUserInfoResult;
-import com.jason.usedcar.util.HttpUtil;
-import com.jason.usedcar.util.ViewFinder;
+import android.widget.*;
+import android.widget.DatePicker;
+import com.jason.usedcar.fragment.LoadingFragment;
+import com.jason.usedcar.request.*;
+import com.jason.usedcar.request.Request;
+import com.jason.usedcar.response.*;
+import com.jason.usedcar.response.Response;
 import com.jason.usedcar.view.ExtendedEditText;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import retrofit.*;
 
 /**
  * @author t77yq @2014.06.14
  */
-public class InfoActivity extends ActionBarActivity implements OnClickListener {
+public class InfoActivity extends BaseActivity implements OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private static final int LOGIN = 10001;
 
@@ -39,19 +29,20 @@ public class InfoActivity extends ActionBarActivity implements OnClickListener {
 
     private InfoActivityHolder activityHolder;
 
-    private UpdateUserInfoParam userInfoParam;
+    private UserInfoRequest userInfoParam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        viewUserInfo();
-        userInfoParam = new UpdateUserInfoParam();
-        userInfoParam.setAccessToken(((UsedCarApplication) getApplication()).accessToken);
+        userInfoParam = new UserInfoRequest();
+        userInfoParam.setAccessToken(Application.fromActivity(this).getAccessToken());
         activityHolder = new InfoActivityHolder(this);
         activityHolder.changePasswordText.setOnClickListener(this);
-        activityHolder.bindPhoneText.setOnClickListener(this);
-        activityHolder.bindEmailText.setOnClickListener(this);
+        activityHolder.changePhoneButton.setOnClickListener(this);
+        //activityHolder.bindEmailText.setOnClickListener(this);
+        activityHolder.birthdayText.setOnClickListener(this);
+        viewUserInfo();
     }
 
     @Override
@@ -86,171 +77,76 @@ public class InfoActivity extends ActionBarActivity implements OnClickListener {
     }
 
     private void viewUserInfo() {
-        Volley.newRequestQueue(this).add(
-            new StringRequest(HttpUtil.VIEW_USER_INFO_URI,
-                new Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        ViewUserInfoResult result = new Gson().fromJson(response, ViewUserInfoResult.class);
-                        if (result == null) {
-                            return;
-                        }
-                        userInfoParam.setNickname(result.getNickname());
-                        userInfoParam.setRealName(result.getRealName());
-                        userInfoParam.setSex(result.isSex());
-                        userInfoParam.setPhone(result.getPhone());
-                        userInfoParam.setBindPhone(result.isBindPhone());
-                        userInfoParam.setEmail(result.getEmail());
-                        userInfoParam.setBindEmail(result.isBindEmail());
-                        userInfoParam.setBirthyear(result.getBirthyear());
-                        userInfoParam.setBirthmonth(result.getBirthmonth());
-                        userInfoParam.setBirthday(result.getBirthday());
-                        userInfoParam.setProvince(result.getProvince());
-                        userInfoParam.setCity(result.getCity());
-                        userInfoParam.setCounty(result.getCounty());
-                        userInfoParam.setStreet(result.getStreet());
-                        activityHolder.nicknameText.setText(result.getNickname());
-                        activityHolder.changePasswordText.setText("");
-                        activityHolder.bindPhoneText.setText(result.getPhone());
-                        activityHolder.bindEmailText.setText(result.getEmail());
-                        activityHolder.nameText.setText(result.getRealName());
-                        activityHolder.birthdayText.setText(new StringBuilder()
-                            .append(result.getBirthyear()).append("-")
-                            .append(result.getBirthmonth()).append("-")
-                            .append(result.getBirthday()));
-                        activityHolder.birthdayText.setText(result.getCertificateNumber());
-                        activityHolder.addressText.setText(new StringBuffer()
-                            .append(result.getProvince()).append(result.getCity())
-                            .append(result.getCounty()).append(result.getStreet()));
-                    }
-                },
-                new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.getCause();
-                    }
-                }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<String, String>();
-                    headers.put("Accept", "application/json");
-                    headers.put("User-Agent", DeviceInfo.USER_AGENT);
-                    return headers;
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取个人资料&#8230;");
+        loadingFragment.show(getSupportFragmentManager());
+        Request viewUserInfoRequest = new Request();
+//        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
+//        viewUserInfoRequest.setAccessToken(Application.getEncryptedToken(Application.fromActivity(this).userId,
+//                Application.fromActivity(this).getAccessToken()));
+        viewUserInfoRequest.setAccessToken(Application.sampleAccessToken);
+        new RestClient().viewUserInfo(viewUserInfoRequest, new Callback<UserInfoResponse>() {
+            @Override
+            public void success(final UserInfoResponse response, final retrofit.client.Response response2) {
+                loadingFragment.dismiss();
+                if (response.isExecutionResult()) {
+                    userInfoParam.setNickname(response.getNickname());
+                    userInfoParam.setRealName(response.getRealName());
+                    userInfoParam.setSex(response.isSex());
+                    userInfoParam.setPhone(response.getPhone());
+                    userInfoParam.setBindPhone(response.isBindPhone());
+                    userInfoParam.setEmail(response.getEmail());
+                    userInfoParam.setBindEmail(response.isBindEmail());
+                    userInfoParam.setBirthYear(response.getBirthyear());
+                    userInfoParam.setBirthMonth(response.getBirthmonth());
+                    userInfoParam.setBirthDay(response.getBirthday());
+                    userInfoParam.setProvince(response.getProvince());
+                    userInfoParam.setCity(response.getCity());
+                    userInfoParam.setCounty(response.getCounty());
+                    userInfoParam.setStreet(response.getStreet());
+                    activityHolder.nicknameText.setText(response.getNickname());
+                    activityHolder.changePasswordText.setText("");
+                    activityHolder.bindPhoneText.setText(response.getPhone());
+                    activityHolder.bindEmailText.setText(response.getEmail());
+                    activityHolder.nameText.setText(response.getRealName());
+                    activityHolder.birthdayText.setText(new StringBuilder()
+                            .append(response.getBirthyear()).append("-")
+                            .append(response.getBirthmonth()).append("-")
+                            .append(response.getBirthday()));
+                    activityHolder.birthdayText.setText(response.getCertificateNumber());
+                    activityHolder.addressText.setText(new StringBuffer()
+                            .append(response.getProvince()).append(response.getCity())
+                            .append(response.getCounty()).append(response.getStreet()));
                 }
+            }
 
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    ViewUserInfoParam param = new ViewUserInfoParam();
-                    param.setAccessToken(((UsedCarApplication) getApplication()).accessToken);
-                    return object2Map(param);
-                }
-
-                private Map<String, String> object2Map(Object obj) {
-                    return object2Map(obj, false);
-                }
-
-                private Map<String, String> object2Map(Object obj, boolean nullable) {
-                    Map<String, String> result = new HashMap<String, String>();
-                    if (obj == null) {
-                        return result;
-                    }
-                    java.lang.reflect.Method[] methods = obj.getClass().getMethods();
-                    if (methods == null || methods.length == 0) {
-                        return result;
-                    }
-                    try {
-                        for (java.lang.reflect.Method method : methods) {
-                            String methodName = method.getName();
-                            if (methodName != null && methodName.length() > 3
-                                && methodName.startsWith("get") && !methodName.equals("getClass")) {
-                                Object value = method.invoke(obj, null);
-                                if (!nullable && value == null) {
-                                    continue;
-                                }
-                                char[] fieldNameArray = methodName.substring(3).toCharArray();
-                                fieldNameArray[0] = Character.toLowerCase(fieldNameArray[0]);
-                                result.put(String.valueOf(fieldNameArray),
-                                    (value == null) ? "" : String.valueOf(value));
-                            }
-                        }
-                    } catch (InvocationTargetException e) {
-                        result.clear();
-                    } catch (IllegalAccessException e) {
-                        result.clear();
-                    }
-                    return result;
-                }
-            });
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
     }
 
     private void updateUserInfo() {
-        Volley.newRequestQueue(this).add(
-            new StringRequest(Method.POST, HttpUtil.UPDATE_USER_INFO_URI,
-                new Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                    }
-                },
-                new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<String, String>();
-                    headers.put("Accept", "application/json");
-                    headers.put("User-Agent", DeviceInfo.USER_AGENT);
-                    return headers;
-                }
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("更新个人资料&#8230;");
+        loadingFragment.show(getSupportFragmentManager());
+        new RestClient().updateUserInfo(userInfoParam, new Callback<Response>() {
+            @Override
+            public void success(final Response response, final retrofit.client.Response response2) {
+                loadingFragment.dismiss();
+            }
 
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    return object2Map(userInfoParam);
-                }
-
-                private Map<String, String> object2Map(Object obj) {
-                    return object2Map(obj, false);
-                }
-
-                private Map<String, String> object2Map(Object obj, boolean nullable) {
-                    Map<String, String> result = new HashMap<String, String>();
-                    if (obj == null) {
-                        return result;
-                    }
-                    java.lang.reflect.Method[] methods = obj.getClass().getMethods();
-                    if (methods == null || methods.length == 0) {
-                        return result;
-                    }
-                    try {
-                        for (java.lang.reflect.Method method : methods) {
-                            String methodName = method.getName();
-                            if (methodName != null && methodName.length() > 3
-                                && methodName.startsWith("get") && !methodName.equals("getClass")) {
-                                Object value = method.invoke(obj, null);
-                                if (!nullable && value == null) {
-                                    continue;
-                                }
-                                char[] fieldNameArray = methodName.substring(3).toCharArray();
-                                fieldNameArray[0] = Character.toLowerCase(fieldNameArray[0]);
-                                result.put(String.valueOf(fieldNameArray),
-                                    (value == null) ? "" : String.valueOf(value));
-                            }
-                        }
-                    } catch (InvocationTargetException e) {
-                        result.clear();
-                    } catch (IllegalAccessException e) {
-                        result.clear();
-                    }
-                    return result;
-                }
-            });
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
     }
 
     private void edit() {
         activityHolder.nicknameText.setEnabled(true);
         activityHolder.changePasswordText.setEnabled(true);
         activityHolder.bindPhoneText.setEnabled(true);
+        activityHolder.changePhoneButton.setEnabled(true);
         activityHolder.bindEmailText.setEnabled(true);
         activityHolder.nameText.setEnabled(true);
         activityHolder.birthdayText.setEnabled(true);
@@ -262,6 +158,7 @@ public class InfoActivity extends ActionBarActivity implements OnClickListener {
         activityHolder.nicknameText.setEnabled(false);
         activityHolder.changePasswordText.setEnabled(false);
         activityHolder.bindPhoneText.setEnabled(false);
+        activityHolder.changePhoneButton.setEnabled(false);
         activityHolder.bindEmailText.setEnabled(false);
         activityHolder.nameText.setEnabled(false);
         activityHolder.birthdayText.setEnabled(false);
@@ -289,22 +186,33 @@ public class InfoActivity extends ActionBarActivity implements OnClickListener {
                 changePassword.putExtra("phone", activityHolder.bindPhoneText.getText());
                 startActivity(changePassword);
                 break;
-            case R.id.info_bind_phone:
+            case R.id.info_change_phone:
                 startActivity(new Intent(this, BindPhoneActivity.class));
                 break;
             case R.id.info_bind_email:
                 startActivity(new Intent(this, BindEmailActivity.class));
                 break;
+            case R.id.info_birthday:
+                new com.jason.usedcar.DatePicker().setListener(this).show(getSupportFragmentManager(), "");
+                break;
         }
+    }
+
+    @Override
+    public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+        String date = year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日";
+        activityHolder.birthdayText.setText(date);
     }
 
     private static class InfoActivityHolder {
 
         public final ExtendedEditText nicknameText;
 
-        public final TextView changePasswordText;
+        public final Button changePasswordText;
 
         public final TextView bindPhoneText;
+
+        public final Button changePhoneButton;
 
         public final TextView bindEmailText;
 
@@ -317,14 +225,15 @@ public class InfoActivity extends ActionBarActivity implements OnClickListener {
         public final ExtendedEditText addressText;
 
         public InfoActivityHolder(Activity activity) {
-            nicknameText = ViewFinder.findViewById(activity, R.id.info_nickname);
-            changePasswordText = ViewFinder.findViewById(activity, R.id.info_password);
-            bindPhoneText = ViewFinder.findViewById(activity, R.id.info_bind_phone);
-            bindEmailText = ViewFinder.findViewById(activity, R.id.info_bind_email);
-            nameText = ViewFinder.findViewById(activity, R.id.info_name);
-            birthdayText = ViewFinder.findViewById(activity, R.id.info_birthday);
-            identifyText = ViewFinder.findViewById(activity, R.id.info_id);
-            addressText = ViewFinder.findViewById(activity, R.id.info_address);
+            nicknameText = (ExtendedEditText) activity.findViewById(R.id.info_nickname);
+            changePasswordText = (Button) activity.findViewById(R.id.info_password);
+            bindPhoneText = (TextView) activity.findViewById(R.id.info_bind_phone);
+            changePhoneButton = (Button) activity.findViewById(R.id.info_change_phone);
+            bindEmailText = (TextView) activity.findViewById(R.id.info_bind_email);
+            nameText = (ExtendedEditText) activity.findViewById(R.id.info_name);
+            birthdayText = (TextView) activity.findViewById(R.id.info_birthday);
+            identifyText = (ExtendedEditText) activity.findViewById(R.id.info_id);
+            addressText = (ExtendedEditText) activity.findViewById(R.id.info_address);
         }
     }
 }

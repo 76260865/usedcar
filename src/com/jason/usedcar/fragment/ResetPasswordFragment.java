@@ -8,15 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.jason.usedcar.MessageToast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
-import com.jason.usedcar.model.param.ResetPasswordByPhoneParam;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.request.ResetPasswordByPhoneRequest;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter;
 import com.jason.usedcar.presenter.ResetPasswordFragmentPresenter.ResetPasswordFragmentUi;
-import com.jason.usedcar.util.ViewFinder;
-import com.jason.usedcar.view.ObtainCodeButton;
-import com.jason.usedcar.view.ObtainCodeButton.OnClickLimitListener;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Password;
@@ -45,8 +43,6 @@ public class ResetPasswordFragment extends
     @ConfirmPassword(order = 5, message = Constants.Validator.MSG_PASSWORD_NOT_MATCH)
     private EditText editConfirmNewPassword;
 
-    private ObtainCodeButton buttonObtainCode;
-
     private String verifyCode;
 
     public static ResetPasswordFragment newInstance(String phoneNumber, String verifyCode) {
@@ -62,19 +58,13 @@ public class ResetPasswordFragment extends
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.fragment_reset_password_set_new_password,
                 container, false);
-        TextView textAccount = ViewFinder.findViewById(contentView, R.id.reset_password_account);
-        buttonObtainCode = ViewFinder.findViewById(contentView, R.id.reset_password_obtain_code);
-        buttonObtainCode.setLimitListener(new OnClickLimitListener() {
-            @Override
-            public void onClickLimited() {
-                Toast.makeText(getActivity(), R.string.notice_obtain_code_multiple,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        editVerifyCode = ViewFinder.findViewById(contentView, R.id.reset_password_verify_code);
-        editNewPassword = ViewFinder.findViewById(contentView, R.id.reset_password_new_password);
-        editConfirmNewPassword = ViewFinder.findViewById(contentView, R.id.reset_password_confirm_password);
-        Button buttonResetPassword = ViewFinder.findViewById(contentView, R.id.reset_password_confirm);
+        TextView textAccount = getView(contentView, R.id.reset_password_account);
+        Button buttonObtainCode = getView(contentView, R.id.reset_password_obtain_code);
+        buttonObtainCode.setOnClickListener(this);
+        editVerifyCode = getView(contentView, R.id.reset_password_verify_code);
+        editNewPassword = getView(contentView, R.id.reset_password_new_password);
+        editConfirmNewPassword = getView(contentView, R.id.reset_password_confirm_password);
+        Button buttonResetPassword = getView(contentView, R.id.reset_password_confirm);
         buttonResetPassword.setOnClickListener(this);
         Bundle args = getArguments();
         if (args != null) {
@@ -101,9 +91,12 @@ public class ResetPasswordFragment extends
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.reset_password_confirm:
-            getValidator().validate();
-            break;
+            case R.id.reset_password_confirm:
+                getValidator().validate();
+                break;
+            case R.id.reset_password_obtain_code:
+                obtainCode();
+                break;
         }
     }
 
@@ -116,47 +109,48 @@ public class ResetPasswordFragment extends
     public void onValidationFailed(View view, Rule<?> rule) {
         super.onValidationFailed(view, rule);
         switch (view.getId()) {
-        case R.id.reset_password_verify_code:
-            BaseDialogFragment.newInstance(getString(R.string.error_input_verify_code)).show(
-                    getFragmentManager());
-            break;
-        case R.id.reset_password_new_password:
-            if (Constants.Validator.MSG_PASSWORD_LENGTH.equals(rule.getFailureMessage())) {
-                BaseDialogFragment.newInstance(
-                        getString(R.string.error_password_length, Constants.PASSWORD_LENGTH_MIN,
-                                Constants.PASSWORD_LENGTH_MAX)).show(getFragmentManager());
-            } else {
-                BaseDialogFragment.newInstance(getString(R.string.error_input_password)).show(
-                        getFragmentManager());
-            }
-            break;
-        case R.id.reset_password_confirm_password:
-            if (Constants.Validator.MSG_PASSWORD_NOT_MATCH.equals(rule.getFailureMessage())) {
-                BaseDialogFragment.newInstance(getString(R.string.error_password_not_equal)).show(
-                        getFragmentManager());
-            } else {
-                BaseDialogFragment.newInstance(getString(R.string.error_input_confirm_password))
-                        .show(getFragmentManager());
-            }
-            break;
+            case R.id.reset_password_verify_code:
+                MessageToast.makeText(getActivity(), R.string.error_input_verify_code).show();
+                break;
+            case R.id.reset_password_new_password:
+                if (Constants.Validator.MSG_PASSWORD_LENGTH.equals(rule.getFailureMessage())) {
+                    MessageToast.makeText(getActivity(),
+                            getString(R.string.error_password_length, Constants.PASSWORD_LENGTH_MIN,
+                                    Constants.PASSWORD_LENGTH_MAX)).show();
+                } else {
+                    MessageToast.makeText(getActivity(), R.string.error_input_password).show();
+                }
+                break;
+            case R.id.reset_password_confirm_password:
+                if (Constants.Validator.MSG_PASSWORD_NOT_MATCH.equals(rule.getFailureMessage())) {
+                    MessageToast.makeText(getActivity(), R.string.error_password_not_equal).show();
+                } else {
+                    MessageToast.makeText(getActivity(), R.string.error_input_confirm_password).show();
+                }
+                break;
         }
     }
 
     private void resetPassword() {
         String verifyCode = String.valueOf(editVerifyCode.getText());
         if (!verifyCode.equals(this.verifyCode)) {
-            BaseDialogFragment.newInstance(getString(R.string.error_verify_code_incorrect)).show(
-                    getFragmentManager());
+            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
             return;
         }
         String newPassword = String.valueOf(editNewPassword.getText());
         String confirmPassword = String.valueOf(editConfirmNewPassword.getText());
         String phoneNum = getArguments().getString(PHONE_NUMBER);
-        ResetPasswordByPhoneParam param = new ResetPasswordByPhoneParam();
+        ResetPasswordByPhoneRequest param = new ResetPasswordByPhoneRequest();
         param.setNewPassword(newPassword);
         param.setConfirmPassword(confirmPassword);
         param.setPrinciple(phoneNum);
         param.setActiveCode(verifyCode);
-        getPresenter().resetPassword(getActivity(), param);
+        getPresenter().resetPassword(this, param);
+    }
+
+    private void obtainCode() {
+        ObtainCodeRequest request = new ObtainCodeRequest();
+        request.setPhoneNumber(String.valueOf(0));
+        getPresenter().obtainCode(this, request);
     }
 }

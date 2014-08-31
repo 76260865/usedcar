@@ -16,12 +16,26 @@ public class ExtendedEditText extends EditText {
     public ExtendedEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        TextDrawable leftDrawable = new TextDrawable(context);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExtendedTextView);
-        leftDrawable.setText(a.getString(R.styleable.ExtendedTextView_prefix));
-        leftDrawable.setTextColor(a.getColor(R.styleable.ExtendedTextView_prefixColor, 0));
-        leftDrawable.setRawTextSize(a.getDimensionPixelSize(R.styleable.ExtendedTextView_prefixSize, 15));
-        setCompoundDrawablesWithIntrinsicBounds(leftDrawable, null, null, null);
+        TextDrawable drawable = new TextDrawable(context);
+        drawable.setText(a.getString(R.styleable.ExtendedTextView_prefix));
+        drawable.setTextColor(a.getColor(R.styleable.ExtendedTextView_prefixColor, 0));
+        drawable.setRawTextSize(a.getDimensionPixelSize(R.styleable.ExtendedTextView_prefixSize, 15));
+        int direction = a.getInt(R.styleable.ExtendedTextView_direction, 0);
+        switch (direction) {
+            case 0:
+                setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
+                break;
+            case 1:
+                setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null);
+                break;
+            case 2:
+                setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
+                break;
+            default:
+                setCompoundDrawablesWithIntrinsicBounds(null, null, null, drawable);
+                break;
+        }
     }
 
 }

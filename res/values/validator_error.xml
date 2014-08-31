@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 录入车辆信息1 -->
+    <string name="err_car_info_address">请填写交易地点</string>
+    <string name="err_car_info_street">请填写街道地址</string>
+    <string name="err_car_info_car_type">请选择车辆型号</string>
+    <string name="err_car_info_time_bought">请填写购买时间</string>
+    <string name="err_car_info_distance">请填写表显里程</string>
+    <string name="err_car_info_price">请填写预售价格</string>
+    <string name="err_car_info_vin">请填写车辆识别码</string>
+</resources>

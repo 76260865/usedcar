@@ -8,19 +8,19 @@ import android.text.TextUtils;
 import android.util.Log;
 
 public class UUIDUtil {
+
     private static final String TAG = "UUIDUtil";
 
     public static String getUUID(SharedPreferences sharePrefs) {
         String uuid = "";
         if (sharePrefs != null) {
             uuid = sharePrefs.getString("uuid", "");
-        }
-
-        if (TextUtils.isEmpty(uuid)) {
-            uuid = UUID.randomUUID().toString();
-            Editor enditor = sharePrefs.edit();
-            enditor.putString("uuid", uuid);
-            enditor.commit();
+            if (TextUtils.isEmpty(uuid)) {
+                uuid = UUID.randomUUID().toString();
+                Editor editor = sharePrefs.edit();
+                editor.putString("uuid", uuid);
+                editor.commit();
+            }
         }
 
         Log.d(TAG, "getUUID : " + uuid);

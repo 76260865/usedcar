@@ -26,6 +26,7 @@ public class IconEditText extends LinearLayoutICS {
         editText.setTextColor(arr.getColor(R.styleable.IconEditText_textColor, 0));
         editText.setHintTextColor(arr.getColor(R.styleable.IconEditText_textColorHint, 0));
         editText.setHint(arr.getString(R.styleable.IconEditText_hint));
+        setAddStatesFromChildren(true);
     }
 
     @SuppressWarnings("unchecked")

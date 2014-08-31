@@ -1,28 +1,24 @@
 package com.jason.usedcar.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.jason.usedcar.MessageToast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.constants.Constants.ObtainCode;
-import com.jason.usedcar.model.param.ObtainCodeParam;
-import com.jason.usedcar.model.param.SignOnParam;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.request.RegisterRequest;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
-import com.jason.usedcar.util.ViewFinder;
-import com.jason.usedcar.view.ObtainCodeButton;
 import com.mobsandgeeks.saripaar.Rule;
-import com.mobsandgeeks.saripaar.Rules;
-import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 import com.mobsandgeeks.saripaar.annotation.Checked;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Password;
@@ -30,8 +26,8 @@ import com.mobsandgeeks.saripaar.annotation.Required;
 import com.mobsandgeeks.saripaar.annotation.TextRule;
 
 public class RegisterFragment extends
-    BaseFragment<RegisterFragmentPresenter, RegisterFragmentUi> implements
-    RegisterFragmentUi, OnClickListener, ValidationListener {
+        BaseFragment<RegisterFragmentPresenter, RegisterFragmentUi> implements
+        RegisterFragmentUi, OnClickListener {
 
     private static final String TAG = RegisterFragment.class.getSimpleName();
 
@@ -49,59 +45,34 @@ public class RegisterFragment extends
     @Required(order = 4000)
     protected EditText editVerifyCode;
 
-    private ObtainCodeButton buttonObtainCode;
-
     @Checked(order = 5000)
     protected CheckBox checkAgreement;
 
     protected String verifyCode;
 
-    private Validator verifyCodeValidator;
-
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        verifyCodeValidator = new Validator(editAccount);
-        verifyCodeValidator.put(editAccount, Rules.required("", true));
-        verifyCodeValidator.setValidationListener(new ValidationListener() {
-            @Override
-            public void onValidationSucceeded() {
-                obtainCode();
-            }
-
-            @Override
-            public void onValidationFailed(View view, Rule<?> rule) {
-                switch (view.getId()) {
-                    case R.id.register_account:
-                        buttonObtainCode.reset();
-                        BaseDialogFragment.newInstance(getString(R.string.error_input_account)).show(getFragmentManager());
-                        break;
-                }
-            }
-        });
+    public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(layout(), container, false);
     }
 
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View contentView = inflater.inflate(layout(), container, false);
-        bindViews(contentView);
-        return contentView;
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        bindViews(view);
     }
 
     protected int layout() {
         return R.layout.fragment_register;
     }
 
-    protected void bindViews(View contentView) {
-        editAccount = ViewFinder.findViewById(contentView, R.id.register_account);
-        editVerifyCode = ViewFinder.findViewById(contentView, R.id.register_verify_code);
-        editPassword = ViewFinder.findViewById(contentView, R.id.register_password);
-        editConfirmPassword = ViewFinder.findViewById(contentView, R.id.register_password_confirm);
-        checkAgreement = ViewFinder.findViewById(contentView, R.id.register_agreement_check);
-        buttonObtainCode = ViewFinder.findViewById(contentView, R.id.register_obtain_code);
-        buttonObtainCode.setOnClickListener(this);
-        Button buttonRegister = ViewFinder.findViewById(contentView, R.id.register_register);
-        buttonRegister.setOnClickListener(this);
+    protected void bindViews(View view) {
+        editAccount = getView(view, R.id.register_account);
+        editVerifyCode = getView(view, R.id.edit_verify_code);
+        editPassword = getView(view, R.id.register_password);
+        editConfirmPassword = getView(view, R.id.register_password_confirm);
+        checkAgreement = getView(view, R.id.register_agreement_check);
+        getView(view, R.id.btn_obtain_code).setOnClickListener(this);
+        getView(view, R.id.register_register).setOnClickListener(this);
     }
 
     @Override
@@ -130,8 +101,12 @@ public class RegisterFragment extends
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.register_obtain_code:
-                verifyCodeValidator.validate();
+            case R.id.btn_obtain_code:
+                if (TextUtils.isEmpty(editAccount.getText())) {
+                    MessageToast.makeText(getActivity(), R.string.error_input_account).show();
+                    return;
+                }
+                obtainCode();
                 break;
             case R.id.register_register:
                 getValidator().validate();
@@ -148,38 +123,38 @@ public class RegisterFragment extends
     public void onValidationFailed(View view, Rule<?> rule) {
         switch (view.getId()) {
             case R.id.register_account:
-                BaseDialogFragment.newInstance(getString(R.string.error_input_account)).show(getFragmentManager());
+                MessageToast.makeText(getActivity(), R.string.error_input_account).show();
                 break;
             case R.id.register_password:
                 if (Constants.Validator.MSG_PASSWORD_LENGTH.equals(rule.getFailureMessage())) {
-                    BaseDialogFragment.newInstance(getString(R.string.error_password_length,
-                        Constants.PASSWORD_LENGTH_MIN, Constants.PASSWORD_LENGTH_MAX)).show(getFragmentManager());
+                    MessageToast.makeText(getActivity(), getString(R.string.error_password_length,
+                            Constants.PASSWORD_LENGTH_MIN, Constants.PASSWORD_LENGTH_MAX)).show();
                 } else {
-                    BaseDialogFragment.newInstance(getString(R.string.error_input_password)).show(getFragmentManager());
+                    MessageToast.makeText(getActivity(), R.string.error_input_password).show();
                 }
                 break;
             case R.id.register_password_confirm:
                 if (Constants.Validator.MSG_PASSWORD_NOT_MATCH.equals(rule.getFailureMessage())) {
-                    BaseDialogFragment.newInstance(getString(R.string.error_password_not_equal)).show(getFragmentManager());
+                    MessageToast.makeText(getActivity(), R.string.error_password_not_equal).show();
                 } else {
-                    BaseDialogFragment.newInstance(getString(R.string.error_input_confirm_password)).show(getFragmentManager());
+                    MessageToast.makeText(getActivity(), R.string.error_input_confirm_password).show();
                 }
                 break;
-            case R.id.register_verify_code:
-                BaseDialogFragment.newInstance(getString(R.string.error_input_verify_code)).show(getFragmentManager());
+            case R.id.edit_verify_code:
+                MessageToast.makeText(getActivity(), R.string.error_input_verify_code).show();
                 break;
             case R.id.register_agreement_check:
-                BaseDialogFragment.newInstance(getString(R.string.error_input_agreement)).show(getFragmentManager());
+                MessageToast.makeText(getActivity(), R.string.error_input_agreement).show();
                 break;
         }
     }
 
     protected void obtainCode() {
         String account = String.valueOf(editAccount.getText());
-        ObtainCodeParam param = new ObtainCodeParam();
+        ObtainCodeRequest param = new ObtainCodeRequest();
         param.setPhoneNumber(account);
         param.setType(ObtainCode.TYPE_REGISTER);
-        getPresenter().obtainCode(getActivity(), param);
+        getPresenter().obtainCode(this, param);
     }
 
     protected void register() {
@@ -188,16 +163,16 @@ public class RegisterFragment extends
         String confirmPassword = String.valueOf(editConfirmPassword.getText());
         String verifyCode = String.valueOf(editVerifyCode.getText());
         if (!verifyCode.equals(this.verifyCode)) {
-            BaseDialogFragment.newInstance(getString(R.string.error_verify_code_incorrect)).show(getFragmentManager());
+            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
             return;
         }
-        SignOnParam param = new SignOnParam();
+        RegisterRequest param = new RegisterRequest();
         param.setPhone(account);
         param.setPassword(password);
-        param.setRepassword(confirmPassword);
+        param.setConfirmPassword(confirmPassword);
         param.setPhoneVerifyCode(verifyCode);
         param.setAccountType(1);
         param.setAcceptTerm(true);
-        getPresenter().register(getActivity(), param);
+        getPresenter().register(this, param);
     }
 }

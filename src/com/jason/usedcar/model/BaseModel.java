@@ -2,7 +2,6 @@ package com.jason.usedcar.model;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
-import com.jason.usedcar.model.result.Model;
 
 /**
  * @author t77yq @2014.06.14

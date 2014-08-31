@@ -1,5 +1,7 @@
 package com.jason.usedcar.presenter;
 
+import com.jason.usedcar.CarDetailsActivity;
+import com.jason.usedcar.model.UsedCar;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,16 +11,11 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.jason.usedcar.db.DBHelper;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.db.Brand;
-import com.jason.usedcar.model.db.Province;
-import com.jason.usedcar.model.param.PublishUsedCarParam;
+import com.jason.usedcar.model.data.Brand;
+import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.presenter.BuyCarFragmentPresenter.CallButtonUi;
-import com.jason.usedcar.util.HttpUtil;
 
 /**
  * Logic for call buttons.
@@ -26,23 +23,11 @@ import com.jason.usedcar.util.HttpUtil;
 public class BuyCarFragmentPresenter extends BasePresenter<CallButtonUi> {
 
     public void login(final Context context) {
-        Volley.newRequestQueue(context).add(
-                createPostRequest(HttpUtil.LOGIN_URI, null, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        getUi().login(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                    }
-                }));
     }
 
-    public void clickItem(Context context, PublishUsedCarParam param) {
-        if (param != null) {
-            context.startActivity(new Intent());
+    public void clickItem(Context context, UsedCar car) {
+        if (car != null) {
+            context.startActivity(new Intent(context, CarDetailsActivity.class));
         }
     }
 
@@ -72,7 +57,7 @@ public class BuyCarFragmentPresenter extends BasePresenter<CallButtonUi> {
                 String name = object.getString(key);
                 Brand brand = new Brand();
                 brand.setBrandId(Integer.valueOf(key));
-                brand.setBrandName(name);
+                brand.setName(name);
                 brands.add(brand);
             }
         } catch (JSONException e) {

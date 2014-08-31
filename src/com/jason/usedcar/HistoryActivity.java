@@ -1,19 +1,26 @@
 package com.jason.usedcar;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import com.jason.usedcar.fragment.CarHistoryFragment;
+import com.jason.usedcar.fragment.BuyCarHistoryFragment;
+import com.jason.usedcar.fragment.SellCarHistoryFragment;
+import com.jason.usedcar.model.UsedCar;
+import java.util.List;
 
 
-public class HistoryActivity extends ActionBarActivity implements ActionBar.OnNavigationListener {
+public class HistoryActivity extends BaseActivity implements
+        ActionBar.OnNavigationListener,
+        BuyCarHistoryFragment.Data,
+        SellCarHistoryFragment.Data {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+
+    private List<UsedCar> buyCarHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +32,8 @@ public class HistoryActivity extends ActionBarActivity implements ActionBar.OnNa
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
         actionBar.setListNavigationCallbacks(new ArrayAdapter<String>(
-                actionBar.getThemedContext(),
-                android.R.layout.simple_list_item_1,
+                getApplicationContext(),
+                R.layout.text1,
                 android.R.id.text1,
                 new String[] {
                     getString(R.string.activity_history_car_bought),
@@ -70,26 +77,27 @@ public class HistoryActivity extends ActionBarActivity implements ActionBar.OnNa
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (position) {
             case 0:
-                ft.replace(R.id.container, new CarHistoryFragment()).commit();
+                ft.replace(R.id.container, new BuyCarHistoryFragment()).commit();
                 break;
             case 1:
-                ft.replace(R.id.container, PlaceholderFragment.newInstance(position + 1)).commit();
+                ft.replace(R.id.container, new SellCarHistoryFragment()).commit();
                 break;
         }
         return true;
     }
 
-    public static class PlaceholderFragment extends ListFragment {
-
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            fragment.setArguments(args);
-            return fragment;
+    @Override
+    public List<UsedCar> getData(Fragment fragment) {
+        if (fragment instanceof BuyCarHistoryFragment) {
+            return buyCarHistory;
         }
+        return null;
     }
 
+    @Override
+    public void setData(Fragment fragment, final List<UsedCar> data) {
+        if (fragment instanceof BuyCarHistoryFragment) {
+            buyCarHistory = data;
+        }
+    }
 }

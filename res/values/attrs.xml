@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ExtendedTextView">
+        <attr name="direction" format="integer"/>
         <attr name="prefix" format="string"/>
         <attr name="prefixColor" format="color"/>
         <attr name="prefixSize" format="dimension"/>

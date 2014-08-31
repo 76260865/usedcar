@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:support="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/action_addToCart"
+        android:icon="@drawable/add_to_cart"
+        android:title="添加到购物车"
+        android:onClick="onMenuClicked"
+        support:showAsAction="always"
+        tools:context="com.jason.usedcar.CarDetailsActivity"/>
+</menu>

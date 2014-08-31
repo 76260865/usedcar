@@ -13,6 +13,7 @@ import com.jason.usedcar.adapter.holder.ShoppingCarViewHolder;
 import com.jason.usedcar.adapter.holder.ViewHolder;
 import com.jason.usedcar.model.ShoppingCar;
 import com.jason.usedcar.model.ShoppingCarModel;
+import com.jason.usedcar.model.UsedCar;
 
 /**
  * @author t77yq @14-6-28.
@@ -47,7 +48,7 @@ public class ShoppingCarAdapter extends BaseAdapter {
     }
 
     @Override
-    public ShoppingCar getItem(int position) {
+    public UsedCar getItem(int position) {
         return getCount() == 0 ? null : model.get(position);
     }
 
@@ -66,7 +67,7 @@ public class ShoppingCarAdapter extends BaseAdapter {
             holder = new ShoppingCarViewHolder(convertView);
             convertView.setTag(holder);
         }
-        ShoppingCar data = getItem(position);
+        UsedCar data = getItem(position);
         if (data != null) {
             //holder.imageView.setImageResource();
             holder.historyCarInfoText.setText(activity.getString(R.string.history_car_info,

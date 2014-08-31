@@ -1,17 +1,14 @@
 package com.jason.usedcar.presenter;
 
-import android.content.Context;
-import android.util.Log;
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
+import android.support.v4.app.Fragment;
+import com.jason.usedcar.*;
+import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.param.ObtainCodeParam;
-import com.jason.usedcar.model.result.ObtainCodeResult;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.response.ObtainCodeResponse;
 import com.jason.usedcar.presenter.ObtainCodeFragmentPresenter.ObtainCodeFragmentUi;
-import com.jason.usedcar.util.HttpUtil;
+import retrofit.*;
+import retrofit.client.*;
 
 /**
  * @author t77yq @2014.06.08
@@ -25,25 +22,22 @@ public class ObtainCodeFragmentPresenter extends BasePresenter<ObtainCodeFragmen
 
     private static final String TAG = ObtainCodeFragmentPresenter.class.getSimpleName();
 
-    public void obtainCode(Context context, final ObtainCodeParam param) {
-        Log.d(TAG, " obtainCode URI:" + HttpUtil.OBTAIN_CODE_URI);
-        Volley.newRequestQueue(context).add(createPostRequest(HttpUtil.OBTAIN_CODE_URI, param,
-            new Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d(TAG, "mObtainCodeResponseListener:response" + response);
-                    Gson gson = new Gson();
-                    ObtainCodeResult result = gson.fromJson(response, ObtainCodeResult.class);
-                    if (result.isExecutionResult()) {
-                        getUi().onCodeObtained(result.getCode());
-                    }
+    public void obtainCode(Fragment fragment, final ObtainCodeRequest param) {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取短信验证码&#8230;");
+        loadingFragment.show(fragment.getFragmentManager());
+        new RestClient().obtainCode(param, new Callback<ObtainCodeResponse>() {
+            @Override
+            public void success(final ObtainCodeResponse response, final Response response2) {
+                loadingFragment.dismiss();
+                if (response.isExecutionResult()) {
+                    getUi().onCodeObtained(response.getCode());
                 }
-            },
-            new ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, error.toString());
-                }
-            }));
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                loadingFragment.dismiss();
+            }
+        });
     }
 }

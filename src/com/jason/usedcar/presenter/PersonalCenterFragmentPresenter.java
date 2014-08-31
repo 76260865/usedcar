@@ -6,7 +6,7 @@ import android.content.Intent;
 import com.jason.usedcar.HistoryActivity;
 import com.jason.usedcar.InfoActivity;
 import com.jason.usedcar.LoginActivity;
-import com.jason.usedcar.UsedCarApplication;
+import com.jason.usedcar.Application;
 import com.jason.usedcar.interfaces.Ui;
 
 /**
@@ -15,7 +15,7 @@ import com.jason.usedcar.interfaces.Ui;
 public class PersonalCenterFragmentPresenter extends Presenter<Ui> {
 
     public void myInfo(Activity activity) {
-        if (((UsedCarApplication) activity.getApplication()).accessToken == null) {
+        if (Application.fromActivity(activity).getAccessToken() == null) {
             activity.startActivity(new Intent(activity, LoginActivity.class));
         } else {
             activity.startActivity(new Intent(activity, InfoActivity.class));

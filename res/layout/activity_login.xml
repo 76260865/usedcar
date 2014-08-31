@@ -1,58 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:support="http://schemas.android.com/apk/res-auto"
-        xmlns:ied="http://schemas.android.com/apk/res/com.jason.usedcar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="40dip"
-        android:paddingRight="40dip"
-        android:background="@color/white">
-    <android.support.v7.internal.widget.LinearLayoutICS
-            android:id="@+id/login_account_base"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@drawable/rect_bg"
-            android:orientation="vertical"
-            support:divider="@drawable/divider_h"
-            support:showDividers="middle">
-        <com.jason.usedcar.view.IconEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@color/white"
-                support:divider="@drawable/divider_v"
-                support:dividerPadding="10dip"
-                support:showDividers="middle"
-                ied:editId="@+id/login_account"
-                ied:src="@drawable/avatar_icon"
-                ied:hint="@string/hint_phone"
-                ied:textColor="#134EFD"
-                ied:textColorHint="#D4D4D4"
-                ied:textSize="16sp"/>
-        <com.jason.usedcar.view.IconEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@color/white"
-                support:divider="@drawable/divider_v"
-                support:dividerPadding="10dip"
-                support:showDividers="middle"
-                ied:editId="@+id/login_password"
-                ied:src="@drawable/password_icon"
-                ied:hint="@string/hint_password"
-                ied:textColor="#134EFD"
-                ied:textColorHint="#D4D4D4"
-                ied:textSize="16sp"/>
-    </android.support.v7.internal.widget.LinearLayoutICS>
+        android:background="@color/white"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:orientation="vertical">
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="60dip"
             android:layout_marginBottom="40dp"
-            android:layout_above="@id/login_account_base"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
             android:src="@drawable/used_car_logo"/>
+    <LinearLayout
+            android:id="@+id/login_area "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <EditText
+            style="@style/Phone.EditText"
+                android:id="@+id/login_edit_username"
+                android:drawableLeft="@drawable/avatar_icon"
+                android:drawablePadding="10dip"
+                android:inputType="phone"
+                android:src="@drawable/avatar_icon"/>
+        <EditText
+            style="@style/EditText"
+                android:id="@+id/login_edit_password"
+                android:layout_marginTop="6dp"
+                android:drawableLeft="@drawable/password_icon"
+                android:drawablePadding="10dip"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:src="@drawable/password_icon"/>
+    </LinearLayout>
     <CheckBox
             android:id="@+id/checkBox1"
             android:layout_width="wrap_content"
@@ -60,39 +44,45 @@
             android:visibility="gone"
             android:text="@string/chk_save_user_name_text"/>
     <Button
-            style="@style/register.button"
-            android:id="@+id/login_login"
-            android:layout_below="@id/login_account_base"
+            style="@style/Button"
+            android:id="@+id/login_btn_login"
             android:layout_marginTop="20dip"
             android:onClick="onClick"
             android:text="@string/btn_login_text"/>
-    <android.support.v7.internal.widget.LinearLayoutICS
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dip"
-            android:layout_centerHorizontal="true"
-            support:divider="@drawable/divider_v"
-            support:dividerPadding="15dip"
-            support:showDividers="middle">
-        <Button
-                android:id="@+id/login_register"
-                android:layout_width="wrap_content"
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="20dip"
+            android:gravity="center">
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@null"
-                android:onClick="onClick"
-                android:padding="10dip"
-                android:text="@string/txt_register"/>
-        <Button
-                android:id="@+id/login_reset_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@null"
-                android:onClick="onClick"
-                android:padding="10dip"
-                android:text="@string/txt_forgot_pwd"/>
-    </android.support.v7.internal.widget.LinearLayoutICS>
-</RelativeLayout>
+                android:layout_gravity="bottom">
+            <Button
+                    android:id="@+id/login_btn_register"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:onClick="onClick"
+                    android:padding="10dip"
+                    android:text="@string/txt_register"/>
+            <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dip"
+                    android:background="@drawable/divider_v"/>
+            <Button
+                    android:id="@+id/login_btn_reset_password"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:background="@null"
+                    android:onClick="onClick"
+                    android:padding="10dip"
+                    android:text="@string/txt_forgot_pwd"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -18,17 +18,26 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.jason.usedcar.Application;
 import com.jason.usedcar.R;
-import com.jason.usedcar.adapter.SaleCarAdapter;
+import com.jason.usedcar.RestClient;
+import com.jason.usedcar.adapter.BuyCarAdapter;
 import com.jason.usedcar.model.SaleCarModel;
-import com.jason.usedcar.model.param.PublishUsedCarParam;
+import com.jason.usedcar.request.CarRequest;
+import com.jason.usedcar.request.LoginRequest;
+import com.jason.usedcar.request.PagedRequest;
 import com.jason.usedcar.presenter.BuyCarFragmentPresenter;
 import com.jason.usedcar.presenter.BuyCarFragmentPresenter.CallButtonUi;
-import com.jason.usedcar.util.ViewFinder;
+import com.jason.usedcar.request.TokenGenerateRequest;
+import com.jason.usedcar.response.CarListResponse;
+import com.jason.usedcar.response.CarResponse;
+import com.jason.usedcar.response.LoginResponse;
+import com.jason.usedcar.response.TokenGenerateResponse;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.Required;
-import java.util.ArrayList;
-import java.util.List;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class BuyCarFragment extends
     BaseFragment<BuyCarFragmentPresenter, CallButtonUi> implements
@@ -36,14 +45,10 @@ public class BuyCarFragment extends
 
     private View mFooterLoadingView;
 
-    private int mVisibleLastIndex = 0;
-
-    private SaleCarModel saleCarModel = new SaleCarModel();
-
-    private int mCount = 41;
-
     @Required(order = 1)
     private TextView filterText;
+
+    private SaleCarModel saleCarModel = new SaleCarModel();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,13 +60,13 @@ public class BuyCarFragment extends
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getPresenter().login(getActivity());
         View view = inflater.inflate(R.layout.fragment_buy_car, container, false);
-        filterText = ViewFinder.findViewById(view, R.id.sale_car_filter_text);
+        filterText = getView(view, R.id.textSaleCarFilter);
         filterText.setOnClickListener(this);
-        ViewFinder.findViewById(view, R.id.sale_car_filter_button).setOnClickListener(this);
-        ListView saleCarlList = ViewFinder.findViewById(view, R.id.listCar);
+        getView(view, R.id.saleCarFilterButton).setOnClickListener(this);
+        ListView saleCarlList = getView(view, R.id.usedCarList);
         mFooterLoadingView = inflater.inflate(R.layout.footer_loading_layout, null);
         saleCarlList.addFooterView(mFooterLoadingView);
-        saleCarlList.setAdapter(new SaleCarAdapter(getActivity(), saleCarModel));
+        saleCarlList.setAdapter(new BuyCarAdapter(getActivity(), saleCarModel));
         saleCarlList.setOnScrollListener(mOnScrollListener);
         saleCarlList.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -76,20 +81,92 @@ public class BuyCarFragment extends
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.buy_car_text);
-        List<PublishUsedCarParam> data = new ArrayList<PublishUsedCarParam>(20);
-        for (int i = 0; i < 20; i++) {
-            PublishUsedCarParam param = new PublishUsedCarParam();
-            param.setListPrice(1000 + i);
-            param.setOdometer(2032 + 10 * i);
-            param.setPurchaseDate(String.valueOf(System.currentTimeMillis()));
-            data.add(param);
-        }
-        saleCarModel.setData(data);
-        saleCarModel.notifyDataSetInvalidated();
+        PagedRequest pagedRequest = new PagedRequest();
+        pagedRequest.setPageIndex(saleCarModel.getPageSize() + 1);
+        new RestClient().getUsedCarList(pagedRequest, new Callback<CarListResponse>() {
+            @Override
+            public void success(final CarListResponse response, final Response response2) {
+                if (response != null && response.isExecutionResult()) {
+                    saleCarModel.add(response.getUsedCars());
+                    saleCarModel.notifyDataSetInvalidated();
+                }
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+
+            }
+        });
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setPhoneOrEmail("15008488463");
+        loginRequest.setPassword("111111");
+        new RestClient().login(loginRequest, new Callback<LoginResponse>() {
+            @Override
+            public void success(final LoginResponse response, final Response response2) {
+                TokenGenerateRequest tokenGenerateRequest = new TokenGenerateRequest();
+                tokenGenerateRequest.setUserId(String.valueOf(response.getUserId()));
+                tokenGenerateRequest.setAccessToken(response.getAccessToken());
+                final int userId = response.getUserId();
+                final String accessToken = response.getAccessToken();
+                new RestClient().generateAccessToken(tokenGenerateRequest, new Callback<TokenGenerateResponse>() {
+                    @Override
+                    public void success(final TokenGenerateResponse response, final Response response2) {
+                        CarRequest carRequest = new CarRequest();
+                        carRequest.setProductId("prod10032");
+                        Application.sampleAccessToken = response.getSampleAccessToken();
+                        Application.fromContext(getActivity()).setAccessToken(response.getSampleAccessToken());
+                        carRequest.setAccessToken(Application.getEncryptedToken(userId, accessToken));
+                        new RestClient().getUsedCar(carRequest, new Callback<CarResponse>() {
+                            @Override
+                            public void success(final CarResponse response, final Response response2) {
+
+                            }
+
+                            @Override
+                            public void failure(final RetrofitError error) {
+
+                            }
+                        });
+                        PagedRequest pagedRequest = new PagedRequest();
+                        pagedRequest.setAccessToken(Application.sampleAccessToken);
+                        pagedRequest.setPageSize(SaleCarModel.PAGE_SIZE);
+                        pagedRequest.setPageIndex(saleCarModel.getPageSize() + 1);
+                        new RestClient().getUsedCarList(pagedRequest, new Callback<CarListResponse>() {
+                            @Override
+                            public void success(final CarListResponse response, final Response response2) {
+                                if (response != null && response.isExecutionResult()) {
+                                    if (response.getUsedCars().isEmpty()) {
+                                        saleCarModel.setFull(true);
+                                    }
+                                    saleCarModel.setLoading(false);
+                                    saleCarModel.add(response.getUsedCars());
+                                    saleCarModel.notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void failure(final RetrofitError error) {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failure(final RetrofitError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+
+            }
+        });
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.menu_buy_car, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -138,39 +215,37 @@ public class BuyCarFragment extends
 
         @Override
         public void onScrollStateChanged(AbsListView view, int mScrollState) {
-            int itemsLastIndex = saleCarModel.size() - 1;
-            int lastIndex = itemsLastIndex + 1;
-            if (mScrollState == OnScrollListener.SCROLL_STATE_IDLE
-                && !saleCarModel.isLoading()
-                && mVisibleLastIndex == lastIndex
-                && saleCarModel.size() <= mCount) {
-                saleCarModel.setLoading(true);
-                view.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        List<PublishUsedCarParam> data = new ArrayList<PublishUsedCarParam>(20);
-                        for (int i = 0; i < 20; i++) {
-                            PublishUsedCarParam param = new PublishUsedCarParam();
-                            param.setListPrice(1000 + i);
-                            param.setOdometer(2032 + 10 * i);
-                            param.setPurchaseDate(String.valueOf(System.currentTimeMillis()));
-                            data.add(param);
-                        }
-                        saleCarModel.add(data);
-                        saleCarModel.setLoading(false);
-                        saleCarModel.notifyDataSetInvalidated();
-                    }
-                }, 1000);
-            }
         }
 
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
             int totalItemCount) {
-            mVisibleLastIndex = firstVisibleItem + visibleItemCount - 1;
-            if (saleCarModel.size() > mCount) {
+            if (saleCarModel.isFull()) {
                 mFooterLoadingView.findViewById(R.id.loading_more_no_data).setVisibility(View.VISIBLE);
                 mFooterLoadingView.findViewById(R.id.loading_more_progress).setVisibility(View.GONE);
+            } else if (!saleCarModel.isLoading() && firstVisibleItem + visibleItemCount == totalItemCount ) {
+                saleCarModel.setLoading(true);
+                PagedRequest pagedRequest = new PagedRequest();
+                pagedRequest.setAccessToken(Application.sampleAccessToken);
+                pagedRequest.setPageSize(SaleCarModel.PAGE_SIZE);
+                pagedRequest.setPageIndex(saleCarModel.getPageSize() + 1);
+                new RestClient().getUsedCarList(pagedRequest, new Callback<CarListResponse>() {
+                    @Override
+                    public void success(final CarListResponse response, final Response response2) {
+                        if (response != null && response.isExecutionResult()) {
+                            if (response.getUsedCars().isEmpty()) {
+                                saleCarModel.setFull(true);
+                            }
+                            saleCarModel.setLoading(false);
+                            saleCarModel.add(response.getUsedCars());
+                            saleCarModel.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void failure(final RetrofitError error) {
+                    }
+                });
             }
         }
     };
@@ -178,9 +253,9 @@ public class BuyCarFragment extends
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.sale_car_filter_text:
+            case R.id.textSaleCarFilter:
                 break;
-            case R.id.sale_car_filter_button:
+            case R.id.saleCarFilterButton:
                 getValidator().validate();
                 break;
         }
@@ -194,7 +269,7 @@ public class BuyCarFragment extends
     @Override
     public void onValidationFailed(View view, Rule<?> rule) {
         switch (view.getId()) {
-            case R.id.sale_car_filter_text:
+            case R.id.textSaleCarFilter:
                 Toast.makeText(getActivity(), "请选择筛选条件", Toast.LENGTH_SHORT).show();
                 break;
         }

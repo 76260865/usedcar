@@ -15,8 +15,9 @@ import com.jason.usedcar.db.CarTablesInfo.CarBrand;
 import com.jason.usedcar.db.CarTablesInfo.CarModels;
 import com.jason.usedcar.db.CarTablesInfo.CarProvince;
 import com.jason.usedcar.db.CarTablesInfo.CarSeries;
-import com.jason.usedcar.model.db.Brand;
-import com.jason.usedcar.model.db.Province;
+import com.jason.usedcar.model.data.Brand;
+import com.jason.usedcar.model.data.Province;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
@@ -44,12 +45,13 @@ public class DBHelper extends SQLiteOpenHelper {
         createCarBrandTable(db);
         createCarSeriesTable(db);
         createCarModelTable(db);
+        createProvinceTable(db);
     }
 
     private void createCarBrandTable(SQLiteDatabase db) {
         String cmd = "CREATE TABLE " + CarBrand.TABLE_NAME + " (" + BaseColumns._ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT," + CarBrand.BRAND_ID + " INTEGER,"
-                + CarBrand.BRAND_NAME + " TEXT," + ");";
+                + CarBrand.BRAND_NAME + " TEXT" + ");";
         if (DEBUG) {
             Log.d(TAG, "createEcaRulesTable(): cmd = " + cmd);
         }
@@ -59,7 +61,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createCarSeriesTable(SQLiteDatabase db) {
         String cmd = "CREATE TABLE " + CarSeries.TABLE_NAME + " (" + BaseColumns._ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT," + CarSeries.SERIES_ID + " INTEGER,"
-                + CarSeries.SERIES_NAME + " TEXT," + ");";
+                + CarSeries.BRAND_ID + " INTEGER,"
+                + CarSeries.SERIES_NAME + " TEXT" + ");";
         if (DEBUG) {
             Log.d(TAG, "createCarSeriesTable(): cmd = " + cmd);
         }
@@ -69,7 +72,18 @@ public class DBHelper extends SQLiteOpenHelper {
     private void createCarModelTable(SQLiteDatabase db) {
         String cmd = "CREATE TABLE " + CarModels.TABLE_NAME + " (" + BaseColumns._ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT," + CarModels.MODEL_ID + " INTEGER,"
-                + CarModels.MODEL_NAME + " TEXT," + ");";
+                + CarModels.SERIES_ID + " INTEGER,"
+                + CarModels.MODEL_NAME + " TEXT" + ");";
+        if (DEBUG) {
+            Log.d(TAG, "createCarModelTable(): cmd = " + cmd);
+        }
+        db.execSQL(cmd);
+    }
+
+    private void createProvinceTable(SQLiteDatabase db) {
+        String cmd = "CREATE TABLE " + CarProvince.TABLE_NAME + " (" + BaseColumns._ID
+                + " INTEGER PRIMARY KEY AUTOINCREMENT," + CarProvince.PROVINCE_ID + " INTEGER,"
+                + CarProvince.PROVINCE_NAME + " TEXT" + ");";
         if (DEBUG) {
             Log.d(TAG, "createCarModelTable(): cmd = " + cmd);
         }
@@ -85,6 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + CarBrand.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CarModels.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CarSeries.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CarProvince.TABLE_NAME);
     }
 
     @Override
@@ -98,7 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
         createAllTables(db);
     }
 
-    public boolean isBrandsInited() {
+    public boolean isBrandsInit() {
         boolean ret = false;
         Cursor cursor = null;
         try {
@@ -109,22 +124,24 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (SQLException e) {
             Log.e(TAG, e.getMessage());
         } finally {
-            cursor.close();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
         return ret;
     }
 
-    public void insertBrands(ArrayList<Brand> brands) {
+    public void insertBrands(List<Brand> brands) {
         String sql = "INSERT INTO " + CarTablesInfo.CarBrand.TABLE_NAME + " (" + CarBrand.BRAND_ID
                 + "," + CarBrand.BRAND_NAME + ") VALUES (?,?)";
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransaction();
         try {
             for (Brand brand : brands) {
-                SQLiteStatement sqlListStatment = db.compileStatement(sql);
-                sqlListStatment.bindAllArgsAsStrings(new String[] {
-                        String.valueOf(brand.getBrandId()), brand.getBrandName() });
-                sqlListStatment.executeInsert();
+                SQLiteStatement sqlListStatement = db.compileStatement(sql);
+                sqlListStatement.bindAllArgsAsStrings(new String[] {
+                        String.valueOf(brand.getBrandId()), brand.getName() });
+                sqlListStatement.executeInsert();
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -134,7 +151,42 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertProvinces(ArrayList<Province> provinces) {
+    public List<Brand> getBrands() {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + CarBrand.TABLE_NAME, null);
+        List<Brand> brandList = new ArrayList<Brand>();
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                Brand brand = new Brand();
+                brand.setBrandId(cursor.getInt(cursor.getColumnIndex(CarBrand.BRAND_ID)));
+                brand.setName(cursor.getString(cursor.getColumnIndex(CarBrand.BRAND_NAME)));
+                brandList.add(brand);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return brandList;
+    }
+
+    public boolean isProvincesInit() {
+        boolean ret = false;
+        Cursor cursor = null;
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            cursor = db.query(CarProvince.TABLE_NAME, CarProvince.PROJECTION,
+                    null, null, null, null, null);
+            ret = cursor.getCount() > 0;
+        } catch (SQLException e) {
+            Log.e(TAG, e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return ret;
+    }
+
+    public void insertProvinces(List<Province> provinces) {
         String sql = "INSERT INTO " + CarTablesInfo.CarProvince.TABLE_NAME + " ("
                 + CarProvince.PROVINCE_ID + "," + CarProvince.PROVINCE_NAME + ") VALUES (?,?)";
         SQLiteDatabase db = getWritableDatabase();
@@ -152,5 +204,22 @@ public class DBHelper extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public List<Province> getProvinces() {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + CarProvince.TABLE_NAME, null);
+        List<Province> provinceList = new ArrayList<Province>();
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            do {
+                Province province = new Province();
+                province.setProvinceId(cursor.getInt(cursor.getColumnIndex(CarProvince.PROVINCE_ID)));
+                province.setProvinceName(cursor.getString(cursor.getColumnIndex(CarProvince.PROVINCE_NAME)));
+                provinceList.add(province);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return provinceList;
     }
 }
