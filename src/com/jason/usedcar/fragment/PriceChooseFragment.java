@@ -1,6 +1,9 @@
 package com.jason.usedcar.fragment;
 
+import java.util.ArrayList;
+
 import com.jason.usedcar.R;
+import com.jason.usedcar.model.data.FilterEntity;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -15,18 +18,20 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-public class PriceChooseFragment extends DialogFragment {
-	private PriceChooseDialogListener mChooseListener;
-	private PriceAdapter mAdapter;
+public class PriceChooseFragment extends SearchConditionChooseFragment {
 
-	public interface PriceChooseDialogListener {
-		void onPriceChoosed(int brandId);
+	public PriceChooseFragment(ArrayList<FilterEntity> filters) {
+		super(filters);
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_Fullscreen);
+	private PriceChooseDialogListener mChooseListener;
+
+	public interface PriceChooseDialogListener {
+		void onPriceChoosed(FilterEntity filter);
+	}
+
+	public void setPriceChooseDialogListener(PriceChooseDialogListener listener) {
+		mChooseListener = listener;
 	}
 
 	@Override
@@ -37,26 +42,17 @@ public class PriceChooseFragment extends DialogFragment {
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		mAdapter = new PriceAdapter();
-	}
-
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_seriers_choose,
-				container, false);
-		ListView listViewBrands = (ListView) view
-				.findViewById(R.id.listView_seriers);
-		listViewBrands.setAdapter(mAdapter);
-		listViewBrands.setOnItemClickListener(new OnItemClickListener() {
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+		ListView listView = (ListView) view.findViewById(R.id.listView_seriers);
+		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				if (mChooseListener != null) {
-					// mChooseListener.onBrandChoosed(mAdapter.getItem(position));
+					mChooseListener.onPriceChoosed((FilterEntity) mAdapter.getItem(position));
 				}
 			}
 		});

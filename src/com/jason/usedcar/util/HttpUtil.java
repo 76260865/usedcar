@@ -82,4 +82,6 @@ public class HttpUtil {
      * 获取汽车车系
      */
     public static final String GET_MODELS_URI = URI.concat("product/getModels.json");
+    
+    public static final String SEARCH_FILTER_URI = URI.concat("searchFilter.json");
 }
