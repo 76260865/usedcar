@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:support="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/action_save"
+        android:onClick="onMenuClicked"
+        support:showAsAction="always"
+        android:title="收藏"
+        tools:context="com.jason.usedcar.CarDetailsActivity"/>
+</menu>

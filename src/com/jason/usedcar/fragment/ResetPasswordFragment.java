@@ -133,10 +133,10 @@ public class ResetPasswordFragment extends
 
     private void resetPassword() {
         String verifyCode = String.valueOf(editVerifyCode.getText());
-        if (!verifyCode.equals(this.verifyCode)) {
-            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
-            return;
-        }
+//        if (!verifyCode.equals(this.verifyCode)) {
+//            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
+//            return;
+//        }
         String newPassword = String.valueOf(editNewPassword.getText());
         String confirmPassword = String.valueOf(editConfirmNewPassword.getText());
         String phoneNum = getArguments().getString(PHONE_NUMBER);

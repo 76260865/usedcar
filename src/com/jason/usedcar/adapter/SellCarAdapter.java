@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import com.jason.usedcar.R;
 import com.jason.usedcar.adapter.holder.SaleCarViewHolder;
 import com.jason.usedcar.model.SaleCarModel;
+import com.jason.usedcar.model.SaleCarModel2;
 import com.jason.usedcar.model.UsedCar;
+import com.jason.usedcar.model.data.Product;
 import com.jason.usedcar.request.PublishUsedCarRequest;
 
 /**
@@ -21,9 +23,9 @@ public class SellCarAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
 
-    private SaleCarModel model;
+    private SaleCarModel2 model;
 
-    public SellCarAdapter(Context context, SaleCarModel model) {
+    public SellCarAdapter(Context context, SaleCarModel2 model) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.model = model;
@@ -66,6 +68,7 @@ public class SellCarAdapter extends BaseAdapter {
             convertView.setTag(viewHolder);
         }
         UsedCar param = getItem(position);
+        viewHolder.carNameText.setText(context.getString(R.string.sale_car_name, param.getProductName()));
         viewHolder.preSalePriceText.setText(context.getString(R.string.sale_car_pre_sale_price,
                 param.getListPrice()));
         viewHolder.mileageText.setText(context.getString(R.string.sale_car_mileage,

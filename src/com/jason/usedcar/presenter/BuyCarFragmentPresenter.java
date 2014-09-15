@@ -5,6 +5,7 @@ import com.jason.usedcar.model.UsedCar;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.jason.usedcar.model.data.Product;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,9 +26,11 @@ public class BuyCarFragmentPresenter extends BasePresenter<CallButtonUi> {
     public void login(final Context context) {
     }
 
-    public void clickItem(Context context, UsedCar car) {
+    public void clickItem(Context context, Product car) {
         if (car != null) {
-            context.startActivity(new Intent(context, CarDetailsActivity.class));
+            Intent carDetails = new Intent(context, CarDetailsActivity.class);
+            carDetails.putExtra("product", car);
+            context.startActivity(carDetails);
         }
     }
 

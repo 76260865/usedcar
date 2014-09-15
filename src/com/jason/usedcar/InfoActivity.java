@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,10 +68,9 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                 edit();
                 break;
             case R.id.action_save:
-                editMode = false;
-                supportInvalidateOptionsMenu();
-                updateUserInfo();
-                save();
+                if (validate()) {
+                    updateUserInfo();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -92,13 +92,9 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                     userInfoParam.setNickname(response.getNickname());
                     userInfoParam.setRealName(response.getRealName());
                     userInfoParam.setSex(response.isSex());
-                    userInfoParam.setPhone(response.getPhone());
-                    userInfoParam.setBindPhone(response.isBindPhone());
-                    userInfoParam.setEmail(response.getEmail());
-                    userInfoParam.setBindEmail(response.isBindEmail());
-                    userInfoParam.setBirthYear(response.getBirthyear());
-                    userInfoParam.setBirthMonth(response.getBirthmonth());
-                    userInfoParam.setBirthDay(response.getBirthday());
+                    userInfoParam.setBirthyear(response.getBirthyear());
+                    userInfoParam.setBirthmonth(response.getBirthmonth());
+                    userInfoParam.setBirthday(response.getBirthday());
                     userInfoParam.setProvince(response.getProvince());
                     userInfoParam.setCity(response.getCity());
                     userInfoParam.setCounty(response.getCounty());
@@ -127,12 +123,23 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
     }
 
     private void updateUserInfo() {
+        userInfoParam.setNickname(String.valueOf(activityHolder.nicknameText.getText()));
+        userInfoParam.setRealName(String.valueOf(activityHolder.nameText.getText()));
+        userInfoParam.setCertificateNumber(String.valueOf(activityHolder.identifyText.getText()));
+        userInfoParam.setStreet(String.valueOf(activityHolder.addressText.getText()));
+        userInfoParam.setSex(activityHolder.radioTypeMale.isChecked());
+        userInfoParam.setProvince("xxx");
+        userInfoParam.setCity("yyy");
+        userInfoParam.setStreet("zzz");
         final LoadingFragment loadingFragment = LoadingFragment.newInstance("更新个人资料&#8230;");
         loadingFragment.show(getSupportFragmentManager());
         new RestClient().updateUserInfo(userInfoParam, new Callback<Response>() {
             @Override
             public void success(final Response response, final retrofit.client.Response response2) {
                 loadingFragment.dismiss();
+                editMode = false;
+                supportInvalidateOptionsMenu();
+                save();
             }
 
             @Override
@@ -140,6 +147,30 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                 loadingFragment.dismiss();
             }
         });
+    }
+
+    private boolean validate() {
+        if (TextUtils.isEmpty(activityHolder.nicknameText.getText())) {
+            MessageToast.makeText(this, "请设置用户名").show();
+            return false;
+        }
+        if (TextUtils.isEmpty(activityHolder.nameText.getText())) {
+            MessageToast.makeText(this, "请设置姓名").show();
+            return false;
+        }
+        if (TextUtils.isEmpty(activityHolder.birthdayText.getText())) {
+            MessageToast.makeText(this, "请设置出生年月").show();
+            return false;
+        }
+        if (TextUtils.isEmpty(activityHolder.identifyText.getText())) {
+            MessageToast.makeText(this, "请设置证件号码").show();
+            return false;
+        }
+        if (TextUtils.isEmpty(activityHolder.addressText.getText())) {
+            MessageToast.makeText(this, "请设置所在地").show();
+            return false;
+        }
+        return true;
     }
 
     private void edit() {
@@ -201,6 +232,9 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
     @Override
     public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
         String date = year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日";
+        userInfoParam.setBirthyear(String.valueOf(year));
+        userInfoParam.setBirthmonth(String.valueOf(monthOfYear + 1));
+        userInfoParam.setBirthday(String.valueOf(dayOfMonth));
         activityHolder.birthdayText.setText(date);
     }
 
@@ -224,6 +258,8 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
 
         public final ExtendedEditText addressText;
 
+        public final RadioButton radioTypeMale;
+
         public InfoActivityHolder(Activity activity) {
             nicknameText = (ExtendedEditText) activity.findViewById(R.id.info_nickname);
             changePasswordText = (Button) activity.findViewById(R.id.info_password);
@@ -234,6 +270,7 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
             birthdayText = (TextView) activity.findViewById(R.id.info_birthday);
             identifyText = (ExtendedEditText) activity.findViewById(R.id.info_id);
             addressText = (ExtendedEditText) activity.findViewById(R.id.info_address);
+            radioTypeMale = (RadioButton) activity.findViewById(R.id.radioTypeMale);
         }
     }
 }

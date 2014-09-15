@@ -1,38 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="车辆外观"
-            android:textColor="#FFFFFF"
-            android:background="#69C4C4C4"
-            android:paddingTop="10dip"
-            android:paddingBottom="6dip"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="6dip"
-            android:singleLine="true"
-            android:text="为了让你的车辆更好的让买家了解车况，请参考示例上传图片"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="6dip"
-            android:paddingRight="6dip"
-            android:text="请点击相应的位置图片按照要求上传至少4张（最多不超过6张）对应的车源图片，推荐上传640*360图片获取最佳显示，大小不超过来M。"
-            android:textColor="#555555"/>
     <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dip"
-            android:layout_marginRight="1dp">
+            android:orientation="vertical">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="车辆外观"
+                android:textColor="#FFFFFF"
+                android:background="#69C4C4C4"
+                android:paddingTop="10dip"
+                android:paddingBottom="6dip"
+                android:paddingLeft="6dip"
+                android:paddingRight="6dip"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dip"
+                android:singleLine="true"
+                android:text="为了让你的车辆更好的让买家了解车况，请参考示例上传图片"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="6dip"
+                android:paddingRight="6dip"
+                android:text="请点击相应的位置图片按照要求上传至少4张（最多不超过6张）对应的车源图片，推荐上传640*360图片获取最佳显示，大小不超过来M。"
+                android:textColor="#555555"/>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="128dip"
@@ -108,52 +105,44 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/tips_upload"/>
         </LinearLayout>
-    </LinearLayout>
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="6dip"
-            android:background="#416EC1"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="添加更多图片"
-            android:textColor="#FFFFFF"/>
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="128dip"
-            android:orientation="horizontal">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:layout_marginTop="6dip"
+                android:background="#416EC1"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="车辆内饰"
+                android:textColor="#FFFFFF"/>
         <ImageView
                 android:id="@+id/car_info_other_photo_1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="128dip"
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"/>
         <View
                 android:layout_width="1dip"
-                android:layout_height="wrap_content"/>
+                android:layout_height="1dip"/>
         <ImageView
                 android:id="@+id/car_info_other_photo_2"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="128dip"
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
         <View
                 android:layout_width="1dip"
                 android:layout_height="1dip"/>
         <ImageView
                 android:id="@+id/car_info_other_photo_3"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="128dip"
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

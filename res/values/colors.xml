@@ -9,4 +9,11 @@
     <color name="button_stroke_color">#4D8E25</color>
     <color name="button_start_color">#78b153</color>
     <color name="button_end_color">#689948</color>
+
+    <!-- drop down list header font color -->
+    <color name="drop_down_list_header_font_color">#000000</color>
+    <!-- drop down list header second font color -->
+    <color name="drop_down_list_header_second_font_color">#000000</color>
+    <!-- drop down list footer font color -->
+    <color name="drop_down_list_footer_font_color">#000000</color>
 </resources>

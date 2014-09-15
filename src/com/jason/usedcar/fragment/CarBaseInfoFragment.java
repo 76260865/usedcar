@@ -13,11 +13,21 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.jason.usedcar.Action;
-import com.jason.usedcar.R;
+import com.jason.usedcar.*;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.presenter.Presenter;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
+import com.jason.usedcar.request.ImageUploadRequest;
+import com.jason.usedcar.response.UploadImageResponse;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.observables.AndroidObservable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * @author t77yq @2014-07-13.
@@ -48,7 +58,7 @@ public class CarBaseInfoFragment extends BaseFragment implements Ui, OnClickList
 
     private ImageView otherPhotoImage3;
 
-    private Bitmap[] carBaseArray = new Bitmap[6];
+    private int[] imageIds = new int[6];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,22 +66,26 @@ public class CarBaseInfoFragment extends BaseFragment implements Ui, OnClickList
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        frontPhotoImage = getView(view, R.id.car_info_front_photo);
+        frontPhotoImage.setOnClickListener(this);
+        leftPhotoImage = getView(view, R.id.car_info_left_photo);
+        leftPhotoImage.setOnClickListener(this);
+        rightPhotoImage = getView(view, R.id.car_info_right_photo);
+        rightPhotoImage.setOnClickListener(this);
+        otherPhotoImage1 = getView(view, R.id.car_info_other_photo_1);
+        otherPhotoImage1.setOnClickListener(this);
+        otherPhotoImage2 = getView(view, R.id.car_info_other_photo_2);
+        otherPhotoImage2.setOnClickListener(this);
+        otherPhotoImage3 = getView(view, R.id.car_info_other_photo_3);
+        otherPhotoImage3.setOnClickListener(this);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-            View view = getView();
-            frontPhotoImage = getView(view, R.id.car_info_front_photo);
-            frontPhotoImage.setOnClickListener(this);
-            leftPhotoImage = getView(view, R.id.car_info_left_photo);
-            leftPhotoImage.setOnClickListener(this);
-            rightPhotoImage = getView(view, R.id.car_info_right_photo);
-            rightPhotoImage.setOnClickListener(this);
-            otherPhotoImage1 = getView(view, R.id.car_info_other_photo_1);
-            otherPhotoImage1.setOnClickListener(this);
-            otherPhotoImage2 = getView(view, R.id.car_info_other_photo_2);
-            otherPhotoImage2.setOnClickListener(this);
-            otherPhotoImage3 = getView(view, R.id.car_info_other_photo_3);
-            otherPhotoImage3.setOnClickListener(this);
     }
 
     @Override
@@ -81,30 +95,24 @@ public class CarBaseInfoFragment extends BaseFragment implements Ui, OnClickList
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             switch (requestCode) {
                 case FRONT_PHOTO:
-                    carBaseArray[0] = bitmap;
-                    frontPhotoImage.setImageBitmap(bitmap);
+                    uploadImage(FRONT_PHOTO, frontPhotoImage, bitmap);
                     break;
                 case LEFT_PHOTO:
-                    carBaseArray[1] = bitmap;
-                    leftPhotoImage.setImageBitmap(bitmap);
+                    uploadImage(LEFT_PHOTO, leftPhotoImage, bitmap);
                     break;
                 case RIGHT_PHOTO:
-                    carBaseArray[2] = bitmap;
-                    rightPhotoImage.setImageBitmap(bitmap);
+                    uploadImage(RIGHT_PHOTO, rightPhotoImage, bitmap);
                     break;
                 case OTHER_PHOTO_1:
-                    carBaseArray[3] = bitmap;
-                    otherPhotoImage1.setImageBitmap(bitmap);
                     otherPhotoImage2.setVisibility(View.VISIBLE);
+                    uploadImage(OTHER_PHOTO_1, otherPhotoImage1, bitmap);
                     break;
                 case OTHER_PHOTO_2:
-                    carBaseArray[4] = bitmap;
-                    otherPhotoImage2.setImageBitmap(bitmap);
                     otherPhotoImage3.setVisibility(View.VISIBLE);
+                    uploadImage(OTHER_PHOTO_2, otherPhotoImage2, bitmap);
                     break;
                 case OTHER_PHOTO_3:
-                    carBaseArray[5] = bitmap;
-                    otherPhotoImage3.setImageBitmap(bitmap);
+                    uploadImage(OTHER_PHOTO_3, otherPhotoImage3, bitmap);
                     break;
             }
         }
@@ -121,19 +129,23 @@ public class CarBaseInfoFragment extends BaseFragment implements Ui, OnClickList
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_next:
-                if (carBaseArray[0] == null) {
+                if (imageIds[0] == 0) {
                     Toast.makeText(getActivity(), "请上传正面图片", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                if (carBaseArray[1] == null) {
+                if (imageIds[1] == 0) {
                     Toast.makeText(getActivity(), "请上传左前45度图片", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                if (carBaseArray[2] == null) {
+                if (imageIds[2] == 0) {
                     Toast.makeText(getActivity(), "请上传右前45度图片", Toast.LENGTH_SHORT).show();
                     return true;
                 }
-                ((Action) getActivity()).action(this, carBaseArray);
+                if (imageIds[3] == 0) {
+                    Toast.makeText(getActivity(), "请上传一张内饰照片", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                ((Action) getActivity()).action(this, imageIds);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -175,5 +187,72 @@ public class CarBaseInfoFragment extends BaseFragment implements Ui, OnClickList
         if (requestCode != 0) {
             startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), requestCode);
         }
+    }
+
+    private void uploadImage(final int index, final ImageView imageView, final Bitmap bitmap) {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("上传...");
+        loadingFragment.show(getFragmentManager());
+        AndroidObservable
+                .bindFragment(this, Observable
+                        .from(bitmap)
+                        .map(new Func1<Bitmap, byte[]>() {
+                            @Override
+                            public byte[] call(final Bitmap bitmap) {
+                                if (bitmap == null) {
+                                    return null;
+                                }
+                                final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                                return stream.toByteArray();
+                            }
+                        })
+                        .subscribeOn(Schedulers.newThread()))
+                .subscribe(new Subscriber<byte[]>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(final Throwable e) {
+                        loadingFragment.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(final byte[] bytes) {
+                        if (bytes == null) {
+                            onError(null);
+                            return;
+                        }
+                        final ImageUploadRequest uploadImageRequest = new ImageUploadRequest();
+                        uploadImageRequest.setAccessToken(Application.sampleAccessToken);
+                        uploadImageRequest.setImage(bytes);
+                        new RestClient().uploadImage(uploadImageRequest, new SimpleCallbackImpl2<UploadImageResponse>(CarBaseInfoFragment.this) {
+                            @Override
+                            protected void onSuccess(UploadImageResponse uploadImageResponse, Response response) {
+                                loadingFragment.dismiss();
+                                if (uploadImageResponse.isExecutionResult()) {
+                                    imageView.setImageBitmap(bitmap);
+                                    imageIds[index - 1] = uploadImageResponse.getImageId();
+                                }
+                            }
+
+                            @Override
+                            protected void onFailure(RetrofitError error) {
+                                loadingFragment.dismiss();
+                                MessageToast.makeText(getActivity(), "图片上传不成功，请重试").show();
+                            }
+
+                            @Override
+                            protected void onAuthorized() {new RestClient().uploadImage(uploadImageRequest, this);
+                            }
+
+                            @Override
+                            protected void onUnauthorized() {
+                                MessageToast.makeText(getActivity(), "会话过期，请重新登录").show();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                            }
+                        });
+                    }
+                });
     }
 }

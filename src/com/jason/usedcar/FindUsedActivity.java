@@ -235,7 +235,7 @@ public class FindUsedActivity extends FragmentActivity implements
 	public void onBrandChoosed(BrandFilterEntity brand) {
 		Log.d(TAG, "brandId: " + brand.getName());
 		mBrand = brand;
-		mTxtBrand.setText("品牌:" + mBrand.getName());
+		mTxtBrand.setText(mBrand.getName());
 		mBrandsChooseFragment.dismiss();
 
 	}
@@ -244,7 +244,7 @@ public class FindUsedActivity extends FragmentActivity implements
 	public void onPriceChoosed(FilterEntity filter) {
 		Log.d(TAG, "selected price : " + filter.getName());
 		selectedPrice = filter;
-		mTxtPrice.setText("价格:" + filter.getName());
+		mTxtPrice.setText(filter.getName());
 		mPriceChooseFragment.dismiss();
 	}
 
@@ -252,7 +252,7 @@ public class FindUsedActivity extends FragmentActivity implements
 	public void onCarMilesSelected(FilterEntity filter) {
 		Log.d(TAG, "selected omerter : " + filter.getName());
 		selectedCarMile = filter;
-		mTxtMiles.setText("里程:" + filter.getName());
+		mTxtMiles.setText(filter.getName());
 		mCarMilesChooseFragment.dismiss();
 	}
 
@@ -260,7 +260,7 @@ public class FindUsedActivity extends FragmentActivity implements
 	public void onCarAgeChoosed(FilterEntity filter) {
 		Log.d(TAG, "selected car age : " + filter.getName());
 		selectedCarAge = filter;
-		mTxtAge.setText("车龄:" + filter.getName());
+		mTxtAge.setText(filter.getName());
 		mCarAgeChooseFragment.dismiss();
 	}
 

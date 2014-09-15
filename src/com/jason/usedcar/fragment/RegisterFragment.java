@@ -162,10 +162,10 @@ public class RegisterFragment extends
         String password = String.valueOf(editPassword.getText());
         String confirmPassword = String.valueOf(editConfirmPassword.getText());
         String verifyCode = String.valueOf(editVerifyCode.getText());
-        if (!verifyCode.equals(this.verifyCode)) {
-            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
-            return;
-        }
+//        if (!verifyCode.equals(this.verifyCode)) {
+//            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
+//            return;
+//        }
         RegisterRequest param = new RegisterRequest();
         param.setPhone(account);
         param.setPassword(password);

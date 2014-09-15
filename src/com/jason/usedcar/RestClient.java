@@ -7,41 +7,9 @@ import com.jason.usedcar.model.data.City;
 import com.jason.usedcar.model.data.County;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
-import com.jason.usedcar.request.CarRequest;
-import com.jason.usedcar.request.CityRequest;
-import com.jason.usedcar.request.CountyRequest;
-import com.jason.usedcar.request.FavoriteCarRequest;
-import com.jason.usedcar.request.ForgetPasswordRequest;
-import com.jason.usedcar.request.ImageUploadRequest;
-import com.jason.usedcar.request.LoginRequest;
-import com.jason.usedcar.request.ModelRequest;
-import com.jason.usedcar.request.ObtainCodeRequest;
-import com.jason.usedcar.request.PagedRequest;
-import com.jason.usedcar.request.PhoneRequest;
-import com.jason.usedcar.request.PublishUsedCarRequest;
-import com.jason.usedcar.request.RegisterRequest;
-import com.jason.usedcar.request.RegisterResellerRequest;
-import com.jason.usedcar.request.Request;
-import com.jason.usedcar.request.ResetPasswordByPhoneRequest;
-import com.jason.usedcar.request.SeriesRequest;
-import com.jason.usedcar.request.ShoppingCarOperationRequest;
-import com.jason.usedcar.request.SuggestionRequest;
-import com.jason.usedcar.request.TokenGenerateRequest;
-import com.jason.usedcar.request.UpdatePasswordRequest;
-import com.jason.usedcar.request.Upgrade2Request;
-import com.jason.usedcar.request.UpgradeRequest;
-import com.jason.usedcar.request.UserInfoRequest;
-import com.jason.usedcar.response.CarListResponse;
-import com.jason.usedcar.response.CarResponse;
-import com.jason.usedcar.response.LoginResponse;
-import com.jason.usedcar.response.ObtainCodeResponse;
-import com.jason.usedcar.response.PasswordResponse;
-import com.jason.usedcar.response.Response;
-import com.jason.usedcar.response.TokenGenerateResponse;
-import com.jason.usedcar.response.Upgrade2Response;
-import com.jason.usedcar.response.UpgradeResponse;
-import com.jason.usedcar.response.UploadImageResponse;
-import com.jason.usedcar.response.UserInfoResponse;
+import com.jason.usedcar.request.*;
+import com.jason.usedcar.response.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -143,7 +111,7 @@ public class RestClient {
 
     interface IRegisterReseller {
         @FormUrlEncoded
-        @POST("/reselleSignon")
+        @POST("/resellerSignon")
         void registerReseller(
                 @Field("phone") String phone,
                 @Field("phoneVerifyCode") String phoneVerifyCode,
@@ -234,13 +202,13 @@ public class RestClient {
     }
 
     interface IUsedCarFavorite {
-        @FormUrlEncoded
-        @GET("/product/UsedCarFavority")
+        @Multipart
+        @POST("/product/UsedCarFavority.json")
         void usedCarFavorite(
-                @Field("productId") String productId,
-                @Field("favority") boolean favorite,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("productId") String productId,
+                @Part("favority") boolean favorite,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
@@ -251,13 +219,13 @@ public class RestClient {
     }
 
     interface IShoppingCarOperation {
-        @FormUrlEncoded
-        @GET("/product/ShoppingCarOperation")
+        @Multipart
+        @POST("/product/ShoppingCarOperation.json")
         void shoppingCarOperation(
-                @Field("productId") String productId,
-                @Field("addShoppingCar") boolean addShoppingCar,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("productId") String productId,
+                @Part("addShoppingCar") boolean addShoppingCar,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
@@ -387,7 +355,7 @@ public class RestClient {
                         request.getDeviceId());
     }
 
-    public void uploadImage(ImageUploadRequest request, Callback<UploadImageResponse> callback) {
+    public void uploadImage(ImageUploadRequest request, SimpleCallbackImpl2<UploadImageResponse> callback) {
         TypedByteArray image = new TypedByteArray("image/png", request.getImage()) {
             @Override
             public String fileName() {
@@ -506,29 +474,29 @@ public class RestClient {
     }
 
     interface IUpdateUserInfo {
-        @FormUrlEncoded
+        @Multipart
         @POST("/account/updateUserInfo")
         void updateUserInfo(
-                @Field("nickname") String nickname,
-                @Field("realName") String realName,
-                @Field("sex") boolean sex,
-                @Field("birthyear") String birthYear,
-                @Field("birthmonth") String birthMonth,
-                @Field("birthday") String birthDay,
-                @Field("certificateNumber") String certificateNumber,
-                @Field("province") String province,
-                @Field("city") String city,
-                @Field("county") String county,
-                @Field("street") String street,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("nickname") String nickname,
+                @Part("realName") String realName,
+                @Part("sex") boolean sex,
+                @Part("birthyear") String birthYear,
+                @Part("birthmonth") String birthMonth,
+                @Part("birthday") String birthDay,
+                @Part("certificateNumber") String certificateNumber,
+                @Part("province") String province,
+                @Part("city") String city,
+                @Part("county") String county,
+                @Part("street") String street,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
     public void updateUserInfo(UserInfoRequest request, Callback<Response> callback) {
         createService("updateUserInfo", POOL, IUpdateUserInfo.class)
-                .updateUserInfo(request.getNickname(), request.getRealName(), request.isSex(),
-                        request.getBirthYear(), request.getBirthMonth(), request.getBirthDay(),
+                .updateUserInfo(request.getNickname(), request.getRealName(), request.getSex(),
+                        request.getBirthyear(), request.getBirthmonth(), request.getBirthday(),
                         request.getCertificateNumber(), request.getProvince(), request.getCity(),
                         request.getCounty(), request.getStreet(),
                         request.getAccessToken(), request.getDeviceId(), callback);
@@ -568,14 +536,14 @@ public class RestClient {
     }
 
     interface IUpdatePassword {
-        @FormUrlEncoded
-        @GET("/account/updatePassword")
+        @Multipart
+        @POST("/account/updatePassword.json")
         void updatePassword(
-                @Field("oldPWD") String oldPassword,
-                @Field("newPWD") String newPassword,
-                @Field("confirmPWD") String confirmPassword,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("oldPWD") String oldPassword,
+                @Part("newPWD") String newPassword,
+                @Part("confirmPWD") String confirmPassword,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
@@ -603,13 +571,13 @@ public class RestClient {
     }
 
     interface IBindNewPhone {
-        @FormUrlEncoded
-        @POST("/account/bindNewPhone")
+        @Multipart
+        @POST("/account/bindNewPhone.json")
         void bindNewPhone(
-                @Field("phoneNumber") String phoneNumber,
-                @Field("code") String verifyCode,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("phoneNumber") String phoneNumber,
+                @Part("code") String verifyCode,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
@@ -746,5 +714,126 @@ public class RestClient {
     public void generateAccessToken(TokenGenerateRequest request, Callback<TokenGenerateResponse> callback) {
         createService("generateAccessToken", POOL, IGenerateAccessToken.class)
                 .generateAccessToken(request.getUserId(), request.getAccessToken(), callback);
+    }
+
+    interface ISearchFilter {
+        @FormUrlEncoded
+        @POST("/searchFilter.json")
+        void searchFilter(Callback<String> s);
+    }
+
+    interface ISearchProductList {
+        @Multipart
+        @POST("/searchProductList.json")
+        void searchProduct(@Part("queryString") String queryString,
+                           @Part("pageSize") int pageSize,
+                           @Part("startPage") int startPage,
+                           @Part("orderBy") String orderBy,
+                           @Part("facetSelections") String facetSelections,
+                           Callback<SearchProductResponse> callback);
+    }
+
+    public void searchProduct(SearchProductRequest request, Callback<SearchProductResponse> callback) {
+        createService("searchProduct", POOL, ISearchProductList.class)
+                .searchProduct(request.getQueryString(),
+                        request.getPageSize(), request.getStartPage(),
+                        request.getOrderBy(), request.getFacetSelections(), callback);
+    }
+
+    interface IAddToFavorite {
+        @Multipart
+        @POST("/account/addToFavorite.json")
+        public void addToFavorite(@Part("productId") String productId,
+                                  @Part("accessToken") String accessToken,
+                                  @Part("deviceId") String deviceId,
+                                  Callback<Response> callback);
+    }
+
+    public void addToFavorite(String productId,
+                              String accessToken,
+                              String deviceId,
+                              Callback<Response> callback) {
+        createService("addToFavorite", POOL, IAddToFavorite.class)
+                .addToFavorite(productId, accessToken, deviceId, callback);
+    }
+
+    interface IDeleteFavorite {
+        @Multipart
+        @POST("/account/deleteFavoriteItem.json")
+        public void deleteFavorite(@Part("productId") String productId,
+                                   @Part("accessToken") String accessToken,
+                                   @Part("deviceId") String deviceId,
+                                   Callback<Response> callback);
+    }
+
+    public void deleteFavorite(String productId,
+                               String accessToken,
+                               String deviceId,
+                               Callback<Response> callback) {
+        createService("deleteFavorite", POOL, IDeleteFavorite.class)
+                .deleteFavorite(productId, accessToken, deviceId, callback);
+    }
+
+    interface ICart {
+        @Multipart
+        @POST("/account/cart.json")
+        public void cart(@Part("accessToken") String accessToken,
+                         @Part("deviceId") String deviceId,
+                         Callback<CartResponse> callback);
+    }
+
+    public void cart(String accessToken,
+                     String deviceId,
+                     Callback<CartResponse> callback) {
+        createService("cart", POOL, ICart.class)
+                .cart(accessToken, deviceId, callback);
+    }
+
+    interface IAddToCart {
+        @Multipart
+        @POST("/account/addToCart.json")
+        public void addToCart(@Part("productId") String productId,
+                              @Part("accessToken") String accessToken,
+                              @Part("deviceId") String deviceId,
+                              Callback<Response> callback);
+    }
+
+    public void addToCart(String productId,
+                          String accessToken,
+                          String deviceId,
+                          Callback<Response> callback) {
+        createService("addToCart", POOL, IAddToCart.class)
+                .addToCart(productId, accessToken, deviceId, callback);
+    }
+
+    interface IDeleteCartItem {
+        @Multipart
+        @POST("/account/deleteCartItem.json")
+        public void deleteCartItem(@Part("productId") String productId,
+                                   @Part("accessToken") String accessToken,
+                                   @Part("deviceId") String deviceId,
+                                   Callback<Response> callback);
+    }
+
+    public void deleteCartItem(String productId,
+                               String accessToken,
+                               String deviceId,
+                               Callback<Response> callback) {
+        createService("deleteCartItem", POOL, IDeleteCartItem.class)
+                .deleteCartItem(productId, accessToken, deviceId, callback);
+    }
+
+    interface ICarUnderSale {
+        @Multipart
+        @POST("/product/getSellableUsedCarsByAccountId.json")
+        public void getSellingCar(@Part("accessToken") String accessToken,
+                                  @Part("deviceId") String deviceId,
+                                  Callback<SellingCarResponse> callback);
+    }
+
+    public void getSellingCar(Request request,
+                              Callback<SellingCarResponse> callback) {
+        createService("getSellingCar", POOL, ICarUnderSale.class)
+                .getSellingCar(request.getAccessToken(), request.getDeviceId(), callback);
     }
 }
