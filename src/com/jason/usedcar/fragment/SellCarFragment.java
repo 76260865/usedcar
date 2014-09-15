@@ -1,5 +1,7 @@
 package com.jason.usedcar.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,15 +10,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import com.jason.usedcar.Application;
+import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
 import com.jason.usedcar.RestClient;
 import com.jason.usedcar.adapter.SellCarAdapter;
 import com.jason.usedcar.fragment.BaseFragment;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.model.SaleCarModel;
+import com.jason.usedcar.model.SaleCarModel2;
 import com.jason.usedcar.model.UsedCar;
+import com.jason.usedcar.model.data.Product;
 import com.jason.usedcar.request.PublishUsedCarRequest;
 import com.jason.usedcar.presenter.SellCarFragmentPresenter;
+import com.jason.usedcar.request.Request;
+import com.jason.usedcar.response.SellingCarResponse;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +38,7 @@ import java.util.List;
 public class SellCarFragment extends BaseFragment<SellCarFragmentPresenter, Ui> {
 
 
-    private SaleCarModel saleCarModel = new SaleCarModel();
+    private SaleCarModel2 saleCarModel = new SaleCarModel2();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,16 +58,26 @@ public class SellCarFragment extends BaseFragment<SellCarFragmentPresenter, Ui> 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.sell_car_text);
-        List<UsedCar> data = new ArrayList<UsedCar>(20);
-        for (int i = 0; i < 20; i++) {
-            UsedCar param = new UsedCar();
-            param.setListPrice(1000 + i);
-            param.setOdometer(2032 + 10 * i);
-            param.setPurchaseDate(String.valueOf(System.currentTimeMillis()));
-            data.add(param);
+        if (Application.fromActivity(getActivity()).getAccessToken() == null) {
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class), 10);
+            return;
         }
-        saleCarModel.setData(data);
-        saleCarModel.notifyDataSetInvalidated();
+        Request request = new Request();
+        request.setAccessToken(Application.fromActivity(getActivity()).getAccessToken());
+        new RestClient().getSellingCar(request, new Callback<SellingCarResponse>() {
+            @Override
+            public void success(SellingCarResponse sellingCarResponse, Response response) {
+                if (sellingCarResponse != null && sellingCarResponse.isExecutionResult()) {
+                    saleCarModel.setData(sellingCarResponse.getUsedCars());
+                    saleCarModel.notifyDataSetInvalidated();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+
+            }
+        });
     }
 
     @Override
@@ -76,6 +98,33 @@ public class SellCarFragment extends BaseFragment<SellCarFragmentPresenter, Ui> 
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case 10:
+                    Request request = new Request();
+                    request.setAccessToken(Application.fromActivity(getActivity()).getAccessToken());
+                    new RestClient().getSellingCar(request, new Callback<SellingCarResponse>() {
+                        @Override
+                        public void success(SellingCarResponse sellingCarResponse, Response response) {
+                            if (sellingCarResponse != null && sellingCarResponse.isExecutionResult()) {
+                                saleCarModel.setData(sellingCarResponse.getUsedCars());
+                                saleCarModel.notifyDataSetInvalidated();
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError retrofitError) {
+
+                        }
+                    });
+                    break;
+            }
+        }
     }
 
     @Override

@@ -14,10 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.DatePicker;
 import com.activeandroid.query.Select;
-import com.jason.usedcar.Action;
-import com.jason.usedcar.CarPickerActivity;
-import com.jason.usedcar.DealPlaceActivity;
-import com.jason.usedcar.R;
+import com.jason.usedcar.*;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.model.data.Brand;
 import com.jason.usedcar.model.data.CarModel;
@@ -49,21 +46,21 @@ public class CompleteCarInfoFragment extends BaseFragment implements Ui, DatePic
     @Required(order = 30, messageResId = R.string.err_car_info_car_type)
     private TextView carType;
 
-    @Required(order = 30, messageResId = R.string.err_car_info_time_bought)
+    @Required(order = 40, messageResId = R.string.err_car_info_time_bought)
     private TextView boughtTime;
 
-    @Required(order = 40, messageResId = R.string.err_car_info_distance)
+    @Required(order = 50, messageResId = R.string.err_car_info_distance)
     private TextView distance;
 
-    @Required(order = 50, messageResId = R.string.err_car_info_price)
+    @Required(order = 60, messageResId = R.string.err_car_info_price)
     private TextView price;
+
+    @Required(order = 70, messageResId = R.string.err_car_info_vin)
+    private TextView vin;
 
     private CheckBox fixedPrice;
 
     private CheckBox payType;
-
-    @Required(order = 60, messageResId = R.string.err_car_info_vin)
-    private TextView vin;
 
     private PublishUsedCarRequest publishUsedCarRequest = new PublishUsedCarRequest();
 
@@ -161,6 +158,10 @@ public class CompleteCarInfoFragment extends BaseFragment implements Ui, DatePic
 
     @Override
     public void onValidationSucceeded() {
+        if (String.valueOf(vin.getText()).length() != 17) {
+            MessageToast.makeText(getActivity(), "VIN号不正确").show();
+            return;
+        }
         publishUsedCarRequest.setStreet(String.valueOf(street.getText()));
         publishUsedCarRequest.setCarVin(String.valueOf(vin.getText()));
         publishUsedCarRequest.setPriceType(fixedPrice.isChecked() ? 0 : 1);
@@ -175,19 +176,13 @@ public class CompleteCarInfoFragment extends BaseFragment implements Ui, DatePic
     public void onValidationFailed(View view, Rule rule) {
         switch (view.getId()) {
             case R.id.car_info_address:
-                // walk through
             case R.id.car_info_street:
-                // walk through
             case R.id.car_info_type:
-                // walk through
             case R.id.car_info_time_bought:
-                // walk through
             case R.id.car_info_distance:
-                // walk through
             case R.id.car_info_price:
-                // walk through
             case R.id.car_info_vin:
-                Toast.makeText(getActivity(), rule.getFailureMessage(), Toast.LENGTH_SHORT).show();
+                MessageToast.makeText(getActivity(), rule.getFailureMessage()).show();
                 break;
         }
     }
@@ -204,8 +199,7 @@ public class CompleteCarInfoFragment extends BaseFragment implements Ui, DatePic
 
     @Override
     public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
-        String date = year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日";
-        boughtTime.setText(date);
-        publishUsedCarRequest.setPurchaseDate(year + "-" + (monthOfYear+1));
+        boughtTime.setText(String.format("%d年%02d月", year, monthOfYear + 1));
+        publishUsedCarRequest.setPurchaseDate(String.format("%d-%02d", year, monthOfYear + 1));
     }
 }

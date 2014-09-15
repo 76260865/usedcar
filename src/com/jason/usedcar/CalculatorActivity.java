@@ -38,8 +38,8 @@ public class CalculatorActivity extends BaseActivity
         rentText = getView(R.id.textRent);
         monthlyPayText = getView(R.id.textMonthlyPay);
         dailyPayText = getView(R.id.textDailyPay);
-        float carPrice = getIntent().getFloatExtra("car_price", 0f);
-        if (carPrice != 0f) {
+        double carPrice = getIntent().getDoubleExtra("car_price", 0);
+        if (carPrice != 0) {
             priceEdit.setText(String.valueOf(carPrice));
         }
     }

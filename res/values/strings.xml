@@ -56,10 +56,10 @@
     <string name="notice_obtain_code_multiple">请不要重复获取短信验证码</string>
 
     <string name="sale_car_name">商品名称: %1$s</string>
-    <string name="sale_car_pre_sale_price">预售价格: %1$.2f万</string>
-    <string name="sale_car_mileage">行驶里程: %1$.2f万公里</string>
+    <string name="sale_car_pre_sale_price">预售价格: %1$s</string>
+    <string name="sale_car_mileage">行驶里程: %1$s</string>
     <string name="sale_car_buy_time">首次购买时间: %1$s</string>
-    <string name="sale_car_filter">筛选</string>
+    <string name="sale_car_filter">搜索</string>
     <!-- Change password -->
     <string name="change_password_bind_phone">绑定手机:  %1$s</string>
 
@@ -76,4 +76,12 @@
     <string name="history_order_state">订单状态: %1$s</string>
     <string name="version">检查更新  当前版本号:%s</string>
     <string name="txt_brands">品牌:</string>
+
+    <string name="drop_down_list_header_default_text">Click to refresh&#8230;</string>
+    <string name="drop_down_list_header_pull_text">Drop Down to refresh&#8230;</string>
+    <string name="drop_down_list_header_release_text">Release to refresh&#8230;</string>
+    <string name="drop_down_list_header_loading_text">Loading&#8230;</string>
+    <string name="drop_down_list_footer_default_text">More</string>
+    <string name="drop_down_list_footer_loading_text">Loading&#8230;</string>
+    <string name="drop_down_list_footer_no_more_text">No More</string>
 </resources>

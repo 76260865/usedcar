@@ -14,6 +14,7 @@ import com.jason.usedcar.adapter.holder.ViewHolder;
 import com.jason.usedcar.model.ShoppingCar;
 import com.jason.usedcar.model.ShoppingCarModel;
 import com.jason.usedcar.model.UsedCar;
+import com.jason.usedcar.model.data.Product;
 
 /**
  * @author t77yq @14-6-28.
@@ -48,7 +49,7 @@ public class ShoppingCarAdapter extends BaseAdapter {
     }
 
     @Override
-    public UsedCar getItem(int position) {
+    public Product getItem(int position) {
         return getCount() == 0 ? null : model.get(position);
     }
 
@@ -67,15 +68,15 @@ public class ShoppingCarAdapter extends BaseAdapter {
             holder = new ShoppingCarViewHolder(convertView);
             convertView.setTag(holder);
         }
-        UsedCar data = getItem(position);
+        Product data = getItem(position);
         if (data != null) {
             //holder.imageView.setImageResource();
             holder.historyCarInfoText.setText(activity.getString(R.string.history_car_info,
-                data.getListPrice(), data.getOdometer(), data.getPurchaseDate()));
-            holder.orderNumberText.setText(activity.getString(R.string.history_order_number, data.getListPrice()));
+                data.getPrice(), data.getOdometer(), data.getPurchaseDate()));
+            holder.orderNumberText.setText(activity.getString(R.string.history_order_number, data.getPrice()));
             holder.orderPayTimeText.setText(activity.getString(R.string.history_order_pay_time, data.getPurchaseDate()));
-            holder.orderPriceText.setText(activity.getString(R.string.history_order_price, data.getListPrice()));
-            holder.orderStateText.setText(activity.getString(R.string.history_order_state, data.getPriceType()));
+            holder.orderPriceText.setText(activity.getString(R.string.history_order_price, data.getPrice()));
+            holder.orderStateText.setText(activity.getString(R.string.history_order_state, data.getPrice()));
             if (holder.orderAction.getText().equals("未付款")) {
                 holder.orderAction.setOnClickListener(new OnClickListener() {
                     @Override

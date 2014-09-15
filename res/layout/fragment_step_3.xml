@@ -26,16 +26,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="请上传车辆登记证图片"/>
-            <ImageView
-                    android:id="@+id/car_info_id_photo"
-                    android:layout_width="128dip"
-                    android:layout_height="128dip"
-                    android:layout_weight="1"
-                    android:layout_marginTop="6dip"
-                    android:layout_gravity="center"
-                    android:background="#69C4C4C4"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/tips_upload"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <ImageView
+                        android:id="@+id/car_info_id_photo"
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_weight="1"
+                        android:layout_margin="6dip"
+                        android:layout_gravity="center"
+                        android:background="#69C4C4C4"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/tips_upload"/>
+                <ImageView
+                        android:id="@+id/car_info_id_photo2"
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_weight="1"
+                        android:layout_margin="6dip"
+                        android:layout_gravity="center"
+                        android:background="#69C4C4C4"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/tips_upload"/>
+            </LinearLayout>
         </LinearLayout>
         <View
                 style="@style/Divider.Horizontal"/>
@@ -69,16 +83,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="如果是已经经过认证的二手车，请上传认证证书图片"/>
-            <ImageView
-                    android:id="@+id/car_info_id_photo2"
-                    android:layout_width="128dip"
-                    android:layout_height="128dip"
-                    android:layout_weight="1"
-                    android:layout_marginTop="6dip"
-                    android:layout_gravity="center"
-                    android:background="#69C4C4C4"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/tips_upload"/>
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <ImageView
+                        android:id="@+id/car_info_id_photo3"
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_weight="1"
+                        android:layout_margin="6dip"
+                        android:layout_gravity="center"
+                        android:background="#69C4C4C4"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/tips_upload"/>
+                <ImageView
+                        android:id="@+id/car_info_id_photo4"
+                        android:layout_width="128dip"
+                        android:layout_height="128dip"
+                        android:layout_weight="1"
+                        android:layout_margin="6dip"
+                        android:layout_gravity="center"
+                        android:background="#69C4C4C4"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/tips_upload"/>
+            </LinearLayout>
             <CheckBox
                     android:id="@+id/car_info_agreement_check"
                     android:layout_width="wrap_content"

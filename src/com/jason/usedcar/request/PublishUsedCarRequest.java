@@ -1,7 +1,6 @@
 package com.jason.usedcar.request;
 
 public class PublishUsedCarRequest extends Request {
-
     private Integer modelId;
     private Integer seriesId;
     private Integer brandId;

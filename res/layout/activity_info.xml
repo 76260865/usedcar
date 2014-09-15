@@ -49,11 +49,10 @@
                 support:border_width="1dip"
                 support:border_color="#88000000"/>
         <com.jason.usedcar.view.ExtendedEditText
-                style="@style/Info.Item2"
+                style="@style/Info.Item"
                 android:id="@+id/info_nickname"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:background="@android:color/transparent"
                 android:enabled="false"
                 android:textColor="@color/notice_color"
                 ett:prefix="用户名:"

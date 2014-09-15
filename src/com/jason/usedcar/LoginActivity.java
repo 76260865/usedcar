@@ -8,12 +8,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.interfaces.IJobListener;
+import com.jason.usedcar.model.SaleCarModel;
 import com.jason.usedcar.request.LoginRequest;
+import com.jason.usedcar.request.PagedRequest;
+import com.jason.usedcar.request.TokenGenerateRequest;
+import com.jason.usedcar.response.CarListResponse;
 import com.jason.usedcar.response.LoginResponse;
+import com.jason.usedcar.response.TokenGenerateResponse;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import retrofit.*;
+import retrofit.client.Response;
 
 public class LoginActivity extends BaseActivity {
 
@@ -56,7 +62,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void login(String username, String password) {
+    private void login(final String username, final String password) {
         final LoginRequest request = new LoginRequest();
         request.setPhoneOrEmail(username);
         request.setPassword(password);
@@ -67,13 +73,30 @@ public class LoginActivity extends BaseActivity {
             public void success(final LoginResponse response, final retrofit.client.Response response2) {
                 loadingFragment.dismiss();
                 if (response != null && response.isExecutionResult()) {
+                    TokenGenerateRequest tokenGenerateRequest = new TokenGenerateRequest();
+                    tokenGenerateRequest.setUserId(String.valueOf(response.getUserId()));
+                    tokenGenerateRequest.setAccessToken(response.getAccessToken());
+                    new RestClient().generateAccessToken(tokenGenerateRequest, new Callback<TokenGenerateResponse>() {
+                        @Override
+                        public void success(final TokenGenerateResponse response, final Response response2) {
+                            Application.sampleAccessToken = response.getSampleAccessToken();
+                            Application.fromContext(getApplicationContext()).setAccessToken(response.getSampleAccessToken());
+                            if (mIJobListener != null) {
+                                mIJobListener.executionDone();
+                            }
+                            setResult(Activity.RESULT_OK);
+                            Application.fromContext(getApplicationContext()).username = username;
+                            Application.fromContext(getApplicationContext()).password = password;
+                            finish();
+                        }
+
+                        @Override
+                        public void failure(final RetrofitError error) {
+
+                        }
+                    });
                     Application.fromContext(getApplicationContext()).userId = response.getUserId();
-                    Application.fromContext(getApplicationContext()).setAccessToken(response.getAccessToken());
-                    if (mIJobListener != null) {
-                        mIJobListener.executionDone();
-                    }
-                    setResult(Activity.RESULT_OK);
-                    finish();
+//                    Application.fromContext(getApplicationContext()).setAccessToken(response.getAccessToken());
                 }
             }
 

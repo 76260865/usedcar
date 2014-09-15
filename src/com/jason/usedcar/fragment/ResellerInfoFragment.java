@@ -15,13 +15,22 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-import com.jason.usedcar.Action;
-import com.jason.usedcar.R;
+import com.jason.usedcar.*;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.interfaces.viewmodel.ViewModel;
 import com.jason.usedcar.presenter.Presenter;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
+import com.jason.usedcar.request.ImageUploadRequest;
 import com.jason.usedcar.request.PublishUsedCarRequest;
+import com.jason.usedcar.response.UploadImageResponse;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.observables.AndroidObservable;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * @author t77yq @2014-07-13.
@@ -32,19 +41,25 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
 
     private static final int ID_PHOTO2 = 2;
 
+    private static final int LICENSE_PHOTO = 3;
+
+    private static final int LICENSE_PHOTO2 = 4;
+
     private ImageView idPhotoImage;
 
     private ImageView idPhotoImage2;
 
+    private ImageView idPhotoImage3;
+
+    private ImageView idPhotoImage4;
+
     private CheckBox checkBox;
-
-    private Bitmap[] licenseImages = new Bitmap[2];
-
-    private Bitmap[] certificateImages = new Bitmap[2];
 
     private EditText contact;
 
     private EditText contactPhone;
+
+    private int[] imageIds = new int[4];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,8 +74,12 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
         idPhotoImage = getView(view, R.id.car_info_id_photo);
         idPhotoImage.setOnClickListener(this);
         idPhotoImage2 = getView(view, R.id.car_info_id_photo2);
-        checkBox = getView(view, R.id.car_info_agreement_check);
         idPhotoImage2.setOnClickListener(this);
+        idPhotoImage3 = getView(view, R.id.car_info_id_photo3);
+        idPhotoImage3.setOnClickListener(this);
+        idPhotoImage4 = getView(view, R.id.car_info_id_photo4);
+        idPhotoImage4.setOnClickListener(this);
+        checkBox = getView(view, R.id.car_info_agreement_check);
         contact = getView(view, R.id.carContact);
         contactPhone = getView(view, R.id.carContactPhone);
     }
@@ -71,12 +90,16 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case ID_PHOTO:
-                    certificateImages[0] = (Bitmap) data.getExtras().get("data");
-                    idPhotoImage.setImageBitmap(certificateImages[0]);
+                    uploadImage(ID_PHOTO, idPhotoImage, (Bitmap) data.getExtras().get("data"));
                     break;
                 case ID_PHOTO2:
-                    certificateImages[1] = (Bitmap)data.getExtras().get("data");
-                    idPhotoImage2.setImageBitmap(certificateImages[1]);
+                    uploadImage(ID_PHOTO2, idPhotoImage2, (Bitmap) data.getExtras().get("data"));
+                    break;
+                case LICENSE_PHOTO:
+                    uploadImage(LICENSE_PHOTO, idPhotoImage3, (Bitmap) data.getExtras().get("data"));
+                    break;
+                case LICENSE_PHOTO2:
+                    uploadImage(LICENSE_PHOTO2, idPhotoImage4, (Bitmap) data.getExtras().get("data"));
                     break;
             }
         }
@@ -93,8 +116,20 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_complete:
-                if (certificateImages[0] == null) {
+                if (imageIds[0] == 0) {
                     Toast.makeText(getActivity(), "请上传车辆登记证图片", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if (imageIds[1] == 0) {
+                    Toast.makeText(getActivity(), "请上传车辆登记证图片", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if (imageIds[2] == 0) {
+                    Toast.makeText(getActivity(), "请上传车辆认证图片", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                if (imageIds[3] == 0) {
+                    Toast.makeText(getActivity(), "请上传车辆认证图片", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 if (!checkBox.isChecked()) {
@@ -104,7 +139,7 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
                 PublishUsedCarRequest publishUsedCarRequest = new PublishUsedCarRequest();
                 publishUsedCarRequest.setCarContact(String.valueOf(contact.getText()));
                 publishUsedCarRequest.setContactPhone(String.valueOf(contactPhone.getText()));
-                ((Action) getActivity()).action(this, certificateImages, publishUsedCarRequest);
+                ((Action) getActivity()).action(this, imageIds, publishUsedCarRequest);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -119,6 +154,12 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
             case R.id.car_info_id_photo2:
                 startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), ID_PHOTO2);
                 break;
+            case R.id.car_info_id_photo3:
+                startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), LICENSE_PHOTO);
+                break;
+            case R.id.car_info_id_photo4:
+                startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), LICENSE_PHOTO2);
+                break;
         }
     }
 
@@ -130,5 +171,73 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
     @Override
     public Ui getUi() {
         return this;
+    }
+
+    private void uploadImage(final int index, final ImageView imageView, final Bitmap bitmap) {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("上传...");
+        loadingFragment.show(getFragmentManager());
+        AndroidObservable
+                .bindFragment(this, Observable
+                        .from(bitmap)
+                        .map(new Func1<Bitmap, byte[]>() {
+                            @Override
+                            public byte[] call(final Bitmap bitmap) {
+                                if (bitmap == null) {
+                                    return null;
+                                }
+                                final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 80, stream);
+                                return stream.toByteArray();
+                            }
+                        })
+                        .subscribeOn(Schedulers.newThread()))
+                .subscribe(new Subscriber<byte[]>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(final Throwable e) {
+                        loadingFragment.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(final byte[] bytes) {
+                        if (bytes == null) {
+                            onError(null);
+                            return;
+                        }
+                        final ImageUploadRequest uploadImageRequest = new ImageUploadRequest();
+                        uploadImageRequest.setAccessToken(Application.sampleAccessToken);
+                        uploadImageRequest.setImage(bytes);
+                        new RestClient().uploadImage(uploadImageRequest, new SimpleCallbackImpl2<UploadImageResponse>(ResellerInfoFragment.this) {
+                            @Override
+                            protected void onSuccess(UploadImageResponse uploadImageResponse, Response response) {
+                                loadingFragment.dismiss();
+                                if (uploadImageResponse.isExecutionResult()) {
+                                    imageView.setImageBitmap(bitmap);
+                                    imageIds[index - 1] = uploadImageResponse.getImageId();
+                                }
+                            }
+
+                            @Override
+                            protected void onFailure(RetrofitError error) {
+                                loadingFragment.dismiss();
+                                MessageToast.makeText(getActivity(), "图片上传不成功，请重试").show();
+                            }
+
+                            @Override
+                            protected void onAuthorized() {new RestClient().uploadImage(uploadImageRequest, this);
+                            }
+
+                            @Override
+                            protected void onUnauthorized() {
+                                MessageToast.makeText(getActivity(), "会话过期，请重新登录").show();
+                                startActivity(new Intent(getActivity(), LoginActivity.class));
+                            }
+                        });
+                    }
+                });
+
     }
 }

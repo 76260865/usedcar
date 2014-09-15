@@ -1,5 +1,7 @@
 package com.jason.usedcar.fragment;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.jason.usedcar.Application;
+import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
 import com.jason.usedcar.RestClient;
 import com.jason.usedcar.adapter.ShoppingCarAdapter;
@@ -20,6 +24,7 @@ import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter.CallButtonUi;
 import com.jason.usedcar.request.PagedRequest;
 import com.jason.usedcar.response.CarListResponse;
+import com.jason.usedcar.response.CartResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -47,12 +52,16 @@ public class ShoppingCarFragment extends
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.txt_shopping_car_str);
-        PagedRequest pagedRequest = new PagedRequest();
-        new RestClient().shoppingCarList(pagedRequest, new Callback<CarListResponse>() {
+        if (Application.fromActivity(getActivity()).getAccessToken() == null) {
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class), 10);
+            return;
+        }
+        new RestClient().cart(Application.fromActivity(getActivity()).getAccessToken(),
+                Build.SERIAL, new Callback<CartResponse>() {
             @Override
-            public void success(final CarListResponse response, final Response response2) {
+            public void success(final CartResponse response, final Response response2) {
                 if (response != null && response.isExecutionResult()) {
-                    shoppingCarModel.add(response.getUsedCars());
+                    shoppingCarModel.add(response.getCartList());
                     shoppingCarModel.notifyDataSetInvalidated();
                 }
             }

@@ -8,6 +8,8 @@ import com.jason.usedcar.MessageToast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter;
 import com.jason.usedcar.presenter.RegisterFragmentPresenter.RegisterFragmentUi;
+import com.jason.usedcar.presenter.RegisterResellerFragmentPresenter;
+import com.jason.usedcar.request.RegisterResellerRequest;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.Required;
 
@@ -38,7 +40,7 @@ public class ResellerRegisterFragment extends RegisterFragment {
 
     @Override
     public RegisterFragmentPresenter createPresenter() {
-        return new RegisterFragmentPresenter() {
+        return new RegisterResellerFragmentPresenter() {
         };
     }
 
@@ -48,13 +50,24 @@ public class ResellerRegisterFragment extends RegisterFragment {
         String password = String.valueOf(editPassword.getText());
         String confirmPassword = String.valueOf(editConfirmPassword.getText());
         String verifyCode = String.valueOf(editVerifyCode.getText());
-        if (!verifyCode.equals(this.verifyCode)) {
-            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
-            return;
-        }
+//        if (!verifyCode.equals(this.verifyCode)) {
+//            MessageToast.makeText(getActivity(), R.string.error_verify_code_incorrect).show();
+//            return;
+//        }
         String resellerName = String.valueOf(editResellerName.getText());
         String resellerAddress = String.valueOf(editResellerAddress.getText());
         int checkedRadioId = radioResellerType.getCheckedRadioButtonId();
+        RegisterResellerRequest param = new RegisterResellerRequest();
+        param.setPhone(account);
+        param.setPassword(password);
+        param.setConfirmPassword(confirmPassword);
+        param.setPhoneVerifyCode(verifyCode);
+        param.setAccountType(2);
+        param.setAcceptTerm(true);
+        param.setResellerType(checkedRadioId == R.id.register_used_car_company ? 1 : 2);
+        param.setResellerName(resellerName);
+        param.setAddress(resellerAddress);
+        ((RegisterResellerFragmentPresenter) getPresenter()).registerReseller(this, param);
     }
 
     @Override

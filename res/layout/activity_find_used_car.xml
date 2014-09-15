@@ -33,7 +33,7 @@
         android:id="@+id/txt_seriers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="车系"
+        android:text="车系:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="gone" />
 
@@ -46,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="价格"
+            android:text="价格:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -71,7 +71,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="车龄"
+            android:text="车龄:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -96,7 +96,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="里程"
+            android:text="里程:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
@@ -104,7 +104,6 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="里程"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </LinearLayout>
 

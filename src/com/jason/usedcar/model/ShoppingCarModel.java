@@ -1,5 +1,7 @@
 package com.jason.usedcar.model;
 
+import com.jason.usedcar.model.data.Product;
+
 import java.util.List;
 
 /**
@@ -7,11 +9,11 @@ import java.util.List;
  */
 public class ShoppingCarModel extends BaseModel {
 
-    private List<UsedCar> data;
+    private List<Product> data;
 
     public ShoppingCarModel() {}
 
-    public void add(List<UsedCar> cars) {
+    public void add(List<Product> cars) {
         if (data == null) {
             this.data = cars;
         } else {
@@ -19,11 +21,11 @@ public class ShoppingCarModel extends BaseModel {
         }
     }
 
-    public List<UsedCar> getData() {
+    public List<Product> getData() {
         return data;
     }
 
-    public void setData(List<UsedCar> data) {
+    public void setData(List<Product> data) {
         this.data = data;
     }
 
@@ -36,7 +38,7 @@ public class ShoppingCarModel extends BaseModel {
         return isEmpty() ? 0 : data.size();
     }
 
-    public UsedCar get(int position) {
+    public Product get(int position) {
         if (isEmpty() || position < 0 || position >= size()) {
             return null;
         }

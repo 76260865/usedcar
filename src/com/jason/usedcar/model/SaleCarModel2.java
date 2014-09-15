@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author t77yq @2014.06.14
  */
-public class SaleCarModel extends BaseModel {
+public class SaleCarModel2 extends BaseModel {
 
     public static final int PAGE_SIZE = 20;
 
@@ -15,15 +15,15 @@ public class SaleCarModel extends BaseModel {
 
     private boolean full;
 
-    private List<Product> data;
+    private List<UsedCar> data;
 
-    public SaleCarModel() {}
+    public SaleCarModel2() {}
 
-    public SaleCarModel(List<Product> data) {
+    public SaleCarModel2(List<UsedCar> data) {
         this.data = data;
     }
 
-    public void add(List<Product> newData) {
+    public void add(List<UsedCar> newData) {
         if (data == null) {
             this.data = newData;
         } else {
@@ -39,11 +39,11 @@ public class SaleCarModel extends BaseModel {
         this.loading = loading;
     }
 
-    public List<Product> getData() {
+    public List<UsedCar> getData() {
         return data;
     }
 
-    public void setData(List<Product> data) {
+    public void setData(List<UsedCar> data) {
         this.data = data;
     }
 
@@ -56,7 +56,7 @@ public class SaleCarModel extends BaseModel {
         return data == null ? 0 : data.size();
     }
 
-    public Product get(int position) {
+    public UsedCar get(int position) {
         return (position < 0 || position >= size()) ? null : data.get(position);
     }
 

@@ -14,17 +14,19 @@ public class CarResponse extends Response {
 
     private List<String> imageUrls;
 
-    private String licenseImage;
+    private List<String> licenseImages;
 
     private String certificateImage;
 
     private String purchaseDate;
 
-    private int odometer;
+    private Double odometer;
 
-    private int listPrice;
+    private Double listPrice;
 
-    private String priceType;
+    private int priceType;
+
+    private int paymentMethod;
 
     private String carVin;
 
@@ -84,12 +86,12 @@ public class CarResponse extends Response {
         this.imageUrls = imageUrls;
     }
 
-    public String getLicenseImage() {
-        return licenseImage;
+    public List<String> getLicenseImages() {
+        return licenseImages;
     }
 
-    public void setLicenseImage(String licenseImage) {
-        this.licenseImage = licenseImage;
+    public void setLicenseImages(List<String> licenseImages) {
+        this.licenseImages = licenseImages;
     }
 
     public String getCertificateImage() {
@@ -108,28 +110,36 @@ public class CarResponse extends Response {
         this.purchaseDate = purchaseDate;
     }
 
-    public int getOdometer() {
+    public Double getOdometer() {
         return odometer;
     }
 
-    public void setOdometer(int odometer) {
+    public void setOdometer(Double odometer) {
         this.odometer = odometer;
     }
 
-    public int getListPrice() {
+    public Double getListPrice() {
         return listPrice;
     }
 
-    public void setListPrice(int listPrice) {
+    public void setListPrice(Double listPrice) {
         this.listPrice = listPrice;
     }
 
-    public String getPriceType() {
+    public int getPriceType() {
         return priceType;
     }
 
-    public void setPriceType(String priceType) {
+    public void setPriceType(int priceType) {
         this.priceType = priceType;
+    }
+
+    public int getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(int paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public String getCarVin() {
@@ -202,5 +212,9 @@ public class CarResponse extends Response {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getPlaceDetails() {
+        return province + city + county + street;
     }
 }

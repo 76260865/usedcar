@@ -18,6 +18,54 @@ public class UsedCar {
 
     private String priceType;
 
+    private String productName;
+
+    private String productId;
+
+    private String updateTime;
+
+    private String status;
+
+    public void setOdometer(float odometer) {
+        this.odometer = odometer;
+    }
+
+    public void setListPrice(float listPrice) {
+        this.listPrice = listPrice;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public List<String> getImageUrls() {
         return imageUrls;
     }

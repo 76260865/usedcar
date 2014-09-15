@@ -16,6 +16,10 @@ public class Application extends com.activeandroid.app.Application {
 
     public static String sampleAccessToken;
 
+    public String username;
+
+    public String password;
+
     public static Application fromContext(Context context) {
         if (context instanceof Activity) {
             return fromActivity((Activity) context);

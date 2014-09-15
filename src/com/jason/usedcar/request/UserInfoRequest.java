@@ -6,21 +6,13 @@ public class UserInfoRequest extends Request {
 
     private String realName;
 
-    private String email;
+    private Boolean sex;
 
-    private boolean bindEmail;
+    private String birthyear;
 
-    private boolean sex;
+    private String birthmonth;
 
-    private String phone;
-
-    private boolean bindPhone;
-
-    private String birthYear;
-
-    private String birthMonth;
-
-    private String birthDay;
+    private String birthday;
 
     private String certificateNumber;
 
@@ -36,7 +28,7 @@ public class UserInfoRequest extends Request {
         return nickname;
     }
 
-    public void setNickname(final String nickname) {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
@@ -44,79 +36,47 @@ public class UserInfoRequest extends Request {
         return realName;
     }
 
-    public void setRealName(final String realName) {
+    public void setRealName(String realName) {
         this.realName = realName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-    public boolean isBindEmail() {
-        return bindEmail;
-    }
-
-    public void setBindEmail(final boolean bindEmail) {
-        this.bindEmail = bindEmail;
-    }
-
-    public boolean isSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(final boolean sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getBirthyear() {
+        return birthyear;
     }
 
-    public void setPhone(final String phone) {
-        this.phone = phone;
+    public void setBirthyear(String birthyear) {
+        this.birthyear = birthyear;
     }
 
-    public boolean isBindPhone() {
-        return bindPhone;
+    public String getBirthmonth() {
+        return birthmonth;
     }
 
-    public void setBindPhone(final boolean bindPhone) {
-        this.bindPhone = bindPhone;
+    public void setBirthmonth(String birthmonth) {
+        this.birthmonth = birthmonth;
     }
 
-    public String getBirthYear() {
-        return birthYear;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setBirthYear(final String birthYear) {
-        this.birthYear = birthYear;
-    }
-
-    public String getBirthMonth() {
-        return birthMonth;
-    }
-
-    public void setBirthMonth(final String birthMonth) {
-        this.birthMonth = birthMonth;
-    }
-
-    public String getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(final String birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public String getCertificateNumber() {
         return certificateNumber;
     }
 
-    public void setCertificateNumber(final String certificateNumber) {
+    public void setCertificateNumber(String certificateNumber) {
         this.certificateNumber = certificateNumber;
     }
 
@@ -124,7 +84,7 @@ public class UserInfoRequest extends Request {
         return province;
     }
 
-    public void setProvince(final String province) {
+    public void setProvince(String province) {
         this.province = province;
     }
 
@@ -132,7 +92,7 @@ public class UserInfoRequest extends Request {
         return city;
     }
 
-    public void setCity(final String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
@@ -140,7 +100,7 @@ public class UserInfoRequest extends Request {
         return county;
     }
 
-    public void setCounty(final String county) {
+    public void setCounty(String county) {
         this.county = county;
     }
 
@@ -148,7 +108,7 @@ public class UserInfoRequest extends Request {
         return street;
     }
 
-    public void setStreet(final String street) {
+    public void setStreet(String street) {
         this.street = street;
     }
 }
