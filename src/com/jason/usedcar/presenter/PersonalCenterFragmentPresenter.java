@@ -3,10 +3,7 @@ package com.jason.usedcar.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import com.jason.usedcar.HistoryActivity;
-import com.jason.usedcar.InfoActivity;
-import com.jason.usedcar.LoginActivity;
-import com.jason.usedcar.Application;
+import com.jason.usedcar.*;
 import com.jason.usedcar.interfaces.Ui;
 
 /**
@@ -30,8 +27,8 @@ public class PersonalCenterFragmentPresenter extends Presenter<Ui> {
         context.startActivity(new Intent(context, HistoryActivity.class));
     }
 
-    public void myCollectCar() {
-
+    public void myCollectCar(Context context) {
+        context.startActivity(new Intent(context, CollectActivity.class));
     }
 
     public void tradeHistory(Context context) {

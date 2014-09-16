@@ -588,17 +588,17 @@ public class RestClient {
     }
 
     interface IFavoriteList {
-        @FormUrlEncoded
-        @POST("/product/FavorityList")
+        @Multipart
+        @POST("/account/favoriteList.json")
         void favoriteList(
-                @Field("pageIndex") int pageIndex,
-                @Field("pageSize") int pageSize,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
-                Callback<CarListResponse> callback);
+                @Part("pageIndex") int pageIndex,
+                @Part("pageSize") int pageSize,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
+                Callback<FavoriteListResponse> callback);
     }
 
-    public void favoriteList(PagedRequest request, Callback<CarListResponse> callback) {
+    public void favoriteList(PagedRequest request, Callback<FavoriteListResponse> callback) {
         createService("favoriteList", POOL, IFavoriteList.class)
                 .favoriteList(request.getPageIndex(), request.getPageSize(),
                         request.getAccessToken(), request.getDeviceId(), callback);

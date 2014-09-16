@@ -15,22 +15,14 @@ import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
 import com.jason.usedcar.RestClient;
 import com.jason.usedcar.adapter.SellCarAdapter;
-import com.jason.usedcar.fragment.BaseFragment;
 import com.jason.usedcar.interfaces.Ui;
-import com.jason.usedcar.model.SaleCarModel;
 import com.jason.usedcar.model.SaleCarModel2;
-import com.jason.usedcar.model.UsedCar;
-import com.jason.usedcar.model.data.Product;
-import com.jason.usedcar.request.PublishUsedCarRequest;
 import com.jason.usedcar.presenter.SellCarFragmentPresenter;
 import com.jason.usedcar.request.Request;
 import com.jason.usedcar.response.SellingCarResponse;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author t77yq @14-6-22.
@@ -68,7 +60,7 @@ public class SellCarFragment extends BaseFragment<SellCarFragmentPresenter, Ui> 
             @Override
             public void success(SellingCarResponse sellingCarResponse, Response response) {
                 if (sellingCarResponse != null && sellingCarResponse.isExecutionResult()) {
-                    saleCarModel.setData(sellingCarResponse.getUsedCars());
+                    saleCarModel.setData(sellingCarResponse.getProductList());
                     saleCarModel.notifyDataSetInvalidated();
                 }
             }
@@ -112,7 +104,7 @@ public class SellCarFragment extends BaseFragment<SellCarFragmentPresenter, Ui> 
                         @Override
                         public void success(SellingCarResponse sellingCarResponse, Response response) {
                             if (sellingCarResponse != null && sellingCarResponse.isExecutionResult()) {
-                                saleCarModel.setData(sellingCarResponse.getUsedCars());
+                                saleCarModel.setData(sellingCarResponse.getProductList());
                                 saleCarModel.notifyDataSetInvalidated();
                             }
                         }

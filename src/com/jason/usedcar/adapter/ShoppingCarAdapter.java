@@ -4,16 +4,12 @@ import android.app.Activity;
 import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Toast;
 import com.jason.usedcar.R;
-import com.jason.usedcar.adapter.holder.ShoppingCarViewHolder;
+import com.jason.usedcar.adapter.holder.SaleCarViewHolder;
 import com.jason.usedcar.adapter.holder.ViewHolder;
-import com.jason.usedcar.model.ShoppingCar;
 import com.jason.usedcar.model.ShoppingCarModel;
-import com.jason.usedcar.model.UsedCar;
 import com.jason.usedcar.model.data.Product;
 
 /**
@@ -61,33 +57,19 @@ public class ShoppingCarAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.history_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.item_shopping_car_layout, parent, false);
         }
-        ShoppingCarViewHolder holder = getViewHolder(convertView);
-        if (holder == null) {
-            holder = new ShoppingCarViewHolder(convertView);
-            convertView.setTag(holder);
+        SaleCarViewHolder viewHolder = (SaleCarViewHolder) convertView.getTag();
+        if (viewHolder == null) {
+            viewHolder = new SaleCarViewHolder(convertView);
+            convertView.setTag(viewHolder);
         }
-        Product data = getItem(position);
-        if (data != null) {
-            //holder.imageView.setImageResource();
-            holder.historyCarInfoText.setText(activity.getString(R.string.history_car_info,
-                data.getPrice(), data.getOdometer(), data.getPurchaseDate()));
-            holder.orderNumberText.setText(activity.getString(R.string.history_order_number, data.getPrice()));
-            holder.orderPayTimeText.setText(activity.getString(R.string.history_order_pay_time, data.getPurchaseDate()));
-            holder.orderPriceText.setText(activity.getString(R.string.history_order_price, data.getPrice()));
-            holder.orderStateText.setText(activity.getString(R.string.history_order_state, data.getPrice()));
-            if (holder.orderAction.getText().equals("未付款")) {
-                holder.orderAction.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(activity, "目前还不支持手机端付款，请在电脑上支付!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                holder.orderAction.setOnClickListener(null);
-            }
-        }
+        Product param = getItem(position);
+        viewHolder.carNameText.setText(activity.getString(R.string.sale_car_name, param.getProductName()));
+        viewHolder.preSalePriceText.setText(activity.getString(R.string.sale_car_pre_sale_price,
+                param.getPrice()));
+        viewHolder.mileageText.setVisibility(View.GONE);
+        viewHolder.buyTimeText.setVisibility(View.GONE);
         return convertView;
     }
 

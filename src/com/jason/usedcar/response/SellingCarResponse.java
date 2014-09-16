@@ -1,6 +1,6 @@
 package com.jason.usedcar.response;
 
-import com.jason.usedcar.model.UsedCar;
+import com.jason.usedcar.model.data.Product;
 
 import java.util.List;
 
@@ -9,13 +9,13 @@ import java.util.List;
  */
 public class SellingCarResponse extends Response {
 
-    private List<UsedCar> usedCars;
+    private List<Product> productList;
 
-    public List<UsedCar> getUsedCars() {
-        return usedCars;
+    public List<Product> getProductList() {
+        return productList;
     }
 
-    public void setUsedCars(List<UsedCar> usedCars) {
-        this.usedCars = usedCars;
+    public void setProductList(List<Product> sellingCars) {
+        this.productList = sellingCars;
     }
 }

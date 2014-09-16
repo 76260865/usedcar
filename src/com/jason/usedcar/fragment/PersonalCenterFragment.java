@@ -1,10 +1,13 @@
 package com.jason.usedcar.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import com.jason.usedcar.Application;
+import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
 import com.jason.usedcar.fragment.BaseFragment;
 import com.jason.usedcar.interfaces.Ui;
@@ -50,7 +53,11 @@ public class PersonalCenterFragment extends
                 getPresenter().identify();
                 break;
             case R.id.info_center_my_collect_cars:
-                getPresenter().myCollectCar();
+                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                getPresenter().myCollectCar(getActivity());
                 break;
             case R.id.info_center_my_info:
                 getPresenter().myInfo(getActivity());

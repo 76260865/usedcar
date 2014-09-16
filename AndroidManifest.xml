@@ -4,7 +4,7 @@
           android:versionCode="1"
           android:versionName="1.0" >
 
-    <uses-sdk 
+    <uses-sdk
             android:minSdkVersion="13"
             android:targetSdkVersion="19" />
 
@@ -44,7 +44,7 @@
         </activity>
         <activity android:name=".InfoActivity"
                   android:label="个人中心"
-                android:windowSoftInputMode="adjustResize">
+                  android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".SellCarActivity"
                   android:label="我要卖车"
@@ -95,6 +95,10 @@
         </activity>
         <activity
                 android:name=".AboutActivity"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".CollectActivity"
                 android:theme="@style/AppTheme">
         </activity>
 
