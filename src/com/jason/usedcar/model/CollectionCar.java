@@ -20,4 +20,6 @@ public interface CollectionCar {
     void clear();
 
     boolean isEmpty();
+
+    public void removeById(String id);
 }

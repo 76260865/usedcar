@@ -16,6 +16,7 @@ import com.jason.usedcar.request.CarRequest;
 import com.jason.usedcar.request.FavoriteCarRequest;
 import com.jason.usedcar.request.ShoppingCarOperationRequest;
 import com.jason.usedcar.response.CarResponse;
+import com.jason.usedcar.response.CarResponse2;
 import com.jason.usedcar.response.Response;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -81,29 +82,28 @@ public class CarDetailsActivity extends BaseActivity {
         CarRequest carRequest = new CarRequest();
         carRequest.setProductId(product.getProductId());
         carRequest.setAccessToken(Application.sampleAccessToken);
-        new RestClient().getUsedCar(carRequest, new Callback<CarResponse>() {
-            @Override
-            public void success(final CarResponse response, final retrofit.client.Response response2) {
-                loadingFragment.dismiss();
-                if (response != null && response.isExecutionResult()) {
-                    carNameText.setText(response.getProductName());
-                    price = response.getListPrice();
-                    preSalePriceText.setText(String.format("%1$f万", response.getListPrice()));
-                    priceTypeText.setText(response.getPriceType() == 0 ? "一口价" : "可议价");
-                    buyTimeText.setText(response.getPurchaseDate());
-                    payTypeText.setText(METHODS[response.getPaymentMethod()]);
-                    mileageText.setText(String.format("%1$f万公里", response.getOdometer()));
-                    carOwnerContactPhone = response.getContactPhone();
-                    contactPhoneText.setText(response.getContactPhone());
-                    dealPlaceText.setText(response.getPlaceDetails());
-                }
-            }
-
-            @Override
-            public void failure(final RetrofitError error) {
-                loadingFragment.dismiss();
-            }
-        });
+//        new RestClient().getUsedCar(carRequest, new Callback<CarResponse2>() {
+//            @Override
+//            public void success(final CarResponse2 response, final retrofit.client.Response response2) {
+//                loadingFragment.dismiss();
+//                if (response != null && response.isExecutionResult()) {
+//                    carNameText.setText(response.getProductName());
+//                    preSalePriceText.setText(response.getListPrice());
+//                    priceTypeText.setText(response.getPriceType() == 0 ? "一口价" : "可议价");
+//                    buyTimeText.setText(response.getPurchaseDate());
+//                    payTypeText.setText(METHODS[response.getPaymentMethod()]);
+//                    mileageText.setText(String.format("%1$f万公里", response.getOdometer()));
+//                    carOwnerContactPhone = response.getContactPhone();
+//                    contactPhoneText.setText(response.getContactPhone());
+//                    //dealPlaceText.setText(response.getPlaceDetails());
+//                }
+//            }
+//
+//            @Override
+//            public void failure(final RetrofitError error) {
+//                loadingFragment.dismiss();
+//            }
+//        });
     }
 
     @Override

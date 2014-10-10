@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import com.jason.usedcar.Application;
 import com.jason.usedcar.RestClient;
 import com.jason.usedcar.adapter.BuyCarHistoryAdapter;
 import com.jason.usedcar.model.UsedCar;
@@ -36,7 +37,9 @@ public class BuyCarHistoryFragment extends ListFragment {
         //setListShown(false);
         List<UsedCar> data = ((Data) getActivity()).getData(this);
         if (data == null || data.isEmpty()) {
-            new RestClient().buyUsedCarList(new PagedRequest(), new Callback<CarListResponse>() {
+            PagedRequest pagedRequest = new PagedRequest();
+            pagedRequest.setAccessToken(Application.fromActivity(getActivity()).getAccessToken());
+            new RestClient().buyUsedCarList(pagedRequest, new Callback<CarListResponse>() {
                 @Override
                 public void success(final CarListResponse response, final Response response2) {
                     if (response != null && response.isExecutionResult()) {

@@ -22,7 +22,7 @@ public class CarResponse extends Response {
 
     private Double odometer;
 
-    private Double listPrice;
+    private String listPrice;
 
     private int priceType;
 
@@ -118,11 +118,11 @@ public class CarResponse extends Response {
         this.odometer = odometer;
     }
 
-    public Double getListPrice() {
+    public String getListPrice() {
         return listPrice;
     }
 
-    public void setListPrice(Double listPrice) {
+    public void setListPrice(String listPrice) {
         this.listPrice = listPrice;
     }
 

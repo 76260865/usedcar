@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:robo="http://robobinding.org/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:prefixIgnore="true">
     <LinearLayout
             android:id="@+id/loading_more_progress"
             android:layout_width="wrap_content"
             android:layout_height="48dip"
             android:layout_gravity="center"
-            android:gravity="center" >
+            android:gravity="center"
+            robo:visibility="{notFull}">
         <ProgressBar
                 android:id="@+id/loading_more_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
         <TextView
                 android:id="@+id/loading_more_progress_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip"
                 android:text="@string/txt_loading_str" />
     </LinearLayout>
     <TextView
@@ -26,5 +31,6 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/txt_no_more_data"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            robo:visibility="{full}"/>
 </FrameLayout>

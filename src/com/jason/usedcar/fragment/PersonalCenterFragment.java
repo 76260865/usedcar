@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.jason.usedcar.Application;
 import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
-import com.jason.usedcar.fragment.BaseFragment;
 import com.jason.usedcar.interfaces.Ui;
 import com.jason.usedcar.presenter.PersonalCenterFragmentPresenter;
 
@@ -47,10 +46,14 @@ public class PersonalCenterFragment extends
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_center_bought_cars_history:
+                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 getPresenter().tradeHistory(getActivity());
                 break;
             case R.id.info_center_identify:
-                getPresenter().identify();
+                getPresenter().identify(getActivity());
                 break;
             case R.id.info_center_my_collect_cars:
                 if (Application.fromContext(getActivity()).getAccessToken() == null) {
@@ -63,6 +66,10 @@ public class PersonalCenterFragment extends
                 getPresenter().myInfo(getActivity());
                 break;
             case R.id.info_center_sale_car:
+                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 getPresenter().myCarsToSale(getActivity());
                 break;
         }

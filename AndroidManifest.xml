@@ -46,6 +46,10 @@
                   android:label="个人中心"
                   android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".Info2Activity"
+                  android:label="个人中心"
+                  android:windowSoftInputMode="adjustResize">
+        </activity>
         <activity android:name=".SellCarActivity"
                   android:label="我要卖车"
                   android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
@@ -69,6 +73,9 @@
                 android:name=".CarDetailsActivity"
                 android:label="汽车详情"
                 android:theme="@style/AppTheme2">
+        </activity>
+        <activity android:name=".CarDetails2Activity"
+                  android:label="汽车详情">
         </activity>
         <activity
                 android:name=".CalculatorActivity"
@@ -105,6 +112,8 @@
         <meta-data android:name="AA_DB_NAME" android:value="car.db" />
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <activity android:name=".FindUsedActivity">
+        </activity>
+        <activity android:name=".AuthorizeActivity">
         </activity>
     </application>
 

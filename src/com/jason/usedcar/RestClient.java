@@ -7,9 +7,48 @@ import com.jason.usedcar.model.data.City;
 import com.jason.usedcar.model.data.County;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
-import com.jason.usedcar.request.*;
-import com.jason.usedcar.response.*;
-
+import com.jason.usedcar.request.CarRequest;
+import com.jason.usedcar.request.CityRequest;
+import com.jason.usedcar.request.CountyRequest;
+import com.jason.usedcar.request.FavoriteCarRequest;
+import com.jason.usedcar.request.ForgetPasswordRequest;
+import com.jason.usedcar.request.ImageUploadRequest;
+import com.jason.usedcar.request.LoginRequest;
+import com.jason.usedcar.request.ModelRequest;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.request.PagedRequest;
+import com.jason.usedcar.request.PhoneRequest;
+import com.jason.usedcar.request.PublishUsedCarRequest;
+import com.jason.usedcar.request.RegisterRequest;
+import com.jason.usedcar.request.RegisterResellerRequest;
+import com.jason.usedcar.request.Request;
+import com.jason.usedcar.request.ResetPasswordByPhoneRequest;
+import com.jason.usedcar.request.SearchProductRequest;
+import com.jason.usedcar.request.SeriesRequest;
+import com.jason.usedcar.request.ShoppingCarOperationRequest;
+import com.jason.usedcar.request.SuggestionRequest;
+import com.jason.usedcar.request.TokenGenerateRequest;
+import com.jason.usedcar.request.UpdatePasswordRequest;
+import com.jason.usedcar.request.Upgrade2Request;
+import com.jason.usedcar.request.UpgradeRequest;
+import com.jason.usedcar.request.UserInfoRequest;
+import com.jason.usedcar.response.CarListResponse;
+import com.jason.usedcar.response.CarResponse;
+import com.jason.usedcar.response.CarResponse2;
+import com.jason.usedcar.response.CarResponse3;
+import com.jason.usedcar.response.CartResponse;
+import com.jason.usedcar.response.FavoriteListResponse;
+import com.jason.usedcar.response.LoginResponse;
+import com.jason.usedcar.response.ObtainCodeResponse;
+import com.jason.usedcar.response.PasswordResponse;
+import com.jason.usedcar.response.Response;
+import com.jason.usedcar.response.SearchProductResponse;
+import com.jason.usedcar.response.SellingCarResponse;
+import com.jason.usedcar.response.TokenGenerateResponse;
+import com.jason.usedcar.response.Upgrade2Response;
+import com.jason.usedcar.response.UpgradeResponse;
+import com.jason.usedcar.response.UploadImageResponse;
+import com.jason.usedcar.response.UserInfoResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,12 +64,10 @@ import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedString;
 
 /**
  * @author t77yq @2014-08-01.
@@ -188,10 +225,10 @@ public class RestClient {
                 @Part("productId") String productId,
                 @Part("accessToken") String accessToken,
                 @Part("deviceId") String deviceId,
-                Callback<CarResponse> callback);
+                Callback<CarResponse3> callback);
     }
 
-    public void getUsedCar(CarRequest request, Callback<CarResponse> callback) {
+    public void getUsedCar(CarRequest request, Callback<CarResponse3> callback) {
 //        createService("getUsedCar", POOL, IGetUsedCar.class)
 //                .getUsedCar(request, callback);
         createService("getUsedCar", POOL, IGetUsedCar.class).getUsedCar(
@@ -622,13 +659,13 @@ public class RestClient {
     }
 
     interface IBuyUsedCarList {
-        @FormUrlEncoded
-        @POST("/product/BuyUsedCarList")
+        @Multipart
+        @POST("/product/BuyUsedCarList.json")
         void buyUsedCarList(
-                @Field("pageIndex") int pageIndex,
-                @Field("pageSize") int pageSize,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("pageIndex") int pageIndex,
+                @Part("pageSize") int pageSize,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<CarListResponse> callback);
     }
 
@@ -655,12 +692,12 @@ public class RestClient {
     }
 
     interface ISuggestion {
-        @FormUrlEncoded
-        @POST("/more/Suggestion")
+        @Multipart
+        @POST("/more/suggestion.json")
         void suggestion(
-                @Field("suggestion") String suggestion,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("message") String suggestion,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 

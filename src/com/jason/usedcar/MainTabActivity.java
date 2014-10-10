@@ -10,35 +10,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import com.jason.usedcar.fragment.BuyCarFragment;
+import com.jason.usedcar.fragment.BuyCarFragment2;
 import com.jason.usedcar.fragment.MoreFragment;
 import com.jason.usedcar.fragment.PersonalCenterFragment;
-import com.jason.usedcar.fragment.SellCarFragment;
+import com.jason.usedcar.fragment.SellCarFragment2;
+import com.jason.usedcar.fragment.ShoppingCar2Fragment;
 import com.jason.usedcar.fragment.ShoppingCarFragment;
-import com.jason.usedcar.request.CityRequest;
-import com.jason.usedcar.request.CountyRequest;
-import com.jason.usedcar.request.ImageUploadRequest;
-import com.jason.usedcar.request.LoginRequest;
-import com.jason.usedcar.request.ModelRequest;
-import com.jason.usedcar.request.Request;
-import com.jason.usedcar.request.SeriesRequest;
-import com.jason.usedcar.request.TokenGenerateRequest;
-import com.jason.usedcar.response.LoginResponse;
-import com.jason.usedcar.response.TokenGenerateResponse;
-import com.jason.usedcar.response.UploadImageResponse;
-import com.jason.usedcar.response.UserInfoResponse;
 import java.io.ByteArrayOutputStream;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class MainTabActivity extends ActionBarActivity {
     private FragmentTabHost mTabHost;
 
     private LayoutInflater layoutInflater;
 
-    private Class<?> fragmentArray[] = { BuyCarFragment.class, SellCarFragment.class,
-            ShoppingCarFragment.class, PersonalCenterFragment.class, MoreFragment.class };
+    private Class<?> fragmentArray[] = { BuyCarFragment2.class, SellCarFragment2.class,
+            ShoppingCar2Fragment.class, PersonalCenterFragment.class, MoreFragment.class };
 
     private int mImageViewArray[] = { R.drawable.tab_buy_car_btn, R.drawable.tab_sell_car_btn,
             R.drawable.tab_shop_car_btn, R.drawable.tab_personal_car_btn,
@@ -50,75 +36,9 @@ public class MainTabActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_tab_layout);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
-
-        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        getSupportActionBar().setIcon(null);
         initView();
-//        final LoginRequest request = new LoginRequest();
-//        request.setPhoneOrEmail("15008488463");
-//        request.setPassword("111111");
-//        final RestClient client = new RestClient();
-//            client.login(request, new Callback<LoginResponse>() {
-//                @Override
-//                public void success(LoginResponse loginResponse, Response response) {
-//                    if (loginResponse.isExecutionResult()) {
-//                        Application.saveAccessToken(getApplication(),
-//                                loginResponse.getUserId(), loginResponse.getAccessToken());
-//                        Request viewUserInfoRequest = new Request();
-//                        request.setAccessToken(Application.accessToken(getApplication()));
-//                        client.viewUserInfo(viewUserInfoRequest, new Callback<UserInfoResponse>() {
-//                            @Override
-//                            public void success(UserInfoResponse userInfoResponse, Response response) {
-//                                response.getUrl();
-//                            }
-//
-//                            @Override
-//                            public void failure(RetrofitError error) {
-//                                error.getCause();
-//                            }
-//                        });
-//                        final TokenGenerateRequest request2 = new TokenGenerateRequest();
-//                        request2.setUserId(String.valueOf(loginResponse.getUserId()));
-//                        request2.setAccessToken(loginResponse.getAccessToken());
-//                        client.generateAccessToken(request2, new Callback<TokenGenerateResponse>() {
-//                            @Override
-//                            public void success(final TokenGenerateResponse response, final Response response2) {
-//                                if (response != null && response.isExecutionResult()) {
-//                                    //Application.saveAccessToken(getApplicationContext(), response.getSampleAccessToken());
-//                                    ImageUploadRequest imageUploadRequest = new ImageUploadRequest();
-//                                    imageUploadRequest.setAccessToken(response.getSampleAccessToken());
-//                                    imageUploadRequest.setImage(stream.toByteArray());
-//                                    client.uploadImage(imageUploadRequest, new Callback<UploadImageResponse>() {
-//                                        @Override
-//                                        public void success(final UploadImageResponse response, final Response response2) {
-//                                            if (response.isExecutionResult()) {
-//                                                response.getImageId();
-//                                            }
-//                                        }
-//
-//                                        @Override
-//                                        public void failure(final RetrofitError error) {
-//                                            error.getBody();
-//                                        }
-//                                    });
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void failure(final RetrofitError error) {
-//                                error.getBody();
-//                            }
-//                        });
-//                    }
-//                }
-//
-//                @Override
-//                public void failure(RetrofitError error) {
-//                    error.getCause();
-//                }
-//            });
     }
 
     private void initView() {

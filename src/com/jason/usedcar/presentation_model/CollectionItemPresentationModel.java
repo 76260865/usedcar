@@ -1,25 +1,43 @@
 package com.jason.usedcar.presentation_model;
 
-import com.jason.usedcar.model.data.Product;
-import org.robobinding.itempresentationmodel.AbstractItemPresentationModel;
+import android.view.View;
+import com.jason.usedcar.model.data.SProduct;
+import org.robobinding.itempresentationmodel.ItemPresentationModel;
+import org.robobinding.presentationmodel.AbstractPresentationModel;
+import org.robobinding.widget.view.ClickEvent;
 
 /**
  * @author t77yq @2014-09-17.
  */
-public class CollectionItemPresentationModel extends AbstractItemPresentationModel<Product> {
+public class CollectionItemPresentationModel extends AbstractPresentationModel implements ItemPresentationModel<SProduct> {
 
-    protected Product product;
+    protected SProduct product;
+
+    private ViewCollectionView view;
+
+    public CollectionItemPresentationModel(final ViewCollectionView view) {
+        this.view = view;
+    }
 
     public String getTitle() {
-        return product.getProductName();
+        return product.product.getProductName();
     }
 
     public String getPrice() {
-        return product.getPrice();
+        return product.product.getPrice();
+    }
+
+    public int getVisibility() {
+        return product.isEditable ? View.VISIBLE : View.GONE;
+    }
+
+    public void delete(ClickEvent event) {
+        //
+        view.delete(product.product);
     }
 
     @Override
-    protected void doUpdateData(int i, Product product) {
+    public void updateData(final int i, final SProduct product) {
         this.product = product;
     }
 }

@@ -62,5 +62,12 @@
             android:visibility="gone"
             tools:text="一口价"
             tools:visibility="visible"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ssss"
+                android:layout_gravity="right|center_vertical"
+                robo:onClick="delete"
+                robo:visibility="{visibility}"/>
     </FrameLayout>
 </LinearLayout>

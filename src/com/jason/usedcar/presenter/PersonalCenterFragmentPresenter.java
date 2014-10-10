@@ -15,12 +15,14 @@ public class PersonalCenterFragmentPresenter extends Presenter<Ui> {
         if (Application.fromActivity(activity).getAccessToken() == null) {
             activity.startActivity(new Intent(activity, LoginActivity.class));
         } else {
-            activity.startActivity(new Intent(activity, InfoActivity.class));
+            activity.startActivity(new Intent(activity, Info2Activity.class));
         }
     }
 
-    public void identify() {
-
+    public void identify(Context context) {
+        Intent authorizeIntent = new Intent(context, AuthorizeActivity.class);
+        authorizeIntent.putExtra("accountType", "reseller");
+        context.startActivity(authorizeIntent);
     }
 
     public void myCarsToSale(Context context) {

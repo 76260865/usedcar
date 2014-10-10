@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://robobinding.org/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:prefixIgnore="true">
+    <item
+            android:id="@+id/actionEdit"
+            android:title="编辑"
+            app:showAsAction="always"
+            bind:onMenuItemClick="edit"
+            bind:visible="{notEditable}"/>
+    <item
+            android:id="@+id/actionSave"
+            android:title="完成"
+            app:showAsAction="always"
+            bind:onMenuItemClick="save"
+            bind:visible="{editable}"/>
+</menu>

@@ -1,5 +1,7 @@
 package com.jason.usedcar;
 
+import android.app.Activity;
+import android.content.Intent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,7 +98,13 @@ public class FindUsedActivity extends FragmentActivity implements
 
 		@Override
 		public void onClick(View v) {
-			// TODO start a intent with the extras to main screen
+            Intent data = new Intent();
+            data.putExtra("brandFilter", mBrand);
+            data.putExtra("priceFilter", selectedPrice);
+            data.putExtra("mileFilter", selectedCarMile);
+            data.putExtra("ageFilter", selectedCarAge);
+            setResult(Activity.RESULT_OK, data);
+            finish();
 		}
 	}
 

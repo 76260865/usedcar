@@ -11,6 +11,10 @@ public class ShoppingCarModel extends BaseModel {
 
     private List<Product> data;
 
+    private boolean loading;
+
+    private boolean hasMore;
+
     public ShoppingCarModel() {}
 
     public void add(List<Product> cars) {
@@ -43,5 +47,21 @@ public class ShoppingCarModel extends BaseModel {
             return null;
         }
         return data.get(position);
+    }
+
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
+    }
+
+    public boolean hasMore() {
+        return hasMore;
+    }
+
+    public void setHasMore(boolean hasMore) {
+        this.hasMore = hasMore;
     }
 }

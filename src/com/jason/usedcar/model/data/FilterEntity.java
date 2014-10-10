@@ -1,6 +1,8 @@
 package com.jason.usedcar.model.data;
 
-public class FilterEntity {
+import java.io.Serializable;
+
+public class FilterEntity implements Serializable {
 	private String name;
 	private int count;
 	private String facetSelection;

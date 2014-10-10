@@ -83,7 +83,7 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
 //        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
 //        viewUserInfoRequest.setAccessToken(Application.getEncryptedToken(Application.fromActivity(this).userId,
 //                Application.fromActivity(this).getAccessToken()));
-        viewUserInfoRequest.setAccessToken(Application.sampleAccessToken);
+        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
         new RestClient().viewUserInfo(viewUserInfoRequest, new Callback<UserInfoResponse>() {
             @Override
             public void success(final UserInfoResponse response, final retrofit.client.Response response2) {
@@ -109,9 +109,20 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                             .append(response.getBirthmonth()).append("-")
                             .append(response.getBirthday()));
                     activityHolder.birthdayText.setText(response.getCertificateNumber());
-                    activityHolder.addressText.setText(new StringBuffer()
-                            .append(response.getProvince()).append(response.getCity())
-                            .append(response.getCounty()).append(response.getStreet()));
+                    String address = "";
+                    if (!TextUtils.isEmpty(response.getProvince())) {
+                        address += response.getProvince();
+                    }
+                    if (!TextUtils.isEmpty(response.getCity())) {
+                        address += response.getCity();
+                    }
+                    if (!TextUtils.isEmpty(response.getCounty())) {
+                        address += response.getCounty();
+                    }
+                    if (!TextUtils.isEmpty(response.getStreet())) {
+                        address += response.getStreet();
+                    }
+                    activityHolder.addressText.setText(address);
                 }
             }
 
@@ -131,6 +142,7 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
         userInfoParam.setProvince("xxx");
         userInfoParam.setCity("yyy");
         userInfoParam.setStreet("zzz");
+        userInfoParam.setAccessToken(Application.fromActivity(this).getAccessToken());
         final LoadingFragment loadingFragment = LoadingFragment.newInstance("更新个人资料&#8230;");
         loadingFragment.show(getSupportFragmentManager());
         new RestClient().updateUserInfo(userInfoParam, new Callback<Response>() {

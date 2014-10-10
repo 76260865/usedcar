@@ -73,30 +73,16 @@ public class LoginActivity extends BaseActivity {
             public void success(final LoginResponse response, final retrofit.client.Response response2) {
                 loadingFragment.dismiss();
                 if (response != null && response.isExecutionResult()) {
-                    TokenGenerateRequest tokenGenerateRequest = new TokenGenerateRequest();
-                    tokenGenerateRequest.setUserId(String.valueOf(response.getUserId()));
-                    tokenGenerateRequest.setAccessToken(response.getAccessToken());
-                    new RestClient().generateAccessToken(tokenGenerateRequest, new Callback<TokenGenerateResponse>() {
-                        @Override
-                        public void success(final TokenGenerateResponse response, final Response response2) {
-                            Application.sampleAccessToken = response.getSampleAccessToken();
-                            Application.fromContext(getApplicationContext()).setAccessToken(response.getSampleAccessToken());
-                            if (mIJobListener != null) {
-                                mIJobListener.executionDone();
-                            }
-                            setResult(Activity.RESULT_OK);
-                            Application.fromContext(getApplicationContext()).username = username;
-                            Application.fromContext(getApplicationContext()).password = password;
-                            finish();
-                        }
-
-                        @Override
-                        public void failure(final RetrofitError error) {
-
-                        }
-                    });
+                    if (mIJobListener != null) {
+                        mIJobListener.executionDone();
+                    }
+                    setResult(Activity.RESULT_OK);
+                    Application.fromContext(getApplicationContext()).setAccessToken(
+                            Application.getEncryptedToken(response.getUserId(), response.getAccessToken()));
+                    Application.fromContext(getApplicationContext()).username = username;
+                    Application.fromContext(getApplicationContext()).password = password;
                     Application.fromContext(getApplicationContext()).userId = response.getUserId();
-//                    Application.fromContext(getApplicationContext()).setAccessToken(response.getAccessToken());
+                    finish();
                 }
             }
 
