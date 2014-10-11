@@ -1,19 +1,74 @@
-apply plugin: 'android'
+buildscript {
+    repositories {
+        mavenCentral()
+        maven() {
+            name 'RoboBinding AspectJPlugin Maven Repository'
+            url "https://github.com/RoboBinding/RoboBinding-aspectj-plugin/raw/master/mavenRepo"
+            //url "file://D:/git/RoboBinding-aspectj-plugin/mavenRepo"
+        }
+    }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:appcompat-v7:19+'
-    compile 'com.android.support:support-v4:19+'
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
-    compile 'com.squareup.okhttp:okhttp:2.0.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
-    compile 'com.mobsandgeeks:android-saripaar:1.0.2'
-    compile 'com.nineoldandroids:library:2.4.0'
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'org.robobinding:aspectj-plugin:0.8.+'
+    }
 }
+
+apply plugin: 'com.android.application'
+apply plugin: 'org.robobinding.android-aspectj'
 
 android {
     compileSdkVersion 19
     buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        disable 'UnusedAttribute', 'ValidFragment', 'GradleDependency', 'OnClick', 'MissingPrefix', 'MenuTitle'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven() {
+        name 'SonaType snapshot repository'
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+ext {
+    robobindingVersion = 'latest.integration'
+    //robobindingVersion = '0.8.6-SNAPSHOT'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile "org.robobinding:robobinding:0.8.8:with-aop"
+    aspectPath "org.robobinding:robobinding:0.8.8:with-aop"
+    compile 'com.android.support:appcompat-v7:19+'
+    compile 'com.android.support:support-v4:19+'
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
 
     sourceSets {
         main {
