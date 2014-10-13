@@ -42,6 +42,7 @@ android {
 
     lintOptions {
         disable 'UnusedAttribute', 'ValidFragment', 'GradleDependency', 'OnClick', 'MissingPrefix', 'MenuTitle'
+        abortOnError false;
     }
 }
 
