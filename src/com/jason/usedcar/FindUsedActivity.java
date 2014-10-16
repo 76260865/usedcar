@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -40,228 +41,248 @@ import com.jason.usedcar.util.HttpUtil;
 
 /**
  * 筛选活动
- * 
+ *
  * @author Administrator
- * 
  */
 public class FindUsedActivity extends FragmentActivity implements
-		BrandsChooseDialogListener, PriceChooseDialogListener,
-		CarMilesChooseDialogListener, CarAgeChooseDialogListener {
-	private static final String TAG = "FindUsedActivity";
-	private static final String MANUAL_STR = "manufacturerVerified:";
+        BrandsChooseDialogListener, PriceChooseDialogListener,
+        CarMilesChooseDialogListener, CarAgeChooseDialogListener {
+    private static final String TAG = "FindUsedActivity";
+    private static final String MANUAL_STR = "manufacturerVerified:";
 
-	private TextView mTxtBrand;
-	private TextView mTxtSeriers;
-	private TextView mTxtPrice;
-	private TextView mTxtAge;
-	private TextView mTxtMiles;
-	private ToggleButton toggleBtnAuth;
-	private Button btnSearch;
-	private BrandsChooseFragment mBrandsChooseFragment;
-	private SeriesChooseFragment mSeriesChooseFragment;
-	private PriceChooseFragment mPriceChooseFragment;
-	private CarAgeChooseFragment mCarAgeChooseFragment;
-	private CarMilesChooseFragment mCarMilesChooseFragment;
-	private BrandFilterEntity mBrand;
-	private FilterEntity selectedPrice;
-	private FilterEntity selectedCarMile;
-	private FilterEntity selectedCarAge;
+    private TextView mTxtBrand;
+    private TextView mTxtSeriers;
+    private TextView mTxtPrice;
+    private TextView mTxtAge;
+    private TextView mTxtMiles;
+    private ToggleButton toggleBtnAuth;
+    private Button btnSearch;
+    private BrandsChooseFragment mBrandsChooseFragment;
+    private SeriesChooseFragment mSeriesChooseFragment;
+    private PriceChooseFragment mPriceChooseFragment;
+    private CarAgeChooseFragment mCarAgeChooseFragment;
+    private CarMilesChooseFragment mCarMilesChooseFragment;
+    private BrandFilterEntity mBrand;
+    private FilterEntity selectedPrice;
+    private FilterEntity selectedCarMile;
+    private FilterEntity selectedCarAge;
 
-	private ArrayList<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
-	private ArrayList<FilterEntity> prices = new ArrayList<FilterEntity>();
-	private ArrayList<FilterEntity> odometers = new ArrayList<FilterEntity>();
-	private ArrayList<FilterEntity> ages = new ArrayList<FilterEntity>();
+    private ArrayList<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
+    private ArrayList<FilterEntity> prices = new ArrayList<FilterEntity>();
+    private ArrayList<FilterEntity> odometers = new ArrayList<FilterEntity>();
+    private ArrayList<FilterEntity> ages = new ArrayList<FilterEntity>();
 
-	@Override
-	protected void onCreate(Bundle bundle) {
-		super.onCreate(bundle);
-		setContentView(R.layout.activity_find_used_car);
-		mTxtBrand = (TextView) findViewById(R.id.txt_brand);
-		mTxtPrice = (TextView) findViewById(R.id.txt_price);
-		mTxtAge = (TextView) findViewById(R.id.txt_age);
-		mTxtMiles = (TextView) findViewById(R.id.txt_miles);
-		mTxtBrand.setOnClickListener(mOnTxtBrandsClickListener);
-		mTxtSeriers = (TextView) findViewById(R.id.txt_seriers);
-		mTxtSeriers.setOnClickListener(mOnTxtSerierssClickListener);
-		mTxtPrice.setOnClickListener(mOnTxtPriceClickListener);
-		mTxtAge.setOnClickListener(mOnTxtAgeClickListener);
-		mTxtMiles.setOnClickListener(mOnTxtMilesClickListener);
-		toggleBtnAuth = (ToggleButton) findViewById(R.id.toggle_btn_auth);
-		btnSearch = (Button) findViewById(R.id.btn_search);
-		btnSearch.setOnClickListener(new OnBtnSearchClickListener());
-		initializeSearchFilter();
-	}
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView(R.layout.activity_find_used_car);
+        mTxtBrand = (TextView) findViewById(R.id.txt_brand);
+        mTxtPrice = (TextView) findViewById(R.id.txt_price);
+        mTxtAge = (TextView) findViewById(R.id.txt_age);
+        mTxtMiles = (TextView) findViewById(R.id.txt_miles);
+        mTxtBrand.setOnClickListener(mOnTxtBrandsClickListener);
+        mTxtSeriers = (TextView) findViewById(R.id.txt_seriers);
+        mTxtSeriers.setOnClickListener(mOnTxtSerierssClickListener);
+        mTxtPrice.setOnClickListener(mOnTxtPriceClickListener);
+        mTxtAge.setOnClickListener(mOnTxtAgeClickListener);
+        mTxtMiles.setOnClickListener(mOnTxtMilesClickListener);
+        toggleBtnAuth = (ToggleButton) findViewById(R.id.toggle_btn_auth);
+        btnSearch = (Button) findViewById(R.id.btn_search);
+        btnSearch.setOnClickListener(new OnBtnSearchClickListener());
+        initializeSearchFilter();
+    }
 
-	private class OnBtnSearchClickListener implements OnClickListener {
+    private class OnBtnSearchClickListener implements OnClickListener {
 
-		@Override
-		public void onClick(View v) {
-			// TODO start a intent with the extras to main screen
-		}
-	}
+        @Override
+        public void onClick(View v) {
+            // TODO start a intent with the extras to main screen
+            String filter = "";
+            if (mBrand != null) {
+                filter += mBrand.getFacetSelection() + ",";
+            }
+            if (selectedPrice != null) {
+                filter += selectedPrice.getFacetSelection() + ",";
+            }
+            if (selectedCarMile != null) {
+                filter += selectedCarMile.getFacetSelection() + ",";
+            }
+            if (selectedCarAge != null) {
+                filter += selectedCarAge.getFacetSelection() + ",";
+            }
+            if (toggleBtnAuth.isChecked()) {
+                //TODO: 添加过滤条件，写死
+            }
 
-	private void initializeSearchFilter() {
-		JsonObjectRequest request = new JsonObjectRequest(Method.POST,
-				HttpUtil.SEARCH_FILTER_URI, null, mResponseListener,
-				mErrorListener) {
+            Intent intent = new Intent();
+            intent.putExtra("filter", filter);
+            FindUsedActivity.this.setResult(RESULT_OK, intent);
+            finish();
+        }
+    }
 
-			@Override
-			public Map<String, String> getHeaders() throws AuthFailureError {
-				Map<String, String> headers = new HashMap<String, String>();
-				headers.put("Accept", "application/json");
-				headers.put("User-Agent", Config.USER_AGENT);
-				return headers;
-			}
-		};
-		RequestQueue queue = Volley.newRequestQueue(this);
-		queue.add(request);
-	}
+    private void initializeSearchFilter() {
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST,
+                HttpUtil.SEARCH_FILTER_URI, null, mResponseListener,
+                mErrorListener) {
 
-	private Response.Listener<JSONObject> mResponseListener = new Response.Listener<JSONObject>() {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("User-Agent", Config.USER_AGENT);
+                return headers;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
+    }
 
-		@Override
-		public void onResponse(JSONObject jsonObject) {
-			Log.d(TAG, jsonObject.toString());
-			try {
-				Gson gson = new Gson();
-				String brandArray = jsonObject.getString("brand");
-				brandsFilters = gson.fromJson(brandArray,
-						new TypeToken<ArrayList<BrandFilterEntity>>() {
-						}.getType());
-				Log.d(TAG, "brandsFilters.size():" + brandsFilters.size());
+    private Response.Listener<JSONObject> mResponseListener = new Response.Listener<JSONObject>() {
 
-				String priceArray = jsonObject.getString("price");
-				prices = gson.fromJson(priceArray,
-						new TypeToken<ArrayList<FilterEntity>>() {
-						}.getType());
-				Log.d(TAG, "prices.size():" + prices.size());
+        @Override
+        public void onResponse(JSONObject jsonObject) {
+            Log.d(TAG, jsonObject.toString());
+            try {
+                Gson gson = new Gson();
+                String brandArray = jsonObject.getString("brand");
+                brandsFilters = gson.fromJson(brandArray,
+                        new TypeToken<ArrayList<BrandFilterEntity>>() {
+                        }.getType());
+                Log.d(TAG, "brandsFilters.size():" + brandsFilters.size());
 
-				String odometer = jsonObject.getString("odometer");
-				odometers = gson.fromJson(odometer,
-						new TypeToken<ArrayList<FilterEntity>>() {
-						}.getType());
-				Log.d(TAG, "odometers.size():" + odometers.size());
+                String priceArray = jsonObject.getString("price");
+                prices = gson.fromJson(priceArray,
+                        new TypeToken<ArrayList<FilterEntity>>() {
+                        }.getType());
+                Log.d(TAG, "prices.size():" + prices.size());
 
-				String age = jsonObject.getString("age");
-				ages = gson.fromJson(age,
-						new TypeToken<ArrayList<FilterEntity>>() {
-						}.getType());
-				Log.d(TAG, "ages.size():" + ages.size());
+                String odometer = jsonObject.getString("odometer");
+                odometers = gson.fromJson(odometer,
+                        new TypeToken<ArrayList<FilterEntity>>() {
+                        }.getType());
+                Log.d(TAG, "odometers.size():" + odometers.size());
 
-			} catch (NumberFormatException e) {
-				Log.e(TAG, e.getMessage());
-			} catch (JSONException e) {
-				Log.e(TAG, e.getMessage());
-			}
-		}
+                String age = jsonObject.getString("age");
+                ages = gson.fromJson(age,
+                        new TypeToken<ArrayList<FilterEntity>>() {
+                        }.getType());
+                Log.d(TAG, "ages.size():" + ages.size());
 
-	};
+            } catch (NumberFormatException e) {
+                Log.e(TAG, e.getMessage());
+            } catch (JSONException e) {
+                Log.e(TAG, e.getMessage());
+            }
+        }
 
-	private Response.ErrorListener mErrorListener = new Response.ErrorListener() {
-		@Override
-		public void onErrorResponse(VolleyError error) {
-			// error
-			Log.e(TAG, new String(error.networkResponse.data).toString());
-		}
-	};
+    };
 
-	private OnClickListener mOnTxtAgeClickListener = new OnClickListener() {
+    private Response.ErrorListener mErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            // error
+            Log.e(TAG, new String(error.networkResponse.data).toString());
+        }
+    };
 
-		@Override
-		public void onClick(View v) {
-			if (mCarAgeChooseFragment == null) {
-				mCarAgeChooseFragment = new CarAgeChooseFragment(ages);
-				mCarAgeChooseFragment
-						.setCarAgeChooseDialogListener(FindUsedActivity.this);
-			}
-			mCarAgeChooseFragment.show(getSupportFragmentManager(),
-					"ageChooseDialog");
-		}
-	};
-	private OnClickListener mOnTxtMilesClickListener = new OnClickListener() {
+    private OnClickListener mOnTxtAgeClickListener = new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			if (mCarMilesChooseFragment == null) {
-				mCarMilesChooseFragment = new CarMilesChooseFragment(odometers);
-				mCarMilesChooseFragment
-						.setCarMilesChooseDialogListener(FindUsedActivity.this);
-			}
-			mCarMilesChooseFragment.show(getSupportFragmentManager(),
-					"milesChooseDialog");
-		}
-	};
+        @Override
+        public void onClick(View v) {
+            if (mCarAgeChooseFragment == null) {
+                mCarAgeChooseFragment = new CarAgeChooseFragment(ages);
+                mCarAgeChooseFragment
+                        .setCarAgeChooseDialogListener(FindUsedActivity.this);
+            }
+            mCarAgeChooseFragment.show(getSupportFragmentManager(),
+                    "ageChooseDialog");
+        }
+    };
+    private OnClickListener mOnTxtMilesClickListener = new OnClickListener() {
 
-	private OnClickListener mOnTxtPriceClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mCarMilesChooseFragment == null) {
+                mCarMilesChooseFragment = new CarMilesChooseFragment(odometers);
+                mCarMilesChooseFragment
+                        .setCarMilesChooseDialogListener(FindUsedActivity.this);
+            }
+            mCarMilesChooseFragment.show(getSupportFragmentManager(),
+                    "milesChooseDialog");
+        }
+    };
 
-		@Override
-		public void onClick(View v) {
-			if (mPriceChooseFragment == null) {
-				mPriceChooseFragment = new PriceChooseFragment(prices);
-				mPriceChooseFragment
-						.setPriceChooseDialogListener(FindUsedActivity.this);
-			}
-			mPriceChooseFragment.show(getSupportFragmentManager(),
-					"priceChooseDialog");
-		}
-	};
-	private OnClickListener mOnTxtSerierssClickListener = new OnClickListener() {
+    private OnClickListener mOnTxtPriceClickListener = new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			if (mSeriesChooseFragment == null) {
-				mSeriesChooseFragment = new SeriesChooseFragment();
-			}
-			mSeriesChooseFragment.show(getSupportFragmentManager(),
-					"seriesChooseDialog");
-		}
-	};
+        @Override
+        public void onClick(View v) {
+            if (mPriceChooseFragment == null) {
+                mPriceChooseFragment = new PriceChooseFragment(prices);
+                mPriceChooseFragment
+                        .setPriceChooseDialogListener(FindUsedActivity.this);
+            }
+            mPriceChooseFragment.show(getSupportFragmentManager(),
+                    "priceChooseDialog");
+        }
+    };
+    private OnClickListener mOnTxtSerierssClickListener = new OnClickListener() {
 
-	private OnClickListener mOnTxtBrandsClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mSeriesChooseFragment == null) {
+                mSeriesChooseFragment = new SeriesChooseFragment();
+            }
+            mSeriesChooseFragment.show(getSupportFragmentManager(),
+                    "seriesChooseDialog");
+        }
+    };
 
-		@Override
-		public void onClick(View v) {
-			if (mBrandsChooseFragment == null) {
-				mBrandsChooseFragment = new BrandsChooseFragment(brandsFilters);
-				mBrandsChooseFragment
-						.setBrandsChooseDialogListener(FindUsedActivity.this);
-			}
-			mBrandsChooseFragment.show(getSupportFragmentManager(),
-					"brandsChooseDialog");
-		}
-	};
+    private OnClickListener mOnTxtBrandsClickListener = new OnClickListener() {
 
-	@Override
-	public void onBrandChoosed(BrandFilterEntity brand) {
-		Log.d(TAG, "brandId: " + brand.getName());
-		mBrand = brand;
-		mTxtBrand.setText(mBrand.getName());
-		mBrandsChooseFragment.dismiss();
+        @Override
+        public void onClick(View v) {
+            if (mBrandsChooseFragment == null) {
+                mBrandsChooseFragment = new BrandsChooseFragment(brandsFilters);
+                mBrandsChooseFragment
+                        .setBrandsChooseDialogListener(FindUsedActivity.this);
+            }
+            mBrandsChooseFragment.show(getSupportFragmentManager(),
+                    "brandsChooseDialog");
+        }
+    };
 
-	}
+    @Override
+    public void onBrandChoosed(BrandFilterEntity brand) {
+        Log.d(TAG, "brandId: " + brand.getName());
+        mBrand = brand;
+        mTxtBrand.setText(mBrand.getName());
+        mBrandsChooseFragment.dismiss();
 
-	@Override
-	public void onPriceChoosed(FilterEntity filter) {
-		Log.d(TAG, "selected price : " + filter.getName());
-		selectedPrice = filter;
-		mTxtPrice.setText(filter.getName());
-		mPriceChooseFragment.dismiss();
-	}
+    }
 
-	@Override
-	public void onCarMilesSelected(FilterEntity filter) {
-		Log.d(TAG, "selected omerter : " + filter.getName());
-		selectedCarMile = filter;
-		mTxtMiles.setText(filter.getName());
-		mCarMilesChooseFragment.dismiss();
-	}
+    @Override
+    public void onPriceChoosed(FilterEntity filter) {
+        Log.d(TAG, "selected price : " + filter.getName());
+        selectedPrice = filter;
+        mTxtPrice.setText(filter.getName());
+        mPriceChooseFragment.dismiss();
+    }
 
-	@Override
-	public void onCarAgeChoosed(FilterEntity filter) {
-		Log.d(TAG, "selected car age : " + filter.getName());
-		selectedCarAge = filter;
-		mTxtAge.setText(filter.getName());
-		mCarAgeChooseFragment.dismiss();
-	}
+    @Override
+    public void onCarMilesSelected(FilterEntity filter) {
+        Log.d(TAG, "selected omerter : " + filter.getName());
+        selectedCarMile = filter;
+        mTxtMiles.setText(filter.getName());
+        mCarMilesChooseFragment.dismiss();
+    }
+
+    @Override
+    public void onCarAgeChoosed(FilterEntity filter) {
+        Log.d(TAG, "selected car age : " + filter.getName());
+        selectedCarAge = filter;
+        mTxtAge.setText(filter.getName());
+        mCarAgeChooseFragment.dismiss();
+    }
 
 }
