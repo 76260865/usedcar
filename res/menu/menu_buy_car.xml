@@ -4,7 +4,7 @@
     <item
             android:id="@+id/action_search"
             android:icon="@android:drawable/ic_menu_search"
-            android:title="搜索"
-            car:showAsAction="ifRoom|collapseActionView"
+            android:title="筛选"
+            car:showAsAction="always"
             car:actionViewClass="android.support.v7.widget.SearchView" />
 </menu>
