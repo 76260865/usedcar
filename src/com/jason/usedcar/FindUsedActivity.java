@@ -112,11 +112,14 @@ public class FindUsedActivity extends FragmentActivity implements
             }
             if (toggleBtnAuth.isChecked()) {
                 //TODO: 添加过滤条件，写死
+                filter += " manufacturerVerified:true";
+            } else {
+                filter += " manufacturerVerified:false";
             }
 
             Intent intent = new Intent();
             intent.putExtra("filter", filter);
-            FindUsedActivity.this.setResult(RESULT_OK, intent);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }
