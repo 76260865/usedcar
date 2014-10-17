@@ -53,6 +53,10 @@ public class PersonalCenterFragment extends
                 getPresenter().tradeHistory(getActivity());
                 break;
             case R.id.info_center_identify:
+                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
                 getPresenter().identify(getActivity());
                 break;
             case R.id.info_center_my_collect_cars:

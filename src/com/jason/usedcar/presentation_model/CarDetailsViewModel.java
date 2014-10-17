@@ -2,14 +2,11 @@ package com.jason.usedcar.presentation_model;
 
 import android.os.Build;
 import android.view.View;
-import android.widget.Toast;
 import com.jason.usedcar.Application;
 import com.jason.usedcar.MessageToast;
 import com.jason.usedcar.RestClient;
-import com.jason.usedcar.model.data.Product;
+import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.request.CarRequest;
-import com.jason.usedcar.response.CarResponse;
-import com.jason.usedcar.response.CarResponse2;
 import com.jason.usedcar.response.CarResponse3;
 import com.jason.usedcar.response.Response;
 import org.robobinding.aspects.PresentationModel;
@@ -24,8 +21,8 @@ import retrofit.RetrofitError;
 public class CarDetailsViewModel {
 
     private static final String[] METHODS = new String[] {
-            "贷款或全款",
-            "全款购买"
+            "可议价",
+            "一口价"
     };
 
     private int contentVisibility;
@@ -34,7 +31,9 @@ public class CarDetailsViewModel {
 
     private int nothingVisibility;
 
-    private Product product;
+    private String productId;
+
+    private int type;
 
     private CarResponse3 carResponse = new CarResponse3();
 
@@ -42,8 +41,9 @@ public class CarDetailsViewModel {
 
     private PresentationModelChangeSupport presentationModelChangeSupport;
 
-    public CarDetailsViewModel(Product product, CarDetailsView carDetailsView) {
-        this.product = product;
+    public CarDetailsViewModel(String productId, int type, CarDetailsView carDetailsView) {
+        this.productId = productId;
+        this.type = type;
         this.carDetailsView = carDetailsView;
         this.presentationModelChangeSupport = new PresentationModelChangeSupport(this);
     }
@@ -57,7 +57,7 @@ public class CarDetailsViewModel {
     }
 
     public String getPriceType() {
-        return carResponse.getPriceType() == null || carResponse.getPriceType() == 0 ? "一口价" : "可议价";
+        return carResponse.getPriceType() == null || carResponse.getPriceType() == 0 ? "可议价" : "一口价";
     }
 
     public String getPayType() {
@@ -115,7 +115,7 @@ public class CarDetailsViewModel {
             return;
         }
         carDetailsView.before();
-        new RestClient().addToCart(product.getProductId(), carDetailsView.getAccessToken(),
+        new RestClient().addToCart(productId, carDetailsView.getAccessToken(),
                 Build.SERIAL, new Callback<Response>() {
                     @Override
                     public void success(final Response response, final retrofit.client.Response response2) {
@@ -144,7 +144,7 @@ public class CarDetailsViewModel {
         presentationModelChangeSupport.firePropertyChange("progressVisibility");
         presentationModelChangeSupport.firePropertyChange("nothingVisibility");
         CarRequest carRequest = new CarRequest();
-        carRequest.setProductId(product.getProductId());
+        carRequest.setProductId(productId);
         carRequest.setAccessToken(Application.sampleAccessToken);
         new RestClient().getUsedCar(carRequest, new Callback<CarResponse3>() {
             @Override
@@ -167,7 +167,15 @@ public class CarDetailsViewModel {
         });
     }
 
-    public Product getProduct() {
-        return product;
+    public String getProductId() {
+        return productId;
+    }
+
+    public CarResponse3 getCarResponse() {
+        return carResponse;
+    }
+
+    public int getBuyVisibility() {
+        return type == Constants.CarDetailsType.BUY ? View.VISIBLE : View.GONE;
     }
 }

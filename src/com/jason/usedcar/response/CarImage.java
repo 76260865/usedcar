@@ -1,9 +1,11 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
+
 /**
  * @author t77yq @2014-09-29.
  */
-public class CarImage {
+public class CarImage implements Serializable {
 
     private Integer imageId;
     private String name;

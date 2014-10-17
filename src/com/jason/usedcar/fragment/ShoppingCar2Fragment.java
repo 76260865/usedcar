@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.jason.usedcar.Application;
+import com.jason.usedcar.CarDetails2Activity;
 import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
@@ -59,7 +60,10 @@ public class ShoppingCar2Fragment extends AbsFragment implements ShoppingCarView
 
     @Override
     public void viewProductDetails(final Product product) {
-
+        Intent detailsIntent = new Intent(getContext(), CarDetails2Activity.class);
+        detailsIntent.putExtra("product_id", product.getProductId());
+        detailsIntent.putExtra("type", Constants.CarDetailsType.OTHER);
+        startActivity(detailsIntent);
     }
 
     @Override
@@ -85,5 +89,10 @@ public class ShoppingCar2Fragment extends AbsFragment implements ShoppingCarView
     @Override
     public String getAccessToken() {
         return Application.fromActivity(getActivity()).getAccessToken();
+    }
+
+    @Override
+    public void finish() {
+        getActivity().finish();
     }
 }

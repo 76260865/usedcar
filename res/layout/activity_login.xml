@@ -21,14 +21,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
         <EditText
-            style="@style/Phone.EditText"
+                style="@style/Phone.EditText"
                 android:id="@+id/login_edit_username"
                 android:drawableLeft="@drawable/avatar_icon"
                 android:drawablePadding="10dip"
                 android:inputType="phone"
                 android:src="@drawable/avatar_icon"/>
         <EditText
-            style="@style/EditText"
+                style="@style/EditText"
                 android:id="@+id/login_edit_password"
                 android:layout_marginTop="6dp"
                 android:drawableLeft="@drawable/password_icon"
@@ -43,10 +43,35 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:text="@string/chk_save_user_name_text"/>
+    <RadioGroup
+            android:id="@+id/userTypeRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+        <RadioButton
+                android:id="@+id/radioPersonal"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:checked="true"
+                android:text="个人"
+                android:textColor="#666666"/>
+        <RadioButton
+                android:id="@+id/radioReseller"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_marginLeft="20dip"
+                android:text="经销商"
+                android:textColor="#666666"/>
+    </RadioGroup>
     <Button
             style="@style/Button"
             android:id="@+id/login_btn_login"
-            android:layout_marginTop="20dip"
+            android:layout_marginTop="10dip"
             android:onClick="onClick"
             android:text="@string/btn_login_text"/>
     <LinearLayout

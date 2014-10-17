@@ -5,7 +5,9 @@ package com.jason.usedcar.presentation_model;
  */
 public interface ResellerAuthView extends ViewBase {
 
-    void launchCamera();
+    void before();
 
-    void openDatePicker();
+    void after();
+
+    boolean isReseller();
 }

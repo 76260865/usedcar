@@ -1,7 +1,5 @@
 package com.jason.usedcar.presentation_model;
 
-import com.jason.usedcar.model.data.Product;
-
 /**
  * @author t77yq @2014-09-29.
  */
@@ -15,5 +13,7 @@ public interface CarDetailsView extends ViewBase {
 
     void after();
 
-    Product getProduct();
+    String getProductId();
+
+    void editCar();
 }

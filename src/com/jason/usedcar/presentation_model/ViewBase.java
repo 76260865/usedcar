@@ -16,4 +16,6 @@ public interface ViewBase {
     void login(int requestCode);
 
     String getAccessToken();
+
+    void finish();
 }

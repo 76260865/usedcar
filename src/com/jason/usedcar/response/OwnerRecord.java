@@ -1,12 +1,13 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author t77yq @2014-10-03.
  */
-public class OwnerRecord {
+public class OwnerRecord implements Serializable {
 
     private Integer ownerId;
     private String ownerPurchaseDate;

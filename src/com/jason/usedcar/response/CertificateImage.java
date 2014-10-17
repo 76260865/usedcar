@@ -1,10 +1,12 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
+
 /**
  * @author t77yq @2014-09-29.
  */
 
-public class CertificateImage {
+public class CertificateImage implements Serializable {
 
     private Integer imageId;
     private String description;
@@ -14,7 +16,7 @@ public class CertificateImage {
     private String sizeSmall;
     private String sizeThumbnail;
     private String type;
-    private Integer updateTime;
+    private String updateTime;
     private String name;
     private Object productId;
 
@@ -82,11 +84,11 @@ public class CertificateImage {
         this.type = type;
     }
 
-    public Integer getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Integer updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 

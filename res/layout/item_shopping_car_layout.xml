@@ -55,7 +55,7 @@
             android:layout_gravity="top|right"
             android:padding="1dip"
             android:textColor="#FB6D0B"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:text="一口价"
             tools:visibility="visible"/>
     </FrameLayout>

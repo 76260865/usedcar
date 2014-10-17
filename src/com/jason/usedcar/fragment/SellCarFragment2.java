@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.jason.usedcar.Application;
+import com.jason.usedcar.CarDetails2Activity;
 import com.jason.usedcar.CarDetailsActivity;
 import com.jason.usedcar.LoginActivity;
 import com.jason.usedcar.R;
@@ -91,8 +92,9 @@ public class SellCarFragment2 extends AbsFragment implements ViewSellingCarView 
 
     @Override
     public void viewProductDetails(Product product) {
-        Intent viewProductDetails = new Intent(getActivity(), CarDetailsActivity.class);
-        viewProductDetails.putExtra("product", product);
+        Intent viewProductDetails = new Intent(getActivity(), CarDetails2Activity.class);
+        viewProductDetails.putExtra("product_id", product.getProductId());
+        viewProductDetails.putExtra("type", Constants.CarDetailsType.SELL);
         startActivity(viewProductDetails);
     }
 
@@ -124,5 +126,10 @@ public class SellCarFragment2 extends AbsFragment implements ViewSellingCarView 
     @Override
     public String getAccessToken() {
         return Application.fromActivity(getActivity()).getAccessToken();
+    }
+
+    @Override
+    public void finish() {
+        getActivity().finish();
     }
 }

@@ -9,7 +9,9 @@ public interface ViewBuyCarView {
 
     void fillFilter();
 
-    void search();
+    void search(String queryStr);
+
+    void search2(String where);
 
     void viewProductDetails(Product product);
 

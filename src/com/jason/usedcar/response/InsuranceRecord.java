@@ -1,9 +1,11 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
+
 /**
  * @author t77yq @2014-10-03.
  */
-public class InsuranceRecord {
+public class InsuranceRecord implements Serializable {
 
     private Integer insuranceId;
     private String insuranceDate;

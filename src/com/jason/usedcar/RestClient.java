@@ -7,6 +7,7 @@ import com.jason.usedcar.model.data.City;
 import com.jason.usedcar.model.data.County;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
+import com.jason.usedcar.request.AuthenticateUserRequest;
 import com.jason.usedcar.request.CarRequest;
 import com.jason.usedcar.request.CityRequest;
 import com.jason.usedcar.request.CountyRequest;
@@ -872,5 +873,26 @@ public class RestClient {
                               Callback<SellingCarResponse> callback) {
         createService("getSellingCar", POOL, ICarUnderSale.class)
                 .getSellingCar(request.getAccessToken(), request.getDeviceId(), callback);
+    }
+
+    interface IAuthenticateUser {
+        @Multipart
+        @POST("/account/authenticateUser.json")
+        public void authenticateUser(@Part("realName") String name,
+                                     @Part("certificateType") int certificateType,
+                                     @Part("certificateNumber") String certificateNumber,
+                                     @Part("bankName") String bankName,
+                                     @Part("bankAccount") String bankAccount,
+                                     @Part("accessToken") String accessToken,
+                                     @Part("deviceId") String deviceId,
+                                     Callback<Response> callback);
+    }
+
+    public void authenticateUser(String name, int certificateType, String certificateNumber,
+                                 String bankName, String bankAccount, String accessToken,
+                                 String deviceId, Callback<Response> callback) {
+        createService("authenticateUser", POOL, IAuthenticateUser.class)
+                .authenticateUser(name, certificateType, certificateNumber, bankName,
+                        bankAccount, accessToken, deviceId, callback);
     }
 }

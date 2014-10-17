@@ -18,4 +18,10 @@
             app:showAsAction="always"
             bind:onMenuItemClick="cancelFavorite"
             bind:visible="{added}"/>
+    <item
+            android:id="@+id/action_edit"
+            android:title="编辑"
+            app:showAsAction="always"
+            bind:onMenuItemClick="editCar"
+            bind:visible="{edit}"/>
 </menu>

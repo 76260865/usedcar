@@ -64,6 +64,7 @@ dependencies {
     aspectPath "org.robobinding:robobinding:0.8.8:with-aop"
     compile 'com.android.support:appcompat-v7:19+'
     compile 'com.android.support:support-v4:19+'
+    compile 'com.github.bumptech.glide:glide:3.3.+'
 }
 
 android {

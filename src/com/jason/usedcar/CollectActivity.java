@@ -1,7 +1,9 @@
 package com.jason.usedcar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.model.data.Product;
 import com.jason.usedcar.presentation_model.MenuCollectionViewModel;
@@ -46,7 +48,12 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
 
     @Override
     public void viewCollectionItem(Product product) {
-        MessageToast.makeText(this, product.getProductName()).show();
+        if (!isEditable) {
+            Intent detailsIntent = new Intent(getContext(), CarDetails2Activity.class);
+            detailsIntent.putExtra("product_id", product.getProductId());
+            detailsIntent.putExtra("type", Constants.CarDetailsType.OTHER);
+            startActivity(detailsIntent);
+        }
     }
 
     @Override

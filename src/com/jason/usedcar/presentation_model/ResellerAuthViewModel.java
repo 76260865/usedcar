@@ -1,9 +1,15 @@
 package com.jason.usedcar.presentation_model;
 
 import android.text.TextUtils;
+import android.view.View;
+import com.jason.usedcar.MessageToast;
+import com.jason.usedcar.RestClient;
+import com.jason.usedcar.request.Request;
+import com.jason.usedcar.response.Response;
 import org.robobinding.aspects.PresentationModel;
 import org.robobinding.presentationmodel.PresentationModelChangeSupport;
-import org.robobinding.property.PropertyChangeSupport;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 /**
  * @author t77yq @2014-09-27.
@@ -11,21 +17,20 @@ import org.robobinding.property.PropertyChangeSupport;
 @PresentationModel
 public class ResellerAuthViewModel {
 
-    private String accountName;
-
     private String name;
 
     private String bankName;
 
     private String bankAccount;
 
-    private int year;
+    /*
+     * 0 : 身份证
+     * 1 : 护照
+     * 2 : 军人证
+     */
+    private int certificateType;
 
-    private int month;
-
-    private int day;
-
-    private String foundationTime;
+    private String certificateNumber;
 
     private ResellerAuthView resellerAuthView;
 
@@ -36,20 +41,20 @@ public class ResellerAuthViewModel {
         this.presentationModelChangeSupport = new PresentationModelChangeSupport(this);
     }
 
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(final String accountName) {
-        this.accountName = accountName;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getCertificateNumber() {
+        return certificateNumber;
+    }
+
+    public void setCertificateNumber(String certificateNumber) {
+        this.certificateNumber = certificateNumber;
     }
 
     public String getBankName() {
@@ -68,42 +73,22 @@ public class ResellerAuthViewModel {
         this.bankAccount = bankAccount;
     }
 
-    public void setYear(final int year) {
-        this.year = year;
+    public void setCertificateType(int certificateType) {
+        this.certificateType = certificateType;
     }
 
-    public void setMonth(final int month) {
-        this.month = month;
-    }
-
-    public void setDay(final int day) {
-        this.day = day;
-    }
-
-    public String getFoundationTime() {
-        return foundationTime;
-    }
-
-    public void updateFoundationTime() {
-        foundationTime = String.format("%d年%02d月", year, month, day);
-        presentationModelChangeSupport.firePropertyChange("foundationTime");
-    }
-
-    public void pickTime() {
-        resellerAuthView.openDatePicker();
-    }
-
-    public void getPic() {
-        resellerAuthView.launchCamera();
+    public int getNormal() {
+        return resellerAuthView.isReseller() ? View.GONE : View.VISIBLE;
     }
 
     public void authorize() {
-        //
-        if (TextUtils.isEmpty(accountName)) {
-            return;
-        }
-        if (TextUtils.isEmpty(name)) {
-            return;
+        if (!resellerAuthView.isReseller()) {
+            if (TextUtils.isEmpty(name)) {
+                return;
+            }
+            if (TextUtils.isEmpty(certificateNumber)) {
+                return;
+            }
         }
         if (TextUtils.isEmpty(bankName)) {
             return;
@@ -111,5 +96,22 @@ public class ResellerAuthViewModel {
         if (TextUtils.isEmpty(bankAccount)) {
             return;
         }
+        resellerAuthView.before();
+        new RestClient().authenticateUser(name, certificateType, certificateNumber, bankName, bankAccount,
+                resellerAuthView.getAccessToken(), new Request().getDeviceId(), new Callback<Response>() {
+                    @Override
+                    public void success(final Response response, final retrofit.client.Response response2) {
+                        resellerAuthView.after();
+                        if (response != null && response.isExecutionResult()) {
+                            MessageToast.makeText(resellerAuthView.getContext(), response.getMessage()).show();
+                            resellerAuthView.finish();
+                        }
+                    }
+
+                    @Override
+                    public void failure(final RetrofitError error) {
+                        resellerAuthView.after();
+                    }
+                });
     }
 }

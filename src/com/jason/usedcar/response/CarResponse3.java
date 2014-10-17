@@ -1,12 +1,13 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author t77yq @2014-10-03.
  */
-public class CarResponse3 extends Response {
+public class CarResponse3 extends Response implements Serializable {
 
     private String productName;
     private String brandName;
@@ -16,7 +17,7 @@ public class CarResponse3 extends Response {
     private List<String> imageIds = new ArrayList<String>();
     private List<LicenseImage> licenseImages = new ArrayList<LicenseImage>();
     private List<String> licenseImageIds = new ArrayList<String>();
-    private String certificateImage;
+    private CertificateImage certificateImage;
     private String certificateImageId;
     private String purchaseDate;
     private Integer odometer;
@@ -100,11 +101,11 @@ public class CarResponse3 extends Response {
         this.licenseImageIds = licenseImageIds;
     }
 
-    public String getCertificateImage() {
+    public CertificateImage getCertificateImage() {
         return certificateImage;
     }
 
-    public void setCertificateImage(String certificateImage) {
+    public void setCertificateImage(CertificateImage certificateImage) {
         this.certificateImage = certificateImage;
     }
 

@@ -1,9 +1,11 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
+
 /**
  * @author t77yq @2014-10-03.
  */
-public class CarBaseInfo {
+public class CarBaseInfo implements Serializable {
 
     private Integer basicId;
     private String brandAndModel;

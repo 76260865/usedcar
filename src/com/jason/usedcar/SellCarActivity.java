@@ -8,6 +8,7 @@ import com.jason.usedcar.fragment.CompleteCarInfoFragment;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.fragment.ResellerInfoFragment;
 import com.jason.usedcar.request.PublishUsedCarRequest;
+import com.jason.usedcar.response.CarResponse3;
 import com.jason.usedcar.response.Response;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -19,13 +20,16 @@ public class SellCarActivity extends BaseActivity implements Action {
 
     private PublishUsedCarRequest publishUsedCarParam = new PublishUsedCarRequest();
 
+    public CarResponse3 carResponse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sell_car);
+        carResponse = (CarResponse3) getIntent().getSerializableExtra("car_response");
         getSupportFragmentManager().beginTransaction().add(
                 R.id.activity_sell_car_container,
-                new CompleteCarInfoFragment(),
+                new CarBaseInfoFragment(),
                 ""
         ).commit();
     }

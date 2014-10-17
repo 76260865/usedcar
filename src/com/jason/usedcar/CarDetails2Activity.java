@@ -5,11 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.fragment.LoadingFragment;
-import com.jason.usedcar.model.data.Product;
 import com.jason.usedcar.presentation_model.CarDetailsView;
 import com.jason.usedcar.presentation_model.CarDetailsViewModel;
 import com.jason.usedcar.presentation_model.MenuDetailsViewModel;
+import com.jason.usedcar.response.CarResponse3;
 import org.robobinding.MenuBinder;
 
 /**
@@ -28,15 +29,17 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
         getSupportActionBar().setDisplayUseLogoEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
         getSupportActionBar().setIcon(android.R.color.transparent);
-        Product product = (Product) getIntent().getSerializableExtra("product");
-        carDetailsViewModel = new CarDetailsViewModel(product, this);
+        String productId = getIntent().getStringExtra("product_id");
+        int type = getIntent().getIntExtra("type", Constants.CarDetailsType.OTHER);
+        carDetailsViewModel = new CarDetailsViewModel(productId, type, this);
         initContentView(R.layout.activity_car_details2, carDetailsViewModel);
         carDetailsViewModel.loadData();
     }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        MenuDetailsViewModel menuDetailsViewModel = new MenuDetailsViewModel(this);
+        int type = getIntent().getIntExtra("type", Constants.CarDetailsType.OTHER);
+        MenuDetailsViewModel menuDetailsViewModel = new MenuDetailsViewModel(type, this);
         MenuBinder menuBinder = createMenuBinder(menu, getMenuInflater());
         menuBinder.inflateAndBind(R.menu.menu_save, menuDetailsViewModel);
         return super.onCreateOptionsMenu(menu);
@@ -78,7 +81,14 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
     }
 
     @Override
-    public Product getProduct() {
-        return carDetailsViewModel.getProduct();
+    public String getProductId() {
+        return carDetailsViewModel.getProductId();
+    }
+
+    @Override
+    public void editCar() {
+        Intent edit = new Intent(this, SellCarActivity.class);
+        edit.putExtra("car_response", carDetailsViewModel.getCarResponse());
+        startActivity(edit);
     }
 }

@@ -16,6 +16,8 @@ public class Application extends com.activeandroid.app.Application {
 
     public int userId;
 
+    public boolean isReseller;
+
     public static String sampleAccessToken;
 
     public String username;

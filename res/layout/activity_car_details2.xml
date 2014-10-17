@@ -132,7 +132,8 @@
                     tools:text="成都市天府广场199号"/>
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    bind:visibility="{buyVisibility}">
                 <Button
                         android:id="@+id/btnDial"
                         android:layout_width="0dip"

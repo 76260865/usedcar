@@ -98,7 +98,11 @@ public class ViewBuyCarPresentationModel extends ViewModelBase {
             view.showMessage("请选择筛选条件");
             return;
         }
-        view.search();
+        view.search(filter);
+    }
+
+    public void search2() {
+        view.search("");
     }
 
     public FooterPresentationModel getFooter() {

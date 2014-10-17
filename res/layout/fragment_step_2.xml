@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://robobinding.org/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <LinearLayout
@@ -51,7 +52,8 @@
                     android:layout_weight="1"
                     android:background="#69C4C4C4"
                     android:scaleType="centerInside"
-                    android:src="@drawable/tips_upload"/>
+                    android:src="@drawable/tips_upload"
+                    bind:src="{frontPhoto}"/>
         </LinearLayout>
         <View
                 android:layout_width="1dip"
@@ -77,7 +79,8 @@
                     android:layout_weight="1"
                     android:background="#69C4C4C4"
                     android:scaleType="centerInside"
-                    android:src="@drawable/tips_upload"/>
+                    android:src="@drawable/tips_upload"
+                    bind:src="{leftPhoto}"/>
         </LinearLayout>
         <View
                 android:layout_width="1dip"
@@ -103,7 +106,8 @@
                     android:layout_weight="1"
                     android:background="#69C4C4C4"
                     android:scaleType="centerInside"
-                    android:src="@drawable/tips_upload"/>
+                    android:src="@drawable/tips_upload"
+                    bind:src="{rightPhoto}"/>
         </LinearLayout>
         <TextView
                 android:layout_width="match_parent"
@@ -121,7 +125,8 @@
                 android:layout_height="128dip"
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
-                android:src="@drawable/tips_upload"/>
+                android:src="@drawable/tips_upload"
+                bind:src="{otherPhoto1}"/>
         <View
                 android:layout_width="1dip"
                 android:layout_height="1dip"/>
@@ -132,7 +137,8 @@
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                bind:src="{otherPhoto2}"/>
         <View
                 android:layout_width="1dip"
                 android:layout_height="1dip"/>
@@ -143,6 +149,7 @@
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                bind:src="{otherPhoto3}"/>
     </LinearLayout>
 </ScrollView>
