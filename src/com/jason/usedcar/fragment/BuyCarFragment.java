@@ -1,10 +1,12 @@
 package com.jason.usedcar.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +18,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,14 +45,17 @@ public class BuyCarFragment extends
     CallButtonUi, OnClickListener {
 
     @Required(order = 1)
-    private TextView filterText;
+    private EditText filterText;
 
     private SaleCarModel saleCarModel = new SaleCarModel();
+
+    private DropDownListView saleCarlList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        getActivity().setTitle("我要买车");
     }
 
     @Override
@@ -62,9 +68,9 @@ public class BuyCarFragment extends
         super.onViewCreated(view, savedInstanceState);
         getPresenter().login(getActivity());
         filterText = getView(view, R.id.textSaleCarFilter);
-        filterText.setOnClickListener(this);
+//        filterText.setOnClickListener(this);
         getView(view, R.id.saleCarFilterButton).setOnClickListener(this);
-        final DropDownListView saleCarlList = getView(view, R.id.usedCarList);
+        saleCarlList = getView(view, R.id.usedCarList);
         saleCarlList.setOnDropDownListener(new DropDownListView.OnDropDownListener() {
             @Override
             public void onDropDown() {
@@ -145,22 +151,49 @@ public class BuyCarFragment extends
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
-                searchView.setOnQueryTextListener(new OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        getPresenter().filterCar(getActivity(), s);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-                        return false;
-                    }
-                });
+                startActivityForResult(new Intent(getActivity(), FindUsedActivity.class), 1000);
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == 1000) {
+                String filter = data.getStringExtra("filter");
+                getPresenter().filterCar(getActivity(), filter);
+                filerUsedCarList(filter, null);
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void filerUsedCarList(String filter, String queryString) {
+        SearchProductRequest searchProductRequest = new SearchProductRequest();
+        searchProductRequest.setPageSize(SaleCarModel.PAGE_SIZE);
+        if(!TextUtils.isEmpty(filter)){
+            searchProductRequest.setFacetSelections(filter);
+        }
+        if(!TextUtils.isEmpty(queryString)){
+            searchProductRequest.setQueryString(queryString);
+        }
+        new RestClient().searchProduct(searchProductRequest, new Callback<SearchProductResponse>() {
+            @Override
+            public void success(final SearchProductResponse response, final Response response2) {
+                if (response != null && response.isExecutionResult()) {
+                    saleCarModel.clearAll();
+                    saleCarModel.add(response.getProductList());
+                    saleCarModel.notifyDataSetInvalidated();
+                }
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+            }
+        });
     }
 
     @Override
@@ -188,7 +221,7 @@ public class BuyCarFragment extends
                 break;
             case R.id.saleCarFilterButton:
 //                getValidator().validate();
-                startActivity(new Intent(getActivity(), FindUsedActivity.class));
+                filerUsedCarList(null, filterText.getText().toString());
                 break;
         }
     }

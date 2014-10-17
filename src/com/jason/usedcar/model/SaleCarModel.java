@@ -31,6 +31,10 @@ public class SaleCarModel extends BaseModel {
         }
     }
 
+    public  void clearAll() {
+        this.data.clear();
+    }
+
     public boolean isLoading() {
         return loading;
     }
