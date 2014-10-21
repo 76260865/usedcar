@@ -29,13 +29,31 @@
         android:layout_height="1.0px"
         android:background="#ffe0e0e0" />
 
-    <TextView
-        android:id="@+id/txt_seriers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="车系:"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="gone" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50.0dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="车系:"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+        <TextView
+            android:id="@+id/txt_seriers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1.0px"
+        android:background="#ffe0e0e0" />
 
     <LinearLayout
         android:layout_width="fill_parent"

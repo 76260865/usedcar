@@ -3,6 +3,8 @@ package com.jason.usedcar.fragment;
 import com.jason.usedcar.Action;
 import com.jason.usedcar.R;
 import com.jason.usedcar.RestClient;
+import com.jason.usedcar.model.data.FacetSeries;
+import com.jason.usedcar.model.data.FilterEntity;
 import com.jason.usedcar.request.*;
 import java.util.List;
 
@@ -35,11 +37,13 @@ public class SeriesChooseFragment extends DialogFragment {
 
     private SeriersAdapter mAdapter;
 
+    public  String facetSelection;
+
     /**
      * 实现这个接口的类需要实现这两个方法
      */
     public interface SeriersChooseDialogListener {
-        void onSeriersChoosed(int brandId);
+        void onSeriersChoosed(FilterEntity filter);
     }
 
     @Override
@@ -65,10 +69,12 @@ public class SeriesChooseFragment extends DialogFragment {
         mAdapter = new SeriersAdapter(getActivity(), mSeriersModel);
         if (mSeriersModel.isEmpty()) {
             SeriesRequest seriesRequest = new SeriesRequest();
-            new RestClient().getSeries(seriesRequest, new Callback<List<Series>>() {
+            seriesRequest.setFacetSelections(facetSelection);
+            new RestClient().getSeriesByBrandSelection(seriesRequest, new Callback<List<FacetSeries>>() {
                 @Override
-                public void success(List<Series> serieses, retrofit.client.Response response) {
-                    mSeriersModel.add(serieses);
+                public void success(List<FacetSeries> series, retrofit.client.Response response) {
+//                    mSeriersModel.add(series);
+                    mSeriersModel.notifyDataSetChanged();
                 }
 
                 @Override

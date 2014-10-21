@@ -5,6 +5,7 @@ import com.jason.usedcar.model.data.Brand;
 import com.jason.usedcar.model.data.CarModel;
 import com.jason.usedcar.model.data.City;
 import com.jason.usedcar.model.data.County;
+import com.jason.usedcar.model.data.FacetSeries;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
 import com.jason.usedcar.request.CarRequest;
@@ -294,11 +295,25 @@ public class RestClient {
                 @Field("accessToken") String accessToken,
                 @Field("deviceId") String deviceId,
                 Callback<List<Series>> callback);
+
+        @FormUrlEncoded
+        @POST("/searchSeriesFilter.json")
+        void getSeriesByBrandSelection(
+                @Field("facetSelections") String facetSelections,
+                @Field("accessToken") String accessToken,
+                @Field("deviceId") String deviceId,
+                Callback<List<FacetSeries>> callback);
     }
 
     public void getSeries(SeriesRequest request, Callback<List<Series>> callback) {
         createService("getSeries", POOL, IGetSeries.class)
                 .getSeries(request.getBrandId(), request.getAccessToken(),
+                        request.getDeviceId(), callback);
+    }
+
+    public void getSeriesByBrandSelection(SeriesRequest request, Callback<List<FacetSeries>> callback) {
+        createService("getSeriesByBrandSelection", POOL, IGetSeries.class)
+                .getSeriesByBrandSelection(request.getFacetSelections(), request.getAccessToken(),
                         request.getDeviceId(), callback);
     }
 
