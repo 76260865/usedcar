@@ -10,11 +10,13 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.android.volley.AuthFailureError;
@@ -45,7 +47,7 @@ import com.jason.usedcar.util.HttpUtil;
  * @author Administrator
  */
 public class FindUsedActivity extends FragmentActivity implements
-        BrandsChooseDialogListener, PriceChooseDialogListener,
+        BrandsChooseDialogListener, SeriesChooseFragment.SeriersChooseDialogListener, PriceChooseDialogListener,
         CarMilesChooseDialogListener, CarAgeChooseDialogListener {
     private static final String TAG = "FindUsedActivity";
     private static final String MANUAL_STR = "manufacturerVerified:";
@@ -63,6 +65,7 @@ public class FindUsedActivity extends FragmentActivity implements
     private CarAgeChooseFragment mCarAgeChooseFragment;
     private CarMilesChooseFragment mCarMilesChooseFragment;
     private BrandFilterEntity mBrand;
+    private FilterEntity selectedSeries;
     private FilterEntity selectedPrice;
     private FilterEntity selectedCarMile;
     private FilterEntity selectedCarAge;
@@ -92,6 +95,13 @@ public class FindUsedActivity extends FragmentActivity implements
         initializeSearchFilter();
     }
 
+    @Override
+    public void onSeriersChoosed(FilterEntity filter) {
+        selectedSeries = filter;
+        mTxtSeriers.setText(filter.getName());
+        mSeriesChooseFragment.dismiss();
+    }
+
     private class OnBtnSearchClickListener implements OnClickListener {
 
         @Override
@@ -100,6 +110,9 @@ public class FindUsedActivity extends FragmentActivity implements
             String filter = "";
             if (mBrand != null) {
                 filter += mBrand.getFacetSelection() + ",";
+            }
+            if (selectedSeries != null) {
+                filter += selectedSeries.getFacetSelection() + ",";
             }
             if (selectedPrice != null) {
                 filter += selectedPrice.getFacetSelection() + ",";
@@ -236,6 +249,11 @@ public class FindUsedActivity extends FragmentActivity implements
             if (mSeriesChooseFragment == null) {
                 mSeriesChooseFragment = new SeriesChooseFragment();
             }
+            if (mBrand == null || TextUtils.isEmpty(mBrand.getFacetSelection())) {
+                Toast.makeText(getApplicationContext(), "请先选择品牌", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            mSeriesChooseFragment.facetSelection = mBrand.getFacetSelection();
             mSeriesChooseFragment.show(getSupportFragmentManager(),
                     "seriesChooseDialog");
         }
