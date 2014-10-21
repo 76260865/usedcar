@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.jason.usedcar.Application;
 import com.jason.usedcar.MessageToast;
 import com.jason.usedcar.R;
 import com.jason.usedcar.constants.Constants;
@@ -143,14 +144,16 @@ public class ResetPasswordFragment extends
         ResetPasswordByPhoneRequest param = new ResetPasswordByPhoneRequest();
         param.setNewPassword(newPassword);
         param.setConfirmPassword(confirmPassword);
-        param.setPrinciple(phoneNum);
-        param.setActiveCode(verifyCode);
+        param.setPhone(phoneNum);
+        param.setCode(verifyCode);
+        param.setAccessToken(Application.fromActivity(getActivity()).getAccessToken());
         getPresenter().resetPassword(this, param);
     }
 
     private void obtainCode() {
         ObtainCodeRequest request = new ObtainCodeRequest();
-        request.setPhoneNumber(String.valueOf(0));
+        request.setPhoneNumber(getArguments().getString(PHONE_NUMBER));
+        request.setType(Constants.ObtainCode.TYPE_RESET_PASSWORD);
         getPresenter().obtainCode(this, request);
     }
 }

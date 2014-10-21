@@ -28,7 +28,7 @@ public class AuthorizeActivity extends AbsActivity implements ResellerAuthView {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
         getSupportActionBar().setIcon(android.R.color.transparent);
         setTitle("认证");
         resellerAuthViewModel = new ResellerAuthViewModel(this);

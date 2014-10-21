@@ -7,7 +7,6 @@ import com.jason.usedcar.model.data.City;
 import com.jason.usedcar.model.data.County;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
-import com.jason.usedcar.request.AuthenticateUserRequest;
 import com.jason.usedcar.request.CarRequest;
 import com.jason.usedcar.request.CityRequest;
 import com.jason.usedcar.request.CountyRequest;
@@ -35,7 +34,6 @@ import com.jason.usedcar.request.UpgradeRequest;
 import com.jason.usedcar.request.UserInfoRequest;
 import com.jason.usedcar.response.CarListResponse;
 import com.jason.usedcar.response.CarResponse;
-import com.jason.usedcar.response.CarResponse2;
 import com.jason.usedcar.response.CarResponse3;
 import com.jason.usedcar.response.CartResponse;
 import com.jason.usedcar.response.FavoriteListResponse;
@@ -49,6 +47,7 @@ import com.jason.usedcar.response.TokenGenerateResponse;
 import com.jason.usedcar.response.Upgrade2Response;
 import com.jason.usedcar.response.UpgradeResponse;
 import com.jason.usedcar.response.UploadImageResponse;
+import com.jason.usedcar.response.UserAuthInfo;
 import com.jason.usedcar.response.UserInfoResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,7 +126,7 @@ public class RestClient {
 
     interface IRegister {
         @FormUrlEncoded
-        @POST("/signon")
+        @POST("/signon.json")
         void register(
                 @Field("phone") String phone,
                 @Field("phoneVerifyCode") String phoneVerifyCode,
@@ -556,10 +555,10 @@ public class RestClient {
 
     interface IResetPasswordByPhone {
         @FormUrlEncoded
-        @POST("/resetPasswordByPhone")
+        @POST("/account/resetPasswordByPhone.json")
         void resetPasswordByPhone(
-                @Field("principle") String principle,
-                @Field("activeCode") String activeCode,
+                @Field("phone") String phone,
+                @Field("code") String activeCode,
                 @Field("newPassword") String newPassword,
                 @Field("confirmPassword") String confirmPassword,
                 @Field("deviceId") String deviceId,
@@ -568,7 +567,7 @@ public class RestClient {
 
     public void resetPasswordByPhone(ResetPasswordByPhoneRequest request, Callback<PasswordResponse> callback) {
         createService("resetPasswordByPhone", POOL, IResetPasswordByPhone.class)
-                .resetPasswordByPhone(request.getPrinciple(), request.getActiveCode(),
+                .resetPasswordByPhone(request.getPhone(), request.getCode(),
                         request.getNewPassword(), request.getConfirmPassword(),
                         request.getDeviceId(), callback);
     }
@@ -894,5 +893,18 @@ public class RestClient {
         createService("authenticateUser", POOL, IAuthenticateUser.class)
                 .authenticateUser(name, certificateType, certificateNumber, bankName,
                         bankAccount, accessToken, deviceId, callback);
+    }
+
+    interface IGetUserAuthInfo {
+        @Multipart
+        @POST("/account/getUserAuthInfo.json")
+        public void getUserAuthInfo(@Part("accessToken") String accessToken,
+                                    @Part("deviceId") String deviceId,
+                                    Callback<UserAuthInfo> callback);
+    }
+
+    public void getUserAuthInfo(String accessToken, String deviceId, Callback<UserAuthInfo> callback) {
+        createService("getUserAuthInfo", POOL, IGetUserAuthInfo.class)
+                .getUserAuthInfo(accessToken, deviceId, callback);
     }
 }

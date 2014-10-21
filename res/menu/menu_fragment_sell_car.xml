@@ -10,7 +10,8 @@
             android:id="@+id/action_save"
             android:title="添加"
             app:showAsAction="always"
-            bind:onMenuItemClick="addNewCar"/>
+            bind:onMenuItemClick="addNewCar"
+            bind:visible="{login}"/>
     <item
             android:id="@+id/action_cancel_save"
             android:title="编辑"

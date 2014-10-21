@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.jason.usedcar.*;
 import com.jason.usedcar.model.data.Brand;
@@ -21,18 +22,46 @@ import com.jason.usedcar.presentation_model.CarBaseInfoViewModel;
 import com.jason.usedcar.request.PublishUsedCarRequest;
 import com.jason.usedcar.presenter.Presenter;
 import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
+import com.jason.usedcar.response.CarResponse3;
 import com.mobsandgeeks.saripaar.Rule;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Required;
 
 /**
  * @author t77yq @14-7-1.
  */
-public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDialog.OnDateSetListener {
+public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDialog.OnDateSetListener, Validator.ValidationListener {
 
     private static final int PLACE = 10001;
 
     private static final int TYPE = 10002;
 
+    @Required(order = 10, messageResId = R.string.err_car_info_address)
+    private TextView tradeAddress;
+
+    @Required(order = 20, messageResId = R.string.err_car_info_street)
+    private TextView street;
+
+    @Required(order = 30, messageResId = R.string.err_car_info_car_type)
+    private TextView carType;
+
+    @Required(order = 40, messageResId = R.string.err_car_info_time_bought)
+    private TextView boughtTime;
+
+    @Required(order = 50, messageResId = R.string.err_car_info_distance)
+    private TextView distance;
+
+    @Required(order = 60, messageResId = R.string.err_car_info_price)
+    private TextView price;
+
+    @Required(order = 70, messageResId = R.string.err_car_info_vin)
+    private TextView vin;
+
+    protected Validator validator = new Validator(this);
+
     private PublishUsedCarRequest publishUsedCarRequest = new PublishUsedCarRequest();
+
+    private CarBaseInfoViewModel carBaseInfoViewModel = new CarBaseInfoViewModel(publishUsedCarRequest);
 
     @Override
     protected int layoutId() {
@@ -41,13 +70,62 @@ public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDi
 
     @Override
     protected Object presentationModel() {
-        return new CarBaseInfoViewModel(((SellCarActivity) getActivity()).carResponse);
+        CarResponse3 carResponse = ((SellCarActivity) getActivity()).carResponse;
+        if (carResponse != null) {
+            Province province = new Select().from(Province.class).where("name = ?", carResponse.getProvince()).executeSingle();
+            City city = new Select().from(City.class).where("name = ?", carResponse.getCity()).executeSingle();
+            County county = new Select().from(County.class).where("name = ?", carResponse.getCounty()).executeSingle();
+            publishUsedCarRequest.setProvinceId(province.getProvinceId());
+            publishUsedCarRequest.setCityId(city.getCityId());
+            publishUsedCarRequest.setCountyId(county.getCityId());
+            Brand brand = new Select().from(Brand.class).where("name = ?", carResponse.getBrandName()).executeSingle();
+            Series series = new Select().from(Series.class).where("name = ?", carResponse.getSeriesName()).executeSingle();
+            CarModel model = new Select().from(CarModel.class).where("name = ?", carResponse.getModelDisplayName()).executeSingle();
+            publishUsedCarRequest.setBrandId(brand.getBrandId());
+            publishUsedCarRequest.setSeriesId(series.getSeriesId());
+            publishUsedCarRequest.setModelId(model.getModelId());
+
+            carBaseInfoViewModel.setProvince(carResponse.getProvince());
+            carBaseInfoViewModel.setCity(carResponse.getCity());
+            carBaseInfoViewModel.setCounty(carResponse.getCounty());
+            carBaseInfoViewModel.setBrand(carResponse.getBrandName());
+            carBaseInfoViewModel.setSeries(carResponse.getSeriesName());
+            carBaseInfoViewModel.setModel(carResponse.getModelDisplayName());
+        }
+        return carBaseInfoViewModel;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        validator.setValidationListener(this);
+        View v = getView();
+        tradeAddress = getView(v, R.id.car_info_address);
+        street = getView(v, R.id.car_info_street);
+        tradeAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), DealPlaceActivity.class), PLACE);
+            }
+        });
+        carType = getView(v, R.id.car_info_type);
+        carType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                startActivityForResult(new Intent(getActivity(), CarPickerActivity.class), TYPE);
+            }
+        });
+        boughtTime = getView(v, R.id.car_info_time_bought);
+        boughtTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                new com.jason.usedcar.DatePicker().setListener(CompleteCarInfoFragment.this).show(getFragmentManager(), "");
+            }
+        });
+        distance = getView(v, R.id.car_info_distance);
+        price = getView(v, R.id.car_info_price);
+        vin = getView(v, R.id.car_info_vin);
     }
 
     @Override
@@ -60,7 +138,7 @@ public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_next:
-                //getValidator().validate();
+                validator.validate();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -80,11 +158,10 @@ public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDi
                     publishUsedCarRequest.setProvinceId(28);
                     publishUsedCarRequest.setCityId(225);
                     publishUsedCarRequest.setCountyId(1875);
-                    if (province.getProvinceName().equalsIgnoreCase(city.getCityName())) {
-                        //tradeAddress.setText(city.getCityName().concat(county.getCountyName()));
-                    } else {
-                        //tradeAddress.setText(province.getProvinceName().concat(city.getCityName().concat(county.getCountyName())));
-                    }
+                    carBaseInfoViewModel.setProvince(province.getProvinceName());
+                    carBaseInfoViewModel.setCity(city.getCityName());
+                    carBaseInfoViewModel.setCounty(county.getCountyName());
+                    carBaseInfoViewModel.refreshAddress();
                     break;
                 case TYPE:
                     String type = data.getStringExtra("data");
@@ -95,9 +172,10 @@ public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDi
                     publishUsedCarRequest.setBrandId(brand.getBrandId());
                     publishUsedCarRequest.setSeriesId(series.getSeriesId());
                     publishUsedCarRequest.setModelId(model.getModelId());
-                    String brandName =brand.getName();
-                    String seriesName = series.getSeriesName().replace(brandName, "");
-                    //carType.setText(brandName.concat(seriesName).concat(model.getModelName()));
+                    carBaseInfoViewModel.setBrand(brand.getBrandName());
+                    carBaseInfoViewModel.setSeries(series.getSeriesName());
+                    carBaseInfoViewModel.setModel(model.getModelName());
+                    carBaseInfoViewModel.refreshCar();
                     break;
             }
         }
@@ -124,10 +202,17 @@ public class CompleteCarInfoFragment extends AbsFragment implements DatePickerDi
     @Override
     public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
         //boughtTime.setText(String.format("%d年%02d月", year, monthOfYear + 1));
-        publishUsedCarRequest.setPurchaseDate(String.format("%d-%02d", year, monthOfYear + 1));
+        String date = String.format("%d-%02d", year, monthOfYear + 1);
+        publishUsedCarRequest.setPurchaseDate(date);
+        carBaseInfoViewModel.setTime(date);
     }
 
     protected static <V extends View> V getView(View view, int id) {
         return (V) view.findViewById(id);
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        ((Action) getActivity()).action(this, publishUsedCarRequest);
     }
 }

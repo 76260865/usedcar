@@ -1,5 +1,6 @@
 package com.jason.usedcar.presentation_model;
 
+import android.view.View;
 import org.robobinding.aspects.PresentationModel;
 
 /**
@@ -8,11 +9,11 @@ import org.robobinding.aspects.PresentationModel;
 @PresentationModel
 public class ViewModelBase {
 
-    protected int contentVisibility;
+    protected int contentVisibility = View.VISIBLE;
 
-    protected int progressVisibility;
+    protected int progressVisibility = View.GONE;
 
-    protected int nothingVisibility;
+    protected int nothingVisibility = View.GONE;
 
     public int getContentVisibility() {
         return contentVisibility;

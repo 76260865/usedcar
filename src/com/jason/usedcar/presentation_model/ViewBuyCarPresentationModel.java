@@ -137,4 +137,31 @@ public class ViewBuyCarPresentationModel extends ViewModelBase {
             changeSupport.refreshPresentationModel();
         }
     }
+
+    public void load() {
+        contentVisibility = View.GONE;
+        progressVisibility = View.VISIBLE;
+        nothingVisibility = View.GONE;
+        changeSupport.firePropertyChange("contentVisibility");
+        changeSupport.firePropertyChange("progressVisibility");
+        changeSupport.firePropertyChange("nothingVisibility");
+    }
+
+    public void finish() {
+        contentVisibility = View.VISIBLE;
+        progressVisibility = View.GONE;
+        nothingVisibility = View.GONE;
+        changeSupport.firePropertyChange("contentVisibility");
+        changeSupport.firePropertyChange("progressVisibility");
+        changeSupport.firePropertyChange("nothingVisibility");
+    }
+
+    public void error() {
+        contentVisibility = View.GONE;
+        progressVisibility = View.GONE;
+        nothingVisibility = View.VISIBLE;
+        changeSupport.firePropertyChange("contentVisibility");
+        changeSupport.firePropertyChange("progressVisibility");
+        changeSupport.firePropertyChange("nothingVisibility");
+    }
 }

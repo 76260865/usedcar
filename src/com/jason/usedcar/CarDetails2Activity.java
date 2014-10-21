@@ -27,7 +27,7 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
         getSupportActionBar().setIcon(android.R.color.transparent);
         String productId = getIntent().getStringExtra("product_id");
         int type = getIntent().getIntExtra("type", Constants.CarDetailsType.OTHER);

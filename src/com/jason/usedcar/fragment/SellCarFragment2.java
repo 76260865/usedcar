@@ -28,6 +28,8 @@ public class SellCarFragment2 extends AbsFragment implements ViewSellingCarView 
 
     private ViewSellingCarPresentationModel presentationModel;
 
+    private MenuSellCarViewModel menuSellCarViewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,7 @@ public class SellCarFragment2 extends AbsFragment implements ViewSellingCarView 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuSellCarViewModel menuSellCarViewModel = new MenuSellCarViewModel(this);
+        menuSellCarViewModel = new MenuSellCarViewModel(this);
         MenuBinder menuBinder = new BinderFactoryBuilder().build().createMenuBinder(menu, inflater, getContext());
         menuBinder.inflateAndBind(R.menu.menu_fragment_sell_car, menuSellCarViewModel);
         super.onCreateOptionsMenu(menu, inflater);
@@ -85,6 +87,7 @@ public class SellCarFragment2 extends AbsFragment implements ViewSellingCarView 
                     break;
                 case Activity.RESULT_OK:
                     presentationModel.loadData();
+                    menuSellCarViewModel.refresh();
                     break;
             }
         }

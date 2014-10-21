@@ -3,6 +3,7 @@ package com.jason.usedcar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 import com.jason.usedcar.fragment.CarBaseInfoFragment;
 import com.jason.usedcar.fragment.CompleteCarInfoFragment;
 import com.jason.usedcar.fragment.LoadingFragment;
@@ -29,7 +30,7 @@ public class SellCarActivity extends BaseActivity implements Action {
         carResponse = (CarResponse3) getIntent().getSerializableExtra("car_response");
         getSupportFragmentManager().beginTransaction().add(
                 R.id.activity_sell_car_container,
-                new CarBaseInfoFragment(),
+                new CompleteCarInfoFragment(),
                 ""
         ).commit();
     }
@@ -66,7 +67,7 @@ public class SellCarActivity extends BaseActivity implements Action {
             publishUsedCarParam.setProvinceId(28);
             publishUsedCarParam.setCityId(225);
             publishUsedCarParam.setCountyId(1875);
-            publishUsedCarParam.setAccessToken(Application.sampleAccessToken);
+            publishUsedCarParam.setAccessToken(Application.fromActivity(this).getAccessToken());
             publishUsedCarParam.setAcceptTerm(true);
             new RestClient().publishUsedCar(publishUsedCarParam, new Callback<Response>() {
                 @Override
@@ -74,12 +75,14 @@ public class SellCarActivity extends BaseActivity implements Action {
                     if (response.isExecutionResult()) {
                         finish();
                     }
+                    Toast.makeText(getApplicationContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
                     loading.dismiss();
                 }
 
                 @Override
                 public void failure(final RetrofitError error) {
                     error.getCause();
+                    Toast.makeText(getApplicationContext(), "出错了", Toast.LENGTH_SHORT).show();
                     loading.dismiss();
                 }
             });

@@ -59,7 +59,7 @@ public class LoadingFragment extends DialogFragment {
             if (messageId != 0) {
                 messageTextView.setText(messageId);
             }
-            String message = args.getString(MESSAGE, "");
+            String message = args.getString(MESSAGE);
             if (!TextUtils.isEmpty(message)) {
                 messageTextView.setText(message);
             }

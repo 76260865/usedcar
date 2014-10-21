@@ -2,28 +2,28 @@ package com.jason.usedcar.request;
 
 public class ResetPasswordByPhoneRequest extends Request {
 
-    private String principle;
+    private String phone;
 
-    private String activeCode;
+    private String code;
 
     private String newPassword;
 
     private String confirmPassword;
 
-    public String getPrinciple() {
-        return principle;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPrinciple(final String principle) {
-        this.principle = principle;
+    public void setPhone(final String phone) {
+        this.phone = phone;
     }
 
-    public String getActiveCode() {
-        return activeCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setActiveCode(final String activeCode) {
-        this.activeCode = activeCode;
+    public void setCode(final String code) {
+        this.code = code;
     }
 
     public String getNewPassword() {

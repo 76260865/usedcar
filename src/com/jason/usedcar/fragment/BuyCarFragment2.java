@@ -3,6 +3,7 @@ package com.jason.usedcar.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.AbsListView;
@@ -44,14 +45,13 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
 
     private String queryStr;
 
+    private ListView listView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         model = new SaleCarModel();
-        if (model.isEmpty()) {
-            loadData(1, facetSelections, null);
-        }
     }
 
     private void loadData(final int startPage, String facetSelections, String queryStr) {
@@ -61,6 +61,9 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
         searchProductRequest.setPageSize(SaleCarModel.PAGE_SIZE);
         searchProductRequest.setFacetSelections(facetSelections);
         searchProductRequest.setQueryString(queryStr);
+        if (startPage == 1) {
+            presentationModel.load();
+        }
         new RestClient().searchProduct(searchProductRequest, new Callback<SearchProductResponse>() {
             @Override
             public void success(final SearchProductResponse response, final Response response2) {
@@ -73,10 +76,16 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
                 model.setLoading(false);
                 model.setHasMore(hasMore);
                 presentationModel.refreshFooter();
+                if (startPage == 1) {
+                    presentationModel.finish();
+                }
             }
 
             @Override
             public void failure(final RetrofitError error) {
+                if (startPage == 1) {
+                    presentationModel.error();
+                }
                 model.setLoading(false);
                 model.setHasMore(false);
             }
@@ -86,7 +95,7 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ListView listView = findViewById(R.id.usedCarList);
+        listView = findViewById(R.id.usedCarList);
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -102,6 +111,9 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
                 }
             }
         });
+        if (model.isEmpty()) {
+            loadData(1, facetSelections, null);
+        }
     }
 
     @Override
@@ -146,6 +158,35 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
                         presentationModel.setFilter(brandFilterEntity.getName());
                     }
                     break;
+                case 1001:
+                    if (data != null) {
+                        BrandFilterEntity brandFilterEntity = (BrandFilterEntity) data.getSerializableExtra("brandFilter");
+                        presentationModel.setBrandFilterEntity(brandFilterEntity);
+                        FilterEntity priceFilterEntity = (FilterEntity) data.getSerializableExtra("priceFilter");
+                        FilterEntity mileFilterEntity = (FilterEntity) data.getSerializableExtra("mileFilter");
+                        FilterEntity ageFilterEntity = (FilterEntity) data.getSerializableExtra("ageFilter");
+                        if (brandFilterEntity != null) {
+                            facetSelections = brandFilterEntity.getBrandInitLetter() + ",";
+                        }
+                        if (priceFilterEntity != null) {
+                            facetSelections = priceFilterEntity.getFacetSelection() + ",";
+                        }
+                        if (mileFilterEntity != null) {
+                            facetSelections = mileFilterEntity.getFacetSelection() + ",";
+                        }
+                        if (ageFilterEntity != null) {
+                            facetSelections = ageFilterEntity.getFacetSelection() + ",";
+                        }
+                        if (facetSelections != null) {
+                            facetSelections = facetSelections.substring(0, facetSelections.length() - 1);
+                        }
+                        if (!TextUtils.isEmpty(facetSelections)) {
+                            queryStr = null;
+                            model.setData(null);
+                            presentationModel.refreshProducts();
+                            loadData(1, facetSelections, null);
+                        }
+                    }
             }
         }
     }
@@ -160,7 +201,7 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
 
     @Override
     public void search2(final String where) {
-        startActivityForResult(new Intent(getActivity(), FindUsedActivity.class), 1000);
+        startActivityForResult(new Intent(getActivity(), FindUsedActivity.class), 1001);
     }
 
     @Override

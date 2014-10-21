@@ -20,7 +20,7 @@ public class BaseActivity extends ActionBarActivity implements Validator.Validat
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
         getSupportActionBar().setIcon(android.R.color.transparent);
         validator.setValidationListener(this);
     }
