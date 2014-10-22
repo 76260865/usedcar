@@ -4,7 +4,7 @@
           android:versionCode="1"
           android:versionName="1.0" >
 
-    <uses-sdk 
+    <uses-sdk
             android:minSdkVersion="13"
             android:targetSdkVersion="19" />
 
@@ -35,7 +35,7 @@
                   android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
         <activity android:name=".RegisterActivity"
-                  android:label="@string/title_register"
+                  android:label=""
                   android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
         <activity android:name=".ResetPasswordActivity"
@@ -44,7 +44,11 @@
         </activity>
         <activity android:name=".InfoActivity"
                   android:label="个人中心"
-                android:windowSoftInputMode="adjustResize">
+                  android:windowSoftInputMode="adjustResize">
+        </activity>
+        <activity android:name=".Info2Activity"
+                  android:label="个人中心"
+                  android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".SellCarActivity"
                   android:label="我要卖车"
@@ -69,6 +73,9 @@
                 android:name=".CarDetailsActivity"
                 android:label="汽车详情"
                 android:theme="@style/AppTheme2">
+        </activity>
+        <activity android:name=".CarDetails2Activity"
+                  android:label="汽车详情">
         </activity>
         <activity
                 android:name=".CalculatorActivity"
@@ -97,10 +104,16 @@
                 android:name=".AboutActivity"
                 android:theme="@style/AppTheme">
         </activity>
+        <activity
+                android:name=".CollectActivity"
+                android:theme="@style/AppTheme">
+        </activity>
 
         <meta-data android:name="AA_DB_NAME" android:value="car.db" />
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
         <activity android:name=".FindUsedActivity">
+        </activity>
+        <activity android:name=".AuthorizeActivity">
         </activity>
     </application>
 

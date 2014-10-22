@@ -1,11 +1,14 @@
 package com.jason.usedcar.fragment;
 
+import android.support.v4.app.FragmentManager;
 import com.jason.usedcar.Action;
 import com.jason.usedcar.R;
 import com.jason.usedcar.RestClient;
+import com.jason.usedcar.adapter.SeriersAdapter2;
 import com.jason.usedcar.model.data.FacetSeries;
 import com.jason.usedcar.model.data.FilterEntity;
 import com.jason.usedcar.request.*;
+import com.jason.usedcar.response.SeriesResponse;
 import java.util.List;
 
 import android.app.Activity;
@@ -33,9 +36,9 @@ public class SeriesChooseFragment extends DialogFragment {
 
     private DBHelper mDbHelper;
 
-    private UsedCarModel<Series> mSeriersModel = new UsedCarModel<Series>();
+    private UsedCarModel<FilterEntity> mSeriersModel = new UsedCarModel<FilterEntity>();
 
-    private SeriersAdapter mAdapter;
+    private SeriersAdapter2 mAdapter;
 
     public  String facetSelection;
 
@@ -43,7 +46,7 @@ public class SeriesChooseFragment extends DialogFragment {
      * 实现这个接口的类需要实现这两个方法
      */
     public interface SeriersChooseDialogListener {
-        void onSeriersChoosed(FilterEntity filter);
+        void onSeriesChoosed(FilterEntity filter);
     }
 
     @Override
@@ -66,23 +69,26 @@ public class SeriesChooseFragment extends DialogFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mDbHelper = new DBHelper(getActivity());
-        mAdapter = new SeriersAdapter(getActivity(), mSeriersModel);
-        if (mSeriersModel.isEmpty()) {
+        mAdapter = new SeriersAdapter2(getActivity(), mSeriersModel);
             SeriesRequest seriesRequest = new SeriesRequest();
             seriesRequest.setFacetSelections(facetSelection);
-            new RestClient().getSeriesByBrandSelection(seriesRequest, new Callback<List<FacetSeries>>() {
+            new RestClient().getSeriesByBrandSelection(seriesRequest, new Callback<SeriesResponse>() {
                 @Override
-                public void success(List<FacetSeries> series, retrofit.client.Response response) {
+                public void success(SeriesResponse response, retrofit.client.Response response2) {
 //                    mSeriersModel.add(series);
-                    mSeriersModel.notifyDataSetChanged();
+                    if (response != null) {
+                        if (response.isExecutionResult()) {
+                            mSeriersModel.add(response.getSeries());
+                            mSeriersModel.notifyDataSetChanged();
+                        }
+                    }
                 }
 
                 @Override
                 public void failure(RetrofitError retrofitError) {
-
+                    retrofitError.getBody();
                 }
             });
-        }
         // 校验主Activity实现回调接口
         try {
             // 获得NoticeDialogListener实例，这样我们就能将事件发送到主Activity
@@ -108,12 +114,16 @@ public class SeriesChooseFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                ((Action) getActivity()).action(SeriesChooseFragment.this,
-                        mAdapter.getItem(position).getSeriesName(),
-                        mAdapter.getItem(position).getSeriesId());
+                ((SeriersChooseDialogListener) getActivity()).onSeriesChoosed(mSeriersModel.get(position));
                 dismiss();
             }
         });
         return view;
+    }
+
+    @Override
+    public void show(final FragmentManager manager, final String tag) {
+        mSeriersModel.setData(null);
+        super.show(manager, tag);
     }
 }

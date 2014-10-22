@@ -12,6 +12,7 @@ import com.jason.usedcar.model.SaleCarModel;
 import com.jason.usedcar.model.SaleCarModel2;
 import com.jason.usedcar.model.UsedCar;
 import com.jason.usedcar.model.data.Product;
+import com.jason.usedcar.model.data.SellingCar;
 import com.jason.usedcar.request.PublishUsedCarRequest;
 
 /**
@@ -48,7 +49,7 @@ public class SellCarAdapter extends BaseAdapter {
     }
 
     @Override
-    public UsedCar getItem(int position) {
+    public Product getItem(int position) {
         return model == null ? null : model.get(position);
     }
 
@@ -67,10 +68,10 @@ public class SellCarAdapter extends BaseAdapter {
             viewHolder = new SaleCarViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
-        UsedCar param = getItem(position);
+        Product param = getItem(position);
         viewHolder.carNameText.setText(context.getString(R.string.sale_car_name, param.getProductName()));
         viewHolder.preSalePriceText.setText(context.getString(R.string.sale_car_pre_sale_price,
-                param.getListPrice()));
+                param.getPrice()));
         viewHolder.mileageText.setText(context.getString(R.string.sale_car_mileage,
                 param.getOdometer()));
         viewHolder.buyTimeText.setText(context.getString(R.string.sale_car_buy_time,

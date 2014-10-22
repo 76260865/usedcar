@@ -1,5 +1,6 @@
 package com.jason.usedcar;
 
+import android.content.Intent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,9 +8,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -43,17 +42,18 @@ import com.jason.usedcar.util.HttpUtil;
 
 /**
  * 筛选活动
- *
+ * 
  * @author Administrator
+ * 
  */
-public class FindUsedActivity extends FragmentActivity implements
+public class FindUsedActivity extends BaseActivity implements
         BrandsChooseDialogListener, SeriesChooseFragment.SeriersChooseDialogListener, PriceChooseDialogListener,
         CarMilesChooseDialogListener, CarAgeChooseDialogListener {
     private static final String TAG = "FindUsedActivity";
     private static final String MANUAL_STR = "manufacturerVerified:";
 
     private TextView mTxtBrand;
-    private TextView mTxtSeriers;
+    private TextView mTxtSeries;
     private TextView mTxtPrice;
     private TextView mTxtAge;
     private TextView mTxtMiles;
@@ -78,14 +78,18 @@ public class FindUsedActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
+        getSupportActionBar().setIcon(android.R.color.transparent);
         setContentView(R.layout.activity_find_used_car);
         mTxtBrand = (TextView) findViewById(R.id.txt_brand);
         mTxtPrice = (TextView) findViewById(R.id.txt_price);
         mTxtAge = (TextView) findViewById(R.id.txt_age);
         mTxtMiles = (TextView) findViewById(R.id.txt_miles);
         mTxtBrand.setOnClickListener(mOnTxtBrandsClickListener);
-        mTxtSeriers = (TextView) findViewById(R.id.txt_seriers);
-        mTxtSeriers.setOnClickListener(mOnTxtSerierssClickListener);
+        mTxtSeries = (TextView) findViewById(R.id.txt_seriers);
+        mTxtSeries.setOnClickListener(mOnTxtSerierssClickListener);
         mTxtPrice.setOnClickListener(mOnTxtPriceClickListener);
         mTxtAge.setOnClickListener(mOnTxtAgeClickListener);
         mTxtMiles.setOnClickListener(mOnTxtMilesClickListener);
@@ -96,9 +100,9 @@ public class FindUsedActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onSeriersChoosed(FilterEntity filter) {
+    public void onSeriesChoosed(FilterEntity filter) {
         selectedSeries = filter;
-        mTxtSeriers.setText(filter.getName());
+        mTxtSeries.setText(filter.getName());
         mSeriesChooseFragment.dismiss();
     }
 
@@ -278,12 +282,13 @@ public class FindUsedActivity extends FragmentActivity implements
         Log.d(TAG, "brandId: " + brand.getName());
         mBrand = brand;
         mTxtBrand.setText(mBrand.getName());
+        mTxtSeries.setText(null);
         mBrandsChooseFragment.dismiss();
 
     }
 
     @Override
-    public void onPriceChoosed(FilterEntity filter) {
+    public void onPriceChosen(FilterEntity filter) {
         Log.d(TAG, "selected price : " + filter.getName());
         selectedPrice = filter;
         mTxtPrice.setText(filter.getName());

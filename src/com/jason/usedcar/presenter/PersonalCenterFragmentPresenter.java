@@ -3,10 +3,7 @@ package com.jason.usedcar.presenter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import com.jason.usedcar.HistoryActivity;
-import com.jason.usedcar.InfoActivity;
-import com.jason.usedcar.LoginActivity;
-import com.jason.usedcar.Application;
+import com.jason.usedcar.*;
 import com.jason.usedcar.interfaces.Ui;
 
 /**
@@ -18,20 +15,22 @@ public class PersonalCenterFragmentPresenter extends Presenter<Ui> {
         if (Application.fromActivity(activity).getAccessToken() == null) {
             activity.startActivity(new Intent(activity, LoginActivity.class));
         } else {
-            activity.startActivity(new Intent(activity, InfoActivity.class));
+            activity.startActivity(new Intent(activity, Info2Activity.class));
         }
     }
 
-    public void identify() {
-
+    public void identify(Context context) {
+        Intent authorizeIntent = new Intent(context, AuthorizeActivity.class);
+        authorizeIntent.putExtra("accountType", "reseller");
+        context.startActivity(authorizeIntent);
     }
 
     public void myCarsToSale(Context context) {
         context.startActivity(new Intent(context, HistoryActivity.class));
     }
 
-    public void myCollectCar() {
-
+    public void myCollectCar(Context context) {
+        context.startActivity(new Intent(context, CollectActivity.class));
     }
 
     public void tradeHistory(Context context) {

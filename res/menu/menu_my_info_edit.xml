@@ -2,6 +2,6 @@
       xmlns:car="http://schemas.android.com/apk/res-auto" >
     <item
             android:id="@+id/action_edit"
-            android:title="修改"
+            android:title="编辑"
             car:showAsAction="ifRoom"/>
 </menu>

@@ -6,34 +6,34 @@ import com.activeandroid.annotation.Table;
 
 public class FacetSeries {
 
-    private int name;
+    private String name;
 
-    public int getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(int name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
 
-    public int getFacetSelection() {
+    public String getFacetSelection() {
         return facetSelection;
     }
 
-    public void setFacetSelection(int facetSelection) {
+    public void setFacetSelection(String facetSelection) {
         this.facetSelection = facetSelection;
     }
 
-    private String count;
+    private int count;
 
-    private int facetSelection;
+    private String facetSelection;
 
 }

@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import com.jason.usedcar.R;
 import com.jason.usedcar.model.data.FilterEntity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ public class PriceChooseFragment extends SearchConditionChooseFragment {
 	private PriceChooseDialogListener mChooseListener;
 
 	public interface PriceChooseDialogListener {
-		void onPriceChoosed(FilterEntity filter);
+		void onPriceChosen(FilterEntity filter);
 	}
 
 	public void setPriceChooseDialogListener(PriceChooseDialogListener listener) {
@@ -52,7 +50,7 @@ public class PriceChooseFragment extends SearchConditionChooseFragment {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				if (mChooseListener != null) {
-					mChooseListener.onPriceChoosed((FilterEntity) mAdapter.getItem(position));
+					mChooseListener.onPriceChosen((FilterEntity) mAdapter.getItem(position));
 				}
 			}
 		});

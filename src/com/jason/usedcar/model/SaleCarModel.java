@@ -11,9 +11,9 @@ public class SaleCarModel extends BaseModel {
 
     public static final int PAGE_SIZE = 20;
 
-    private boolean loading;
+    private boolean loading = false;
 
-    private boolean full;
+    private boolean hasMore = false;
 
     private List<Product> data;
 
@@ -64,12 +64,12 @@ public class SaleCarModel extends BaseModel {
         return (position < 0 || position >= size()) ? null : data.get(position);
     }
 
-    public boolean isFull() {
-        return full;
+    public boolean hasMore() {
+        return hasMore;
     }
 
-    public void setFull(boolean full) {
-        this.full = full;
+    public void setHasMore(boolean hasMore) {
+        this.hasMore = hasMore;
     }
 
     public int getPageSize() {

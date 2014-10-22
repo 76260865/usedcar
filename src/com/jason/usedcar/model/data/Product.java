@@ -15,6 +15,7 @@ public class Product implements Serializable {
     private String price;
     private String odometer;
     private Object regularImage;
+    private Boolean identified;
 
     public String getProductId() {
         return productId;
@@ -78,6 +79,14 @@ public class Product implements Serializable {
 
     public void setRegularImage(Object regularImage) {
         this.regularImage = regularImage;
+    }
+
+    public Boolean getIdentified() {
+        return identified;
+    }
+
+    public void setIdentified(Boolean identified) {
+        this.identified = identified;
     }
 
 }

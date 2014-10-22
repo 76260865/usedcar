@@ -2,27 +2,47 @@ package com.jason.usedcar.response;
 
 public class UserInfoResponse extends Response {
 
-    private String nickname;
+    private String resellerName;
 
-    private String realName;
+    private int resellerType;
+
+    public String getResellerName() {
+        return resellerName;
+    }
+
+    public void setResellerName(final String resellerName) {
+        this.resellerName = resellerName;
+    }
+
+    public int getResellerType() {
+        return resellerType;
+    }
+
+    public void setResellerType(final int resellerType) {
+        this.resellerType = resellerType;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(final String birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    private String nickname;
 
     private String email;
 
     private boolean bindEmail;
 
-    private boolean sex;
+    private int sex;
 
     private String phone;
 
     private boolean bindPhone;
 
-    private String birthyear;
-
-    private String birthmonth;
-
-    private String birthday;
-
-    private String certificateNumber;
+    private String birthdate;
 
     private String province;
 
@@ -38,14 +58,6 @@ public class UserInfoResponse extends Response {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
     }
 
     public String getEmail() {
@@ -64,11 +76,11 @@ public class UserInfoResponse extends Response {
         this.bindEmail = bindEmail;
     }
 
-    public boolean isSex() {
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
@@ -86,38 +98,6 @@ public class UserInfoResponse extends Response {
 
     public void setBindPhone(boolean bindPhone) {
         this.bindPhone = bindPhone;
-    }
-
-    public String getBirthyear() {
-        return birthyear;
-    }
-
-    public void setBirthyear(String birthyear) {
-        this.birthyear = birthyear;
-    }
-
-    public String getBirthmonth() {
-        return birthmonth;
-    }
-
-    public void setBirthmonth(String birthmonth) {
-        this.birthmonth = birthmonth;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getCertificateNumber() {
-        return certificateNumber;
-    }
-
-    public void setCertificateNumber(String certificateNumber) {
-        this.certificateNumber = certificateNumber;
     }
 
     public String getProvince() {

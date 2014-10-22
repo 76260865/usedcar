@@ -26,4 +26,15 @@ public final class Constants {
 
         public static final int TYPE_VERIFY_ID = 7;
     }
+
+    public static final int REQUEST_LOGIN = 10001;
+
+    public static final class CarDetailsType {
+
+        public static final int BUY = 0;
+
+        public static final int SELL = 1;
+
+        public static final int OTHER = 2;
+    }
 }

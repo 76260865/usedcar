@@ -83,18 +83,14 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
 //        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
 //        viewUserInfoRequest.setAccessToken(Application.getEncryptedToken(Application.fromActivity(this).userId,
 //                Application.fromActivity(this).getAccessToken()));
-        viewUserInfoRequest.setAccessToken(Application.sampleAccessToken);
+        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
         new RestClient().viewUserInfo(viewUserInfoRequest, new Callback<UserInfoResponse>() {
             @Override
             public void success(final UserInfoResponse response, final retrofit.client.Response response2) {
                 loadingFragment.dismiss();
                 if (response.isExecutionResult()) {
                     userInfoParam.setNickname(response.getNickname());
-                    userInfoParam.setRealName(response.getRealName());
-                    userInfoParam.setSex(response.isSex());
-                    userInfoParam.setBirthyear(response.getBirthyear());
-                    userInfoParam.setBirthmonth(response.getBirthmonth());
-                    userInfoParam.setBirthday(response.getBirthday());
+                    userInfoParam.setSex(response.getSex());
                     userInfoParam.setProvince(response.getProvince());
                     userInfoParam.setCity(response.getCity());
                     userInfoParam.setCounty(response.getCounty());
@@ -103,15 +99,20 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                     activityHolder.changePasswordText.setText("");
                     activityHolder.bindPhoneText.setText(response.getPhone());
                     activityHolder.bindEmailText.setText(response.getEmail());
-                    activityHolder.nameText.setText(response.getRealName());
-                    activityHolder.birthdayText.setText(new StringBuilder()
-                            .append(response.getBirthyear()).append("-")
-                            .append(response.getBirthmonth()).append("-")
-                            .append(response.getBirthday()));
-                    activityHolder.birthdayText.setText(response.getCertificateNumber());
-                    activityHolder.addressText.setText(new StringBuffer()
-                            .append(response.getProvince()).append(response.getCity())
-                            .append(response.getCounty()).append(response.getStreet()));
+                    String address = "";
+                    if (!TextUtils.isEmpty(response.getProvince())) {
+                        address += response.getProvince();
+                    }
+                    if (!TextUtils.isEmpty(response.getCity())) {
+                        address += response.getCity();
+                    }
+                    if (!TextUtils.isEmpty(response.getCounty())) {
+                        address += response.getCounty();
+                    }
+                    if (!TextUtils.isEmpty(response.getStreet())) {
+                        address += response.getStreet();
+                    }
+                    activityHolder.addressText.setText(address);
                 }
             }
 
@@ -127,10 +128,11 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
         userInfoParam.setRealName(String.valueOf(activityHolder.nameText.getText()));
         userInfoParam.setCertificateNumber(String.valueOf(activityHolder.identifyText.getText()));
         userInfoParam.setStreet(String.valueOf(activityHolder.addressText.getText()));
-        userInfoParam.setSex(activityHolder.radioTypeMale.isChecked());
+        userInfoParam.setSex(activityHolder.radioTypeMale.isChecked() ? 0 : 1);
         userInfoParam.setProvince("xxx");
         userInfoParam.setCity("yyy");
         userInfoParam.setStreet("zzz");
+        userInfoParam.setAccessToken(Application.fromActivity(this).getAccessToken());
         final LoadingFragment loadingFragment = LoadingFragment.newInstance("更新个人资料&#8230;");
         loadingFragment.show(getSupportFragmentManager());
         new RestClient().updateUserInfo(userInfoParam, new Callback<Response>() {

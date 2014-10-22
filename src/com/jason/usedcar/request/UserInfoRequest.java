@@ -2,11 +2,31 @@ package com.jason.usedcar.request;
 
 public class UserInfoRequest extends Request {
 
+    private String resellerName;
+
+    private int resellerType;
+
+    public String getResellerName() {
+        return resellerName;
+    }
+
+    public void setResellerName(final String resellerName) {
+        this.resellerName = resellerName;
+    }
+
+    public int getResellerType() {
+        return resellerType;
+    }
+
+    public void setResellerType(final int resellerType) {
+        this.resellerType = resellerType;
+    }
+
     private String nickname;
 
     private String realName;
 
-    private Boolean sex;
+    private int sex;
 
     private String birthyear;
 
@@ -40,11 +60,11 @@ public class UserInfoRequest extends Request {
         this.realName = realName;
     }
 
-    public Boolean getSex() {
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(Boolean sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ett="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://robobinding.org/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none">
     <LinearLayout
-            xmlns:ett="http://schemas.android.com/apk/res/com.jason.usedcar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -24,6 +25,7 @@
                 android:id="@+id/car_info_address"
                 android:textColor="#555555"
                 android:scrollHorizontally="true"
+                bind:text="{address}"
                 ett:prefix="交易地点:"
                 ett:prefixColor="#555555"
                 ett:prefixSize="20sp"/>
@@ -31,6 +33,7 @@
                 style="@style/Info.Item"
                 android:id="@+id/car_info_street"
                 android:textColor="#555555"
+                bind:text="${street}"
                 ett:prefix="街道地址:"
                 ett:prefixColor="#555555"
                 ett:prefixSize="20sp"/>
@@ -39,6 +42,7 @@
                 android:id="@+id/car_info_type"
                 android:textColor="#555555"
                 android:scrollHorizontally="true"
+                bind:text="{car}"
                 ett:prefix="车辆选择:"
                 ett:prefixColor="#555555"
                 ett:prefixSize="20sp"/>
@@ -46,6 +50,7 @@
                 style="@style/Info.Item"
                 android:id="@+id/car_info_time_bought"
                 android:textColor="#555555"
+                bind:text="{time}"
                 ett:prefix="购买时间:"
                 ett:prefixColor="#555555"
                 ett:prefixSize="20sp"/>
@@ -61,6 +66,7 @@
                     android:numeric="decimal"
                     android:singleLine="true"
                     android:textColor="#555555"
+                    bind:text="${distance}"
                     ett:prefix="表显里程:"
                     ett:prefixColor="#555555"
                     ett:prefixSize="20sp"/>
@@ -89,6 +95,7 @@
                     android:numeric="decimal"
                     android:singleLine="true"
                     android:textColor="#555555"
+                    bind:text="${price}"
                     ett:prefix="预售价格:"
                     ett:prefixColor="#555555"
                     ett:prefixSize="20sp"/>
@@ -107,7 +114,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dip"
-                    android:button="@drawable/price_check_bg"/>
+                    android:button="@drawable/price_check_bg"
+                    bind:checked="{priceCheck}"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_width="match_parent"
@@ -132,6 +140,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dip"
+                    bind:checked="{typeCheck}"
                     android:button="@drawable/price_check_bg"/>
         </LinearLayout>
         <LinearLayout
@@ -147,6 +156,7 @@
                     android:background="@android:color/transparent"
                     android:paddingBottom="4dip"
                     android:textColor="#555555"
+                    bind:text="${vin}"
                     ett:prefix="车辆识别码/VIN:"
                     ett:prefixColor="#555555"
                     ett:prefixSize="20sp"/>

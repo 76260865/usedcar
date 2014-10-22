@@ -23,7 +23,8 @@
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
                 android:text="每日新闻"
-                android:textColor="#444444"/>
+                android:textColor="#444444"
+                android:visibility="gone"/>
         <Button
                 android:id="@+id/buttonSecuredTransaction"
                 android:layout_width="match_parent"
@@ -34,7 +35,8 @@
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
                 android:text="担保交易"
-                android:textColor="#444444"/>
+                android:textColor="#444444"
+                android:visibility="gone"/>
         <Button
                 android:id="@+id/buttonShoppingGuide"
                 android:layout_width="match_parent"
@@ -45,7 +47,8 @@
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
                 android:text="购物指南"
-                android:textColor="#444444"/>
+                android:textColor="#444444"
+                android:visibility="gone"/>
         <Button
                 android:id="@+id/buttonVehicleInsurance"
                 android:layout_width="match_parent"
@@ -56,7 +59,8 @@
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
                 android:text="车辆保险"
-                android:textColor="#444444" />
+                android:textColor="#444444"
+                android:visibility="gone"/>
         <Button
                 android:id="@+id/buttonUsedCarLoan"
                 android:layout_width="match_parent"
@@ -67,7 +71,8 @@
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
                 android:text="二手车贷款"
-                android:textColor="#444444" />
+                android:textColor="#444444"
+                android:visibility="gone"/>
         <Button
                 android:id="@+id/buttonAuthenticate"
                 android:layout_width="match_parent"
@@ -78,7 +83,8 @@
                 android:paddingLeft="16dip"
                 android:paddingRight="16dip"
                 android:text="认证二手车"
-                android:textColor="#444444" />
+                android:textColor="#444444"
+                android:visibility="gone"/>
         <View
                 android:layout_width="match_parent"
                 android:layout_height="6dip"

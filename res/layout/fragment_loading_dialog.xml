@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dip"
-            android:text="正在处理&#8230;"
+            android:text="正在处理"
             android:textColor="#333333"
             android:textSize="20sp"/>
 </LinearLayout>

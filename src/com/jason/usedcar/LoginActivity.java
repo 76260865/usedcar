@@ -5,21 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.interfaces.IJobListener;
-import com.jason.usedcar.model.SaleCarModel;
 import com.jason.usedcar.request.LoginRequest;
-import com.jason.usedcar.request.PagedRequest;
-import com.jason.usedcar.request.TokenGenerateRequest;
-import com.jason.usedcar.response.CarListResponse;
 import com.jason.usedcar.response.LoginResponse;
-import com.jason.usedcar.response.TokenGenerateResponse;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Required;
 import retrofit.*;
-import retrofit.client.Response;
 
 public class LoginActivity extends BaseActivity {
 
@@ -28,6 +23,8 @@ public class LoginActivity extends BaseActivity {
 
     @Password(order = 2, messageResId = R.string.error_input_password)
     private EditText passwordEdit;
+
+    private RadioGroup radioGroup;
 
     private boolean mResult = false;
 
@@ -42,6 +39,7 @@ public class LoginActivity extends BaseActivity {
     private void bindViews() {
         usernameEdit = getView(R.id.login_edit_username);
         passwordEdit = getView(R.id.login_edit_password);
+        radioGroup = getView(R.id.userTypeRadioGroup);
     }
 
     private void popupShortToast(String msg) {
@@ -73,30 +71,18 @@ public class LoginActivity extends BaseActivity {
             public void success(final LoginResponse response, final retrofit.client.Response response2) {
                 loadingFragment.dismiss();
                 if (response != null && response.isExecutionResult()) {
-                    TokenGenerateRequest tokenGenerateRequest = new TokenGenerateRequest();
-                    tokenGenerateRequest.setUserId(String.valueOf(response.getUserId()));
-                    tokenGenerateRequest.setAccessToken(response.getAccessToken());
-                    new RestClient().generateAccessToken(tokenGenerateRequest, new Callback<TokenGenerateResponse>() {
-                        @Override
-                        public void success(final TokenGenerateResponse response, final Response response2) {
-                            Application.sampleAccessToken = response.getSampleAccessToken();
-                            Application.fromContext(getApplicationContext()).setAccessToken(response.getSampleAccessToken());
-                            if (mIJobListener != null) {
-                                mIJobListener.executionDone();
-                            }
-                            setResult(Activity.RESULT_OK);
-                            Application.fromContext(getApplicationContext()).username = username;
-                            Application.fromContext(getApplicationContext()).password = password;
-                            finish();
-                        }
-
-                        @Override
-                        public void failure(final RetrofitError error) {
-
-                        }
-                    });
+                    if (mIJobListener != null) {
+                        mIJobListener.executionDone();
+                    }
+                    setResult(Activity.RESULT_OK);
+                    Application.fromContext(getApplicationContext()).setAccessToken(
+                            Application.getEncryptedToken(response.getUserId(), response.getAccessToken()));
+                    Application.fromContext(getApplicationContext()).username = username;
+                    Application.fromContext(getApplicationContext()).password = password;
                     Application.fromContext(getApplicationContext()).userId = response.getUserId();
-//                    Application.fromContext(getApplicationContext()).setAccessToken(response.getAccessToken());
+                    Application.fromContext(getApplicationContext()).isReseller
+                            = radioGroup.getCheckedRadioButtonId() != R.id.radioPersonal;
+                    finish();
                 }
             }
 

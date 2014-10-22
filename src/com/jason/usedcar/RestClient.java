@@ -8,9 +8,49 @@ import com.jason.usedcar.model.data.County;
 import com.jason.usedcar.model.data.FacetSeries;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
-import com.jason.usedcar.request.*;
-import com.jason.usedcar.response.*;
-
+import com.jason.usedcar.request.CarRequest;
+import com.jason.usedcar.request.CityRequest;
+import com.jason.usedcar.request.CountyRequest;
+import com.jason.usedcar.request.FavoriteCarRequest;
+import com.jason.usedcar.request.ForgetPasswordRequest;
+import com.jason.usedcar.request.ImageUploadRequest;
+import com.jason.usedcar.request.LoginRequest;
+import com.jason.usedcar.request.ModelRequest;
+import com.jason.usedcar.request.ObtainCodeRequest;
+import com.jason.usedcar.request.PagedRequest;
+import com.jason.usedcar.request.PhoneRequest;
+import com.jason.usedcar.request.PublishUsedCarRequest;
+import com.jason.usedcar.request.RegisterRequest;
+import com.jason.usedcar.request.RegisterResellerRequest;
+import com.jason.usedcar.request.Request;
+import com.jason.usedcar.request.ResetPasswordByPhoneRequest;
+import com.jason.usedcar.request.SearchProductRequest;
+import com.jason.usedcar.request.SeriesRequest;
+import com.jason.usedcar.request.ShoppingCarOperationRequest;
+import com.jason.usedcar.request.SuggestionRequest;
+import com.jason.usedcar.request.TokenGenerateRequest;
+import com.jason.usedcar.request.UpdatePasswordRequest;
+import com.jason.usedcar.request.Upgrade2Request;
+import com.jason.usedcar.request.UpgradeRequest;
+import com.jason.usedcar.request.UserInfoRequest;
+import com.jason.usedcar.response.CarListResponse;
+import com.jason.usedcar.response.CarResponse;
+import com.jason.usedcar.response.CarResponse3;
+import com.jason.usedcar.response.CartResponse;
+import com.jason.usedcar.response.FavoriteListResponse;
+import com.jason.usedcar.response.LoginResponse;
+import com.jason.usedcar.response.ObtainCodeResponse;
+import com.jason.usedcar.response.PasswordResponse;
+import com.jason.usedcar.response.Response;
+import com.jason.usedcar.response.SearchProductResponse;
+import com.jason.usedcar.response.SellingCarResponse;
+import com.jason.usedcar.response.SeriesResponse;
+import com.jason.usedcar.response.TokenGenerateResponse;
+import com.jason.usedcar.response.Upgrade2Response;
+import com.jason.usedcar.response.UpgradeResponse;
+import com.jason.usedcar.response.UploadImageResponse;
+import com.jason.usedcar.response.UserAuthInfo;
+import com.jason.usedcar.response.UserInfoResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,12 +66,10 @@ import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedString;
 
 /**
  * @author t77yq @2014-08-01.
@@ -90,7 +128,7 @@ public class RestClient {
 
     interface IRegister {
         @FormUrlEncoded
-        @POST("/signon")
+        @POST("/signon.json")
         void register(
                 @Field("phone") String phone,
                 @Field("phoneVerifyCode") String phoneVerifyCode,
@@ -189,10 +227,10 @@ public class RestClient {
                 @Part("productId") String productId,
                 @Part("accessToken") String accessToken,
                 @Part("deviceId") String deviceId,
-                Callback<CarResponse> callback);
+                Callback<CarResponse3> callback);
     }
 
-    public void getUsedCar(CarRequest request, Callback<CarResponse> callback) {
+    public void getUsedCar(CarRequest request, Callback<CarResponse3> callback) {
 //        createService("getUsedCar", POOL, IGetUsedCar.class)
 //                .getUsedCar(request, callback);
         createService("getUsedCar", POOL, IGetUsedCar.class).getUsedCar(
@@ -265,7 +303,7 @@ public class RestClient {
                 @Field("facetSelections") String facetSelections,
                 @Field("accessToken") String accessToken,
                 @Field("deviceId") String deviceId,
-                Callback<List<FacetSeries>> callback);
+                Callback<SeriesResponse> callback);
     }
 
     public void getSeries(SeriesRequest request, Callback<List<Series>> callback) {
@@ -274,7 +312,7 @@ public class RestClient {
                         request.getDeviceId(), callback);
     }
 
-    public void getSeriesByBrandSelection(SeriesRequest request, Callback<List<FacetSeries>> callback) {
+    public void getSeriesByBrandSelection(SeriesRequest request, Callback<SeriesResponse> callback) {
         createService("getSeriesByBrandSelection", POOL, IGetSeries.class)
                 .getSeriesByBrandSelection(request.getFacetSelections(), request.getAccessToken(),
                         request.getDeviceId(), callback);
@@ -490,15 +528,13 @@ public class RestClient {
 
     interface IUpdateUserInfo {
         @Multipart
-        @POST("/account/updateUserInfo")
+        @POST("/account/updateUserInfo.json")
         void updateUserInfo(
+                @Part("resellerName") String resellerName,
+                @Part("resellerType") Integer resellerType,
                 @Part("nickname") String nickname,
-                @Part("realName") String realName,
-                @Part("sex") boolean sex,
-                @Part("birthyear") String birthYear,
-                @Part("birthmonth") String birthMonth,
-                @Part("birthday") String birthDay,
-                @Part("certificateNumber") String certificateNumber,
+                @Part("sex") int sex,
+                @Part("birthdate") String birthday,
                 @Part("province") String province,
                 @Part("city") String city,
                 @Part("county") String county,
@@ -510,10 +546,9 @@ public class RestClient {
 
     public void updateUserInfo(UserInfoRequest request, Callback<Response> callback) {
         createService("updateUserInfo", POOL, IUpdateUserInfo.class)
-                .updateUserInfo(request.getNickname(), request.getRealName(), request.getSex(),
-                        request.getBirthyear(), request.getBirthmonth(), request.getBirthday(),
-                        request.getCertificateNumber(), request.getProvince(), request.getCity(),
-                        request.getCounty(), request.getStreet(),
+                .updateUserInfo(request.getResellerName(), request.getResellerType(),
+                        request.getNickname(), request.getSex(), request.getBirthday(),
+                        request.getProvince(), request.getCity(), request.getCounty(), request.getStreet(),
                         request.getAccessToken(), request.getDeviceId(), callback);
     }
 
@@ -533,10 +568,10 @@ public class RestClient {
 
     interface IResetPasswordByPhone {
         @FormUrlEncoded
-        @POST("/resetPasswordByPhone")
+        @POST("/account/resetPasswordByPhone.json")
         void resetPasswordByPhone(
-                @Field("principle") String principle,
-                @Field("activeCode") String activeCode,
+                @Field("phone") String phone,
+                @Field("code") String activeCode,
                 @Field("newPassword") String newPassword,
                 @Field("confirmPassword") String confirmPassword,
                 @Field("deviceId") String deviceId,
@@ -545,7 +580,7 @@ public class RestClient {
 
     public void resetPasswordByPhone(ResetPasswordByPhoneRequest request, Callback<PasswordResponse> callback) {
         createService("resetPasswordByPhone", POOL, IResetPasswordByPhone.class)
-                .resetPasswordByPhone(request.getPrinciple(), request.getActiveCode(),
+                .resetPasswordByPhone(request.getPhone(), request.getCode(),
                         request.getNewPassword(), request.getConfirmPassword(),
                         request.getDeviceId(), callback);
     }
@@ -603,17 +638,17 @@ public class RestClient {
     }
 
     interface IFavoriteList {
-        @FormUrlEncoded
-        @POST("/product/FavorityList")
+        @Multipart
+        @POST("/account/favoriteList.json")
         void favoriteList(
-                @Field("pageIndex") int pageIndex,
-                @Field("pageSize") int pageSize,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
-                Callback<CarListResponse> callback);
+                @Part("pageIndex") int pageIndex,
+                @Part("pageSize") int pageSize,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
+                Callback<FavoriteListResponse> callback);
     }
 
-    public void favoriteList(PagedRequest request, Callback<CarListResponse> callback) {
+    public void favoriteList(PagedRequest request, Callback<FavoriteListResponse> callback) {
         createService("favoriteList", POOL, IFavoriteList.class)
                 .favoriteList(request.getPageIndex(), request.getPageSize(),
                         request.getAccessToken(), request.getDeviceId(), callback);
@@ -637,13 +672,13 @@ public class RestClient {
     }
 
     interface IBuyUsedCarList {
-        @FormUrlEncoded
-        @POST("/product/BuyUsedCarList")
+        @Multipart
+        @POST("/product/BuyUsedCarList.json")
         void buyUsedCarList(
-                @Field("pageIndex") int pageIndex,
-                @Field("pageSize") int pageSize,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("pageIndex") int pageIndex,
+                @Part("pageSize") int pageSize,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<CarListResponse> callback);
     }
 
@@ -670,12 +705,12 @@ public class RestClient {
     }
 
     interface ISuggestion {
-        @FormUrlEncoded
-        @POST("/more/Suggestion")
+        @Multipart
+        @POST("/more/suggestion.json")
         void suggestion(
-                @Field("suggestion") String suggestion,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("message") String suggestion,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
@@ -850,5 +885,39 @@ public class RestClient {
                               Callback<SellingCarResponse> callback) {
         createService("getSellingCar", POOL, ICarUnderSale.class)
                 .getSellingCar(request.getAccessToken(), request.getDeviceId(), callback);
+    }
+
+    interface IAuthenticateUser {
+        @Multipart
+        @POST("/account/authenticateUser.json")
+        public void authenticateUser(@Part("realName") String name,
+                                     @Part("certificateType") int certificateType,
+                                     @Part("certificateNumber") String certificateNumber,
+                                     @Part("bankName") String bankName,
+                                     @Part("bankAccount") String bankAccount,
+                                     @Part("accessToken") String accessToken,
+                                     @Part("deviceId") String deviceId,
+                                     Callback<Response> callback);
+    }
+
+    public void authenticateUser(String name, int certificateType, String certificateNumber,
+                                 String bankName, String bankAccount, String accessToken,
+                                 String deviceId, Callback<Response> callback) {
+        createService("authenticateUser", POOL, IAuthenticateUser.class)
+                .authenticateUser(name, certificateType, certificateNumber, bankName,
+                        bankAccount, accessToken, deviceId, callback);
+    }
+
+    interface IGetUserAuthInfo {
+        @Multipart
+        @POST("/account/getUserAuthInfo.json")
+        public void getUserAuthInfo(@Part("accessToken") String accessToken,
+                                    @Part("deviceId") String deviceId,
+                                    Callback<UserAuthInfo> callback);
+    }
+
+    public void getUserAuthInfo(String accessToken, String deviceId, Callback<UserAuthInfo> callback) {
+        createService("getUserAuthInfo", POOL, IGetUserAuthInfo.class)
+                .getUserAuthInfo(accessToken, deviceId, callback);
     }
 }

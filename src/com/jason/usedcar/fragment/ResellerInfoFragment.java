@@ -3,7 +3,9 @@ package com.jason.usedcar.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -88,19 +90,32 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case ID_PHOTO:
-                    uploadImage(ID_PHOTO, idPhotoImage, (Bitmap) data.getExtras().get("data"));
-                    break;
-                case ID_PHOTO2:
-                    uploadImage(ID_PHOTO2, idPhotoImage2, (Bitmap) data.getExtras().get("data"));
-                    break;
-                case LICENSE_PHOTO:
-                    uploadImage(LICENSE_PHOTO, idPhotoImage3, (Bitmap) data.getExtras().get("data"));
-                    break;
-                case LICENSE_PHOTO2:
-                    uploadImage(LICENSE_PHOTO2, idPhotoImage4, (Bitmap) data.getExtras().get("data"));
-                    break;
+            if (data != null) {
+                Uri uri = data.getData();
+                if (uri != null) {
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (bitmap != null) {
+                        switch (requestCode) {
+                            case ID_PHOTO:
+                                uploadImage(ID_PHOTO, idPhotoImage, bitmap);
+                                break;
+                            case ID_PHOTO2:
+                                uploadImage(ID_PHOTO2, idPhotoImage2, bitmap);
+                                break;
+                            case LICENSE_PHOTO:
+                                uploadImage(LICENSE_PHOTO, idPhotoImage3, bitmap);
+                                break;
+                            case LICENSE_PHOTO2:
+                                uploadImage(LICENSE_PHOTO2, idPhotoImage4, bitmap);
+                                break;
+                        }
+                    }
+                }
             }
         }
     }
@@ -147,19 +162,26 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
 
     @Override
     public void onClick(View v) {
+        int requestCode = 0;
         switch (v.getId()) {
             case R.id.car_info_id_photo:
-                startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), ID_PHOTO);
+                requestCode = ID_PHOTO;
                 break;
             case R.id.car_info_id_photo2:
-                startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), ID_PHOTO2);
+                requestCode = ID_PHOTO2;
                 break;
             case R.id.car_info_id_photo3:
-                startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), LICENSE_PHOTO);
+                requestCode = LICENSE_PHOTO;
                 break;
             case R.id.car_info_id_photo4:
-                startActivityForResult(new Intent("android.media.action.IMAGE_CAPTURE"), LICENSE_PHOTO2);
+                requestCode = LICENSE_PHOTO2;
                 break;
+        }
+        if (requestCode != 0) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent, requestCode);
         }
     }
 
@@ -208,7 +230,7 @@ public class ResellerInfoFragment extends BaseFragment implements Ui, OnClickLis
                             return;
                         }
                         final ImageUploadRequest uploadImageRequest = new ImageUploadRequest();
-                        uploadImageRequest.setAccessToken(Application.sampleAccessToken);
+                        uploadImageRequest.setAccessToken(Application.fromActivity(getActivity()).getAccessToken());
                         uploadImageRequest.setImage(bytes);
                         new RestClient().uploadImage(uploadImageRequest, new SimpleCallbackImpl2<UploadImageResponse>(ResellerInfoFragment.this) {
                             @Override

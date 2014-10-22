@@ -2,6 +2,7 @@ package com.jason.usedcar.presenter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 import com.jason.usedcar.*;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.interfaces.Ui;
@@ -25,7 +26,7 @@ public class ResetPasswordFragmentPresenter extends BasePresenter<ResetPasswordF
 
     private static final String TAG = "ResetPasswordFragmentPresenter";
 
-    public void resetPassword(Fragment fragment, final ResetPasswordByPhoneRequest param) {
+    public void resetPassword(final Fragment fragment, final ResetPasswordByPhoneRequest param) {
         final LoadingFragment loadingFragment = new LoadingFragment();
         loadingFragment.show(fragment.getFragmentManager());
         new RestClient().resetPasswordByPhone(param, new Callback<PasswordResponse>() {
@@ -34,11 +35,14 @@ public class ResetPasswordFragmentPresenter extends BasePresenter<ResetPasswordF
                 loadingFragment.dismiss();
                 if (response.isExecutionResult()) {
                     getUi().onPasswordReset();
+                } else {
+                    Toast.makeText(fragment.getActivity(), "密码找回失败", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void failure(final RetrofitError error) {
+                Toast.makeText(fragment.getActivity(), "出错", Toast.LENGTH_SHORT).show();
                 loadingFragment.dismiss();
             }
         });

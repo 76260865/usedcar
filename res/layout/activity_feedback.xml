@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ett="http://schemas.android.com/apk/res/com.jason.usedcar"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none">
-    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:auto="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:bind="http://robobinding.org/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        tools:prefixIgnore="true">
+    <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="反馈内容"
-            android:textSize="20sp"/>
+            android:padding="10dip"
+            android:orientation="vertical">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:text="反馈内容"
+                android:textSize="20sp"/>
         <EditText
-            style="@style/EditText"
-            android:id="@+id/editFeedback"
-            android:layout_marginTop="10dip"
-            android:gravity="top"
-            android:minHeight="200dip"/>
+                style="@style/EditText"
+                android:id="@+id/editFeedback"
+                android:layout_marginTop="10dip"
+                android:gravity="top"
+                android:minHeight="200dip"
+                bind:text="${content}"/>
         <com.jason.usedcar.view.ExtendedEditText
-            style="@style/EditText"
-            android:id="@+id/editContact"
-            android:layout_marginTop="10dip"
-            android:drawablePadding="10dp"
-            android:inputType="phone"
-            ett:prefix="联系方式:"
-            ett:prefixColor="#555555"
-            ett:prefixSize="20sp"/>
+                style="@style/EditText"
+                android:id="@+id/editContact"
+                android:layout_marginTop="10dip"
+                android:drawablePadding="10dp"
+                android:inputType="phone"
+                auto:prefix="联系方式:"
+                auto:prefixColor="#555555"
+                auto:prefixSize="20sp"
+                bind:text="${contactPhone}"/>
         <Button
-            style="@style/Confirm.Button"
-            android:id="@+id/btnFeedback"
-            android:layout_marginTop="10dip"
-            android:onClick="feedback"/>
+                style="@style/Confirm.Button"
+                android:id="@+id/btnFeedback"
+                android:layout_marginTop="10dip"
+                bind:onClick="feedback"/>
     </LinearLayout>
 </ScrollView>

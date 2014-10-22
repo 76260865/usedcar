@@ -23,7 +23,7 @@ android {
 
     defaultConfig {
         minSdkVersion 8
-        targetSdkVersion 20
+        targetSdkVersion 19
 
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
@@ -42,7 +42,6 @@ android {
 
     lintOptions {
         disable 'UnusedAttribute', 'ValidFragment', 'GradleDependency', 'OnClick', 'MissingPrefix', 'MenuTitle'
-        abortOnError false;
     }
 }
 
@@ -63,13 +62,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile "org.robobinding:robobinding:0.8.8:with-aop"
     aspectPath "org.robobinding:robobinding:0.8.8:with-aop"
-    compile 'com.android.support:appcompat-v7:20+'
-    compile 'com.android.support:support-v4:20+'
+    compile 'com.android.support:appcompat-v7:19+'
+    compile 'com.android.support:support-v4:19+'
+    compile 'com.github.bumptech.glide:glide:3.3.+'
 }
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "20.0"
+    compileSdkVersion 19
+    buildToolsVersion "20.0.0"
 
     sourceSets {
         main {

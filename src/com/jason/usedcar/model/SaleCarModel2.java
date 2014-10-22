@@ -1,6 +1,7 @@
 package com.jason.usedcar.model;
 
 import com.jason.usedcar.model.data.Product;
+import com.jason.usedcar.model.data.SellingCar;
 
 import java.util.List;
 
@@ -15,15 +16,15 @@ public class SaleCarModel2 extends BaseModel {
 
     private boolean full;
 
-    private List<UsedCar> data;
+    private List<Product> data;
 
     public SaleCarModel2() {}
 
-    public SaleCarModel2(List<UsedCar> data) {
+    public SaleCarModel2(List<Product> data) {
         this.data = data;
     }
 
-    public void add(List<UsedCar> newData) {
+    public void add(List<Product> newData) {
         if (data == null) {
             this.data = newData;
         } else {
@@ -39,11 +40,11 @@ public class SaleCarModel2 extends BaseModel {
         this.loading = loading;
     }
 
-    public List<UsedCar> getData() {
+    public List<Product> getData() {
         return data;
     }
 
-    public void setData(List<UsedCar> data) {
+    public void setData(List<Product> data) {
         this.data = data;
     }
 
@@ -56,7 +57,7 @@ public class SaleCarModel2 extends BaseModel {
         return data == null ? 0 : data.size();
     }
 
-    public UsedCar get(int position) {
+    public Product get(int position) {
         return (position < 0 || position >= size()) ? null : data.get(position);
     }
 
