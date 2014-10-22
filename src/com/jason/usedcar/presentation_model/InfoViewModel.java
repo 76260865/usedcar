@@ -3,6 +3,8 @@ package com.jason.usedcar.presentation_model;
 import android.view.View;
 import com.jason.usedcar.RestClient;
 import com.jason.usedcar.request.Request;
+import com.jason.usedcar.request.UserInfoRequest;
+import com.jason.usedcar.response.Response;
 import com.jason.usedcar.response.UserInfoResponse;
 import org.robobinding.aspects.PresentationModel;
 import org.robobinding.presentationmodel.PresentationModelChangeSupport;
@@ -38,11 +40,15 @@ public class InfoViewModel extends ViewModelBase {
     }
 
     public boolean getMale() {
-        return userInfoResponse.isSex();
+        return userInfoResponse.getSex() == 0;
     }
 
     public boolean getFemale() {
         return !getMale();
+    }
+
+    public void setNickname(String nickname) {
+        userInfoResponse.setNickname(nickname);
     }
 
     public String getNickname() {
@@ -57,20 +63,45 @@ public class InfoViewModel extends ViewModelBase {
         return userInfoResponse.getEmail();
     }
 
-    public String getRealName() {
-        return userInfoResponse.getRealName();
+    public void setBirthday(String birthday) {
+        userInfoResponse.setBirthdate(birthday);
+        presentationModelChangeSupport.firePropertyChange("birthday");
     }
 
     public String getBirthday() {
-        return userInfoResponse.getBirthyear() + userInfoResponse.getBirthmonth() + userInfoResponse.getBirthday();
+        return userInfoResponse.getBirthdate();
     }
 
-    public String getCertificateNumber() {
-        return userInfoResponse.getCertificateNumber();
+    public void setProvince(String province) {
+        userInfoResponse.setProvince(province);
     }
 
-    public String getAddress() {
-        return userInfoResponse.getProvince() + userInfoResponse.getCity() + userInfoResponse.getCounty() + userInfoResponse.getStreet();
+    public String getProvince() {
+        return userInfoResponse.getProvince();
+    }
+
+    public void setCity(String city) {
+        userInfoResponse.setCity(city);
+    }
+
+    public String getCity() {
+        return userInfoResponse.getCity();
+    }
+
+    public void setCounty(String county) {
+        userInfoResponse.setCounty(county);
+    }
+
+    public String getCounty() {
+        return userInfoResponse.getCounty();
+    }
+
+    public void setStreet(String street) {
+        userInfoResponse.setStreet(street);
+    }
+
+    public String getStreet() {
+        return userInfoResponse.getStreet();
     }
 
     public void changePassword() {
@@ -107,6 +138,40 @@ public class InfoViewModel extends ViewModelBase {
                 nothingVisibility = View.VISIBLE;
                 presentationModelChangeSupport.firePropertyChange("progressVisibility");
                 presentationModelChangeSupport.firePropertyChange("nothingVisibility");
+            }
+        });
+    }
+
+    public void pickTime() {
+        infoView.pickTime();
+    }
+
+    public void save() {
+        UserInfoRequest userInfoRequest = new UserInfoRequest();
+        userInfoRequest.setAccessToken(infoView.getAccessToken());
+        userInfoRequest.setNickname(getNickname());
+        userInfoRequest.setBirthday(getBirthday());
+        userInfoRequest.setSex(userInfoResponse.getSex());
+        userInfoRequest.setCity(getCity());
+        userInfoRequest.setProvince(getProvince());
+        userInfoRequest.setCounty(getCounty());
+        userInfoRequest.setStreet(getStreet());
+        infoView.start();
+        new RestClient().updateUserInfo(userInfoRequest, new Callback<Response>() {
+            @Override
+            public void success(final Response response, final retrofit.client.Response response2) {
+                infoView.stop();
+                if (response != null) {
+                    infoView.tell(response.getMessage());
+                } else {
+                    infoView.tell("出错");
+                }
+            }
+
+            @Override
+            public void failure(final RetrofitError error) {
+                infoView.stop();
+                infoView.tell("出错");
             }
         });
     }

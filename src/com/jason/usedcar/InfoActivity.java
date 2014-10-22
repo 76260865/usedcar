@@ -90,11 +90,7 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                 loadingFragment.dismiss();
                 if (response.isExecutionResult()) {
                     userInfoParam.setNickname(response.getNickname());
-                    userInfoParam.setRealName(response.getRealName());
-                    userInfoParam.setSex(response.isSex());
-                    userInfoParam.setBirthyear(response.getBirthyear());
-                    userInfoParam.setBirthmonth(response.getBirthmonth());
-                    userInfoParam.setBirthday(response.getBirthday());
+                    userInfoParam.setSex(response.getSex());
                     userInfoParam.setProvince(response.getProvince());
                     userInfoParam.setCity(response.getCity());
                     userInfoParam.setCounty(response.getCounty());
@@ -103,12 +99,6 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
                     activityHolder.changePasswordText.setText("");
                     activityHolder.bindPhoneText.setText(response.getPhone());
                     activityHolder.bindEmailText.setText(response.getEmail());
-                    activityHolder.nameText.setText(response.getRealName());
-                    activityHolder.birthdayText.setText(new StringBuilder()
-                            .append(response.getBirthyear()).append("-")
-                            .append(response.getBirthmonth()).append("-")
-                            .append(response.getBirthday()));
-                    activityHolder.birthdayText.setText(response.getCertificateNumber());
                     String address = "";
                     if (!TextUtils.isEmpty(response.getProvince())) {
                         address += response.getProvince();
@@ -138,7 +128,7 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
         userInfoParam.setRealName(String.valueOf(activityHolder.nameText.getText()));
         userInfoParam.setCertificateNumber(String.valueOf(activityHolder.identifyText.getText()));
         userInfoParam.setStreet(String.valueOf(activityHolder.addressText.getText()));
-        userInfoParam.setSex(activityHolder.radioTypeMale.isChecked());
+        userInfoParam.setSex(activityHolder.radioTypeMale.isChecked() ? 0 : 1);
         userInfoParam.setProvince("xxx");
         userInfoParam.setCity("yyy");
         userInfoParam.setStreet("zzz");

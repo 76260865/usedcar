@@ -44,6 +44,7 @@ import com.jason.usedcar.response.PasswordResponse;
 import com.jason.usedcar.response.Response;
 import com.jason.usedcar.response.SearchProductResponse;
 import com.jason.usedcar.response.SellingCarResponse;
+import com.jason.usedcar.response.SeriesResponse;
 import com.jason.usedcar.response.TokenGenerateResponse;
 import com.jason.usedcar.response.Upgrade2Response;
 import com.jason.usedcar.response.UpgradeResponse;
@@ -302,7 +303,7 @@ public class RestClient {
                 @Field("facetSelections") String facetSelections,
                 @Field("accessToken") String accessToken,
                 @Field("deviceId") String deviceId,
-                Callback<List<FacetSeries>> callback);
+                Callback<SeriesResponse> callback);
     }
 
     public void getSeries(SeriesRequest request, Callback<List<Series>> callback) {
@@ -311,7 +312,7 @@ public class RestClient {
                         request.getDeviceId(), callback);
     }
 
-    public void getSeriesByBrandSelection(SeriesRequest request, Callback<List<FacetSeries>> callback) {
+    public void getSeriesByBrandSelection(SeriesRequest request, Callback<SeriesResponse> callback) {
         createService("getSeriesByBrandSelection", POOL, IGetSeries.class)
                 .getSeriesByBrandSelection(request.getFacetSelections(), request.getAccessToken(),
                         request.getDeviceId(), callback);
@@ -527,15 +528,13 @@ public class RestClient {
 
     interface IUpdateUserInfo {
         @Multipart
-        @POST("/account/updateUserInfo")
+        @POST("/account/updateUserInfo.json")
         void updateUserInfo(
+                @Part("resellerName") String resellerName,
+                @Part("resellerType") Integer resellerType,
                 @Part("nickname") String nickname,
-                @Part("realName") String realName,
-                @Part("sex") boolean sex,
-                @Part("birthyear") String birthYear,
-                @Part("birthmonth") String birthMonth,
-                @Part("birthday") String birthDay,
-                @Part("certificateNumber") String certificateNumber,
+                @Part("sex") int sex,
+                @Part("birthdate") String birthday,
                 @Part("province") String province,
                 @Part("city") String city,
                 @Part("county") String county,
@@ -547,10 +546,9 @@ public class RestClient {
 
     public void updateUserInfo(UserInfoRequest request, Callback<Response> callback) {
         createService("updateUserInfo", POOL, IUpdateUserInfo.class)
-                .updateUserInfo(request.getNickname(), request.getRealName(), request.getSex(),
-                        request.getBirthyear(), request.getBirthmonth(), request.getBirthday(),
-                        request.getCertificateNumber(), request.getProvince(), request.getCity(),
-                        request.getCounty(), request.getStreet(),
+                .updateUserInfo(request.getResellerName(), request.getResellerType(),
+                        request.getNickname(), request.getSex(), request.getBirthday(),
+                        request.getProvince(), request.getCity(), request.getCounty(), request.getStreet(),
                         request.getAccessToken(), request.getDeviceId(), callback);
     }
 

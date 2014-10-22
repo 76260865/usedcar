@@ -27,6 +27,10 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
+        getSupportActionBar().setIcon(android.R.color.transparent);
         viewModel = new ViewCollectionPresentationModel(this);
         initContentView(R.layout.activity_collection, viewModel);
         viewModel.loadData();

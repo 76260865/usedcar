@@ -8,4 +8,12 @@ public interface InfoView extends ViewBase {
     void changePassword(String phoneNumber);
 
     void changePhone(String phoneNumber);
+
+    void pickTime();
+
+    void start();
+
+    void stop();
+
+    void tell(String msg);
 }

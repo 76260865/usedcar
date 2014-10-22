@@ -102,7 +102,8 @@ public class CarDetailsViewModel {
     }
 
     public void openCalculator() {
-        carDetailsView.openCalculator(Double.parseDouble(carResponse.getListPrice()));
+        //carDetailsView.openCalculator(Double.parseDouble(carResponse.getListPrice()));
+        carDetailsView.openCalculator(0.0);
     }
 
     public void callCarOwner() {

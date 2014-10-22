@@ -2,26 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+            android:background="@drawable/rect_bg2"
+            android:addStatesFromChildren="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="6dip"
             android:text="@string/txt_brands"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
+        <Button
             android:id="@+id/txt_brand"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="left|center_vertical"
+                android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <View
@@ -33,20 +40,26 @@
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@drawable/rect_bg2"
+        android:addStatesFromChildren="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="6dip"
             android:text="车系:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
-        <TextView
+        <Button
             android:id="@+id/txt_seriers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="left|center_vertical"
+            android:background="@android:color/transparent"
             />
     </LinearLayout>
 
@@ -59,20 +72,26 @@
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@drawable/rect_bg2"
+            android:addStatesFromChildren="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="6dip"
             android:text="价格:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
+        <Button
             android:id="@+id/txt_price"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="left|center_vertical"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <View
@@ -84,20 +103,26 @@
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@drawable/rect_bg2"
+            android:addStatesFromChildren="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="6dip"
             android:text="车龄:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
+        <Button
             android:id="@+id/txt_age"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:gravity="left|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+                android:background="@android:color/transparent"/>
     </LinearLayout>
 
     <View
@@ -109,20 +134,26 @@
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@drawable/rect_bg2"
+            android:addStatesFromChildren="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="6dip"
             android:text="里程:"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <TextView
+        <Button
             android:id="@+id/txt_miles"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:gravity="left|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:background="@android:color/transparent" />
     </LinearLayout>
 
     <View
@@ -134,12 +165,15 @@
         android:layout_width="fill_parent"
         android:layout_height="50.0dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:background="@drawable/rect_bg2" >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:layout_marginRight="6dip"
             android:layout_weight="1"
             android:text="是否认证"
             android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -148,6 +182,7 @@
             android:id="@+id/toggle_btn_auth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="6dip"
             android:text="ToggleButton" />
     </LinearLayout>
 
@@ -161,6 +196,7 @@
         android:id="@+id/btn_search"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dip"
         android:text="搜索" />
 
 </LinearLayout>

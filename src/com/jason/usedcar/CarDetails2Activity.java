@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.presentation_model.CarDetailsView;
@@ -62,9 +63,10 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
 
     @Override
     public void openCalculator(Double carPrice) {
-        Intent intent = new Intent(this, CalculatorActivity.class);
-        intent.putExtra("car_price", carPrice);
-        startActivity(intent);
+        MessageToast.makeText(this, "敬请期待...").show();
+//        Intent intent = new Intent(this, CalculatorActivity.class);
+//        intent.putExtra("car_price", carPrice);
+//        startActivity(intent);
     }
 
     @Override
@@ -87,8 +89,10 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
 
     @Override
     public void editCar() {
-        Intent edit = new Intent(this, SellCarActivity.class);
-        edit.putExtra("car_response", carDetailsViewModel.getCarResponse());
-        startActivity(edit);
+        MessageToast.makeText(this, "敬请期待...").show();
+        return;
+//        Intent edit = new Intent(this, SellCarActivity.class);
+//        edit.putExtra("car_response", carDetailsViewModel.getCarResponse());
+//        startActivity(edit);
     }
 }

@@ -57,38 +57,40 @@
                     android:src="@drawable/xianjian01"
                     res:border_width="1dip"
                     res:border_color="#88000000"/>
-            <com.jason.usedcar.view.ExtendedEditText
-                    style="@style/Info.Item"
-                    android:id="@+id/info_nickname"
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textColor="@color/notice_color"
-                    android:minWidth="20dip"
-                    res:prefix="用户名:"
-                    res:prefixColor="#222222"
-                    res:prefixSize="20sp"
-                    bind:enabled="{editMode}"
-                    bind:text="{nickname}"
-                    tools:text="坏熊熊"/>
-            <Button
-                    style="@style/Button"
-                    android:id="@+id/info_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dip"
-                    android:layout_marginBottom="10dip"
-                    android:layout_gravity="center_horizontal"
-                    android:text="修改密码"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"
-                    bind:enabled="{editMode}"
-                    bind:onClick="changePassword"/>
-            <View
+            <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1dip"
-                    android:layout_marginLeft="6dip"
-                    android:layout_marginRight="6dip"
-                    android:background="#E6E6E6"/>
+                    android:layout_height="wrap_content"
+                    android:addStatesFromChildren="true"
+                    android:background="@drawable/edit_bg"
+                    android:orientation="horizontal"
+                    android:padding="0dp">
+                <com.jason.usedcar.view.ExtendedEditText
+                        style="@style/Info.Item"
+                        android:id="@+id/info_nickname"
+                        android:layout_width="0dip"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/notice_color"
+                        android:minWidth="20dip"
+                        res:prefix="用户名:"
+                        res:prefixColor="#222222"
+                        res:prefixSize="20sp"
+                        bind:enabled="{editMode}"
+                        bind:text="${nickname}"
+                        tools:text="坏熊熊"/>
+                <Button
+                        style="@style/Button"
+                        android:id="@+id/info_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dip"
+                        android:layout_gravity="center_vertical"
+                        android:text="修改密码"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        bind:onClick="changePassword"/>
+            </LinearLayout>
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -119,28 +121,27 @@
                         android:text="修改绑定"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
-                        bind:enabled="{editMode}"
                         bind:onClick="changePhone"/>
             </LinearLayout>
             <com.jason.usedcar.view.ExtendedTextView
                     style="@style/Info.Item"
                     android:id="@+id/info_bind_email"
                     android:textColor="@color/notice_color"
+                    android:visibility="gone"
                     res:prefix="绑定邮箱:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
-                    bind:text="{email}"
                     tools:text="87162649@qq.com"/>
             <com.jason.usedcar.view.ExtendedEditText
                     style="@style/Info.Item"
                     android:id="@+id/info_name"
                     android:textColor="@color/notice_color"
+                    android:visibility="gone"
                     res:prefix="真实姓名:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
-                    bind:text="{realName}"
                     tools:text="坏熊熊"/>
             <com.jason.usedcar.view.ExtendedTextView
                     style="@style/Info.Item"
@@ -151,26 +152,57 @@
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
                     bind:text="{birthday}"
+                    bind:onClick="pickTime"
                     tools:text="2020-06-01"/>
             <com.jason.usedcar.view.ExtendedEditText
                     style="@style/Info.Item"
                     android:id="@+id/info_id"
                     android:textColor="@color/notice_color"
+                    android:visibility="gone"
                     res:prefix="证件号码:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
-                    bind:text="{certificateNumber}"
                     tools:text="41111111111111111111111"/>
+            <com.jason.usedcar.view.ExtendedEditText
+                    style="@style/Info.Item"
+                    android:id="@+id/info_province"
+                    android:textColor="@color/notice_color"
+                    res:prefix="省份:"
+                    res:prefixColor="#222222"
+                    res:prefixSize="20sp"
+                    bind:enabled="{editMode}"
+                    bind:text="${province}"
+                    tools:text="四川省成都市双流县航空港"/>
+            <com.jason.usedcar.view.ExtendedEditText
+                    style="@style/Info.Item"
+                    android:id="@+id/info_city"
+                    android:textColor="@color/notice_color"
+                    res:prefix="城市:"
+                    res:prefixColor="#222222"
+                    res:prefixSize="20sp"
+                    bind:enabled="{editMode}"
+                    bind:text="${city}"
+                    tools:text="四川省成都市双流县航空港"/>
+            <com.jason.usedcar.view.ExtendedEditText
+                    style="@style/Info.Item"
+                    android:id="@+id/info_county"
+                    android:textColor="@color/notice_color"
+                    res:prefix="区/县:"
+                    res:prefixColor="#222222"
+                    res:prefixSize="20sp"
+                    bind:enabled="{editMode}"
+                    bind:text="${county}"
+                    tools:text="四川省成都市双流县航空港"/>
             <com.jason.usedcar.view.ExtendedEditText
                     style="@style/Info.Item"
                     android:id="@+id/info_address"
                     android:textColor="@color/notice_color"
-                    res:prefix="所在地:"
+                    res:prefix="街道:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
-                    bind:text="{address}"
+                    bind:text="${street}"
                     tools:text="四川省成都市双流县航空港"/>
             <View
                     android:layout_width="0dip"

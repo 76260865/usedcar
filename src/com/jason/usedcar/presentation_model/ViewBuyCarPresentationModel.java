@@ -95,7 +95,7 @@ public class ViewBuyCarPresentationModel extends ViewModelBase {
 
     public void search() {
         if (TextUtils.isEmpty(filter)) {
-            view.showMessage("请选择筛选条件");
+            view.showMessage("请输入搜索关键字");
             return;
         }
         view.search(filter);

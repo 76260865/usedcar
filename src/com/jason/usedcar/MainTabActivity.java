@@ -24,7 +24,7 @@ public class MainTabActivity extends ActionBarActivity {
     private LayoutInflater layoutInflater;
 
     private Class<?> fragmentArray[] = { BuyCarFragment2.class, SellCarFragment2.class,
-            ShoppingCar2Fragment.class, PersonalCenterFragment.class, MoreFragment.class };
+            ShoppingCar2Fragment.class, PersonalCenterFragment.class };
 
     private int mImageViewArray[] = { R.drawable.tab_buy_car_btn, R.drawable.tab_sell_car_btn,
             R.drawable.tab_shop_car_btn, R.drawable.tab_personal_car_btn,

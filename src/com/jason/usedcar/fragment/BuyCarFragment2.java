@@ -160,29 +160,11 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
                     break;
                 case 1001:
                     if (data != null) {
-                        BrandFilterEntity brandFilterEntity = (BrandFilterEntity) data.getSerializableExtra("brandFilter");
-                        presentationModel.setBrandFilterEntity(brandFilterEntity);
-                        FilterEntity priceFilterEntity = (FilterEntity) data.getSerializableExtra("priceFilter");
-                        FilterEntity mileFilterEntity = (FilterEntity) data.getSerializableExtra("mileFilter");
-                        FilterEntity ageFilterEntity = (FilterEntity) data.getSerializableExtra("ageFilter");
-                        if (brandFilterEntity != null) {
-                            facetSelections = brandFilterEntity.getBrandInitLetter() + ",";
-                        }
-                        if (priceFilterEntity != null) {
-                            facetSelections = priceFilterEntity.getFacetSelection() + ",";
-                        }
-                        if (mileFilterEntity != null) {
-                            facetSelections = mileFilterEntity.getFacetSelection() + ",";
-                        }
-                        if (ageFilterEntity != null) {
-                            facetSelections = ageFilterEntity.getFacetSelection() + ",";
-                        }
-                        if (facetSelections != null) {
-                            facetSelections = facetSelections.substring(0, facetSelections.length() - 1);
-                        }
+                        facetSelections = data.getStringExtra("filter");
                         if (!TextUtils.isEmpty(facetSelections)) {
                             queryStr = null;
                             model.setData(null);
+                            presentationModel.setFilter(null);
                             presentationModel.refreshProducts();
                             loadData(1, facetSelections, null);
                         }
