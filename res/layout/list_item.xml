@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5B5B5B"
-                    tools:text="预售价格: 1.2万" />
+                    android:text="预售价格:" />
 
                 <TextView
                     android:id="@+id/textPreSalePrice"
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5B5B5B"
-                    tools:text="行驶里程: 2.5万公里" />
+                    android:text="行驶里程:" />
 
                 <TextView
                     android:id="@+id/textMileage"
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#5B5B5B"
-                    tools:text="首次购买时间: 2010年12月" />
+                    android:text="首次购买时间:" />
 
                 <TextView
                     android:id="@+id/textBuyTime"
