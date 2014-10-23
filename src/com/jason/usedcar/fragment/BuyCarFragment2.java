@@ -51,6 +51,7 @@ public class BuyCarFragment2 extends AbsFragment implements ViewBuyCarView {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        getActivity().setTitle(R.string.buy_car_text);
         model = new SaleCarModel();
     }
 

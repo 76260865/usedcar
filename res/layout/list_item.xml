@@ -1,70 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://robobinding.org/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:background="@drawable/rect"
+    android:orientation="horizontal"
     tools:prefixIgnore="true">
+
     <ImageView
         android:id="@+id/imageCarShow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:scaleType="centerInside"
-        android:src="@drawable/pic"/>
+        android:src="@drawable/pic" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6dip"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical" >
+            android:layout_marginLeft="6dip"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/textCarName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#2B4FAD"
                 android:text="商品名称: 大众polo"
-                bind:text="{name}"/>
-            <TextView
-                android:id="@+id/textPreSalePrice"
+                android:textColor="#2B4FAD"
+                bind:text="{name}" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#5B5B5B"
-                tools:text="预售价格: 1.2万"
-                bind:text="{price}"/>
-            <TextView
-                android:id="@+id/textMileage"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5B5B5B"
+                    tools:text="预售价格: 1.2万" />
+
+                <TextView
+                    android:id="@+id/textPreSalePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5B5B5B"
+                    bind:text="{price}" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#5B5B5B"
-                bind:text="{odometer}"
-                tools:text="行驶里程: 2.5万公里"/>
-            <TextView
-                android:id="@+id/textBuyTime"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5B5B5B"
+                    tools:text="行驶里程: 2.5万公里" />
+
+                <TextView
+                    android:id="@+id/textMileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5B5B5B"
+                    bind:text="{odometer}" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#5B5B5B"
-                bind:text="{purchaseDate}"
-                tools:text="首次购买时间: 2010年12月"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5B5B5B"
+                    tools:text="首次购买时间: 2010年12月" />
+
+                <TextView
+                    android:id="@+id/textBuyTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#5B5B5B"
+                    bind:text="{purchaseDate}"
+                    tools:text="首次购买时间: 2010年12月" />
+            </LinearLayout>
         </LinearLayout>
+
         <TextView
             android:id="@+id/textPriceType"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|right"
+            android:orientation="vertical"
             android:padding="1dip"
             android:textColor="#FB6D0B"
             android:visibility="visible"
             bind:text="{payType}"
             bind:visibility="{payTypeVisibility}"
             tools:text="贷款"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </FrameLayout>
 </LinearLayout>
