@@ -202,7 +202,7 @@ public class FindUsedActivity extends BaseActivity implements
         @Override
         public void onErrorResponse(VolleyError error) {
             // error
-            Log.e(TAG, new String(error.networkResponse.data).toString());
+            Log.e(TAG, error.getMessage());
         }
     };
 
