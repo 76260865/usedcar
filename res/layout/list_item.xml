@@ -21,7 +21,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="6dip"
@@ -36,7 +36,7 @@
                 bind:text="{name}" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -48,10 +48,25 @@
 
                 <TextView
                     android:id="@+id/textPreSalePrice"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textColor="#5B5B5B"
                     bind:text="{price}" />
+
+                <TextView
+                        android:id="@+id/textPriceType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dip"
+                        android:orientation="vertical"
+                        android:padding="1dip"
+                        android:textColor="#FB6D0B"
+                        android:visibility="visible"
+                        bind:text="{payType}"
+                        bind:visibility="{payTypeVisibility}"
+                        tools:text="贷款"
+                        tools:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
@@ -93,19 +108,5 @@
                     tools:text="首次购买时间: 2010年12月" />
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/textPriceType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|right"
-            android:orientation="vertical"
-            android:padding="1dip"
-            android:textColor="#FB6D0B"
-            android:visibility="visible"
-            bind:text="{payType}"
-            bind:visibility="{payTypeVisibility}"
-            tools:text="贷款"
-            tools:visibility="visible" />
     </FrameLayout>
 </LinearLayout>

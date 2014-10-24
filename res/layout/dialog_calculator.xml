@@ -27,6 +27,18 @@
             android:layout_marginRight="-6dip"
             android:background="#999999"/>
         <TextView
+                style="?android:textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dip"
+                android:text="基准年利率:"/>
+        <EditText
+                style="@style/EditText"
+                android:id="@+id/editList"
+                android:layout_width="match_parent"
+                android:background="@drawable/edit_text"
+                android:inputType="numberDecimal"/>
+        <TextView
             style="?android:textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dip"
-            android:text="收付比率:"/>
+            android:text="首付:"/>
         <TextView
             style="?android:textAppearanceSmall"
             android:layout_width="wrap_content"

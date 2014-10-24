@@ -8,16 +8,16 @@ import java.io.Serializable;
 public class LicenseImage implements Serializable {
 
     private Integer imageId;
-    private String name;
     private String description;
     private String sizeJumbo;
     private String sizeLarge;
     private String sizeRegular;
     private String sizeSmall;
     private String sizeThumbnail;
-    private Object productId;
     private String type;
     private String updateTime;
+    private String name;
+    private Object productId;
 
     public Integer getImageId() {
         return imageId;
@@ -25,14 +25,6 @@ public class LicenseImage implements Serializable {
 
     public void setImageId(Integer imageId) {
         this.imageId = imageId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -83,14 +75,6 @@ public class LicenseImage implements Serializable {
         this.sizeThumbnail = sizeThumbnail;
     }
 
-    public Object getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Object productId) {
-        this.productId = productId;
-    }
-
     public String getType() {
         return type;
     }
@@ -105,6 +89,22 @@ public class LicenseImage implements Serializable {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Object getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Object productId) {
+        this.productId = productId;
     }
 
 }

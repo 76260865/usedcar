@@ -73,7 +73,7 @@ public class CarDetailsViewModel {
     }
 
     public String getMileage() {
-        return String.format("%1$d万公里", carResponse.getOdometer());
+        return String.format("%1$f万公里", carResponse.getOdometer());
     }
 
     public String getDailyPay() {
@@ -87,6 +87,10 @@ public class CarDetailsViewModel {
     public String getDealPlace() {
         return carResponse.getProvince() + carResponse.getCity()
                 + carResponse.getCounty() + carResponse.getStreet();
+    }
+
+    public String getUrl() {
+        return "http://112.124.62.114:80" + carResponse.getCarBasicInfoUrl();
     }
 
     public int getContentVisibility() {
@@ -103,7 +107,7 @@ public class CarDetailsViewModel {
 
     public void openCalculator() {
         //carDetailsView.openCalculator(Double.parseDouble(carResponse.getListPrice()));
-        carDetailsView.openCalculator(0.0);
+        carDetailsView.openCalculator(carResponse.getListPrice());
     }
 
     public void callCarOwner() {

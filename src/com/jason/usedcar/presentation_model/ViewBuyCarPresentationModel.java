@@ -44,14 +44,14 @@ public class ViewBuyCarPresentationModel extends ViewModelBase {
         this.changeSupport = new PresentationModelChangeSupport(this);
     }
 
-    @ItemPresentationModel(value = CarItemPresentationModel.class,
+    @ItemPresentationModel(value = CarItemPresentationModel2.class,
             factoryMethod="newCarItemPresentationModel")
     public List<Product> getProducts() {
         return model.getData();
     }
 
-    public CarItemPresentationModel newCarItemPresentationModel() {
-        return new CarItemPresentationModel();
+    public CarItemPresentationModel2 newCarItemPresentationModel() {
+        return new CarItemPresentationModel2();
     }
 
     public void setBrandFilterEntity(final BrandFilterEntity brandFilterEntity) {

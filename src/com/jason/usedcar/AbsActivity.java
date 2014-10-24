@@ -33,7 +33,7 @@ public class AbsActivity extends ActionBarActivity implements ViewBase {
         setContentView(rootView);
     }
 
-    private ViewBinder createViewBinder() {
+    protected ViewBinder createViewBinder() {
         return Application.fromActivity(this)
                 .getReusableBinderFactory().createViewBinder(this);
     }

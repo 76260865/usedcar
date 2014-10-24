@@ -49,16 +49,11 @@ public class ShoppingCarViewModel extends ViewModelBase {
     }
 
     public void loadData() {
-        if (initialized) {
-            return;
-        }
-
         contentVisibility = View.GONE;
         progressVisibility = View.VISIBLE;
         nothingVisibility = View.GONE;
-        presentationModelChangeSupport.firePropertyChange("contentVisibility");
-        presentationModelChangeSupport.firePropertyChange("progressVisibility");
-        presentationModelChangeSupport.firePropertyChange("nothingVisibility");
+        model.setData(null);
+        presentationModelChangeSupport.refreshPresentationModel();
 
         if (shoppingCarView.getAccessToken() == null) {
             shoppingCarView.login(Constants.REQUEST_LOGIN);

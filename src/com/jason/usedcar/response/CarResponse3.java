@@ -20,7 +20,7 @@ public class CarResponse3 extends Response implements Serializable {
     private CertificateImage certificateImage;
     private String certificateImageId;
     private String purchaseDate;
-    private Integer odometer;
+    private Float odometer;
     private String listPrice;
     private Integer priceType;
     private Integer paymentMethod;
@@ -33,9 +33,7 @@ public class CarResponse3 extends Response implements Serializable {
     private String city;
     private String county;
     private String street;
-    private CarBaseInfo carBaiseInfo;
-    private List<OwnerRecord> ownerRecords = new ArrayList<OwnerRecord>();
-
+    private String carBasicInfoUrl;
 
     public String getProductName() {
         return productName;
@@ -125,11 +123,11 @@ public class CarResponse3 extends Response implements Serializable {
         this.purchaseDate = purchaseDate;
     }
 
-    public Integer getOdometer() {
+    public Float getOdometer() {
         return odometer;
     }
 
-    public void setOdometer(Integer odometer) {
+    public void setOdometer(Float odometer) {
         this.odometer = odometer;
     }
 
@@ -229,20 +227,11 @@ public class CarResponse3 extends Response implements Serializable {
         this.street = street;
     }
 
-    public CarBaseInfo getCarBaiseInfo() {
-        return carBaiseInfo;
+    public String getCarBasicInfoUrl() {
+        return carBasicInfoUrl;
     }
 
-    public void setCarBaiseInfo(CarBaseInfo carBaiseInfo) {
-        this.carBaiseInfo = carBaiseInfo;
+    public void setCarBasicInfoUrl(String carBasicInfoUrl) {
+        this.carBasicInfoUrl = carBasicInfoUrl;
     }
-
-    public List<OwnerRecord> getOwnerRecords() {
-        return ownerRecords;
-    }
-
-    public void setOwnerRecords(List<OwnerRecord> ownerRecords) {
-        this.ownerRecords = ownerRecords;
-    }
-
 }

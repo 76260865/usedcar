@@ -7,7 +7,7 @@ public interface CarDetailsView extends ViewBase {
 
     void callCarOwner(String phoneNumber);
 
-    void openCalculator(Double carPrice);
+    void openCalculator(String carPrice);
 
     void before();
 
