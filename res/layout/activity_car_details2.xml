@@ -157,10 +157,68 @@
                         android:textSize="20sp"
                         bind:onClick="addToCart"/>
             </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:textColor="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="优卡报(Used Car Report)"/>
             <android.webkit.WebView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                android:id="@+id/webview"
                     bind:url="{url}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="购车小管家\n把它打印出来跟您一起挑选爱车吧！" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/blue"
+                android:text="常规问题" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="车辆是否还在厂家质保期内？\n 下一次保养需要在多少里程后进行？\n 车辆保险将在多久之后到期？" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/blue"
+                android:text="现场验车问题" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="车辆外观是否完好？划痕是否都已修复？\n 打开点火开关，仪表盘是否显示所有系统都正常工作？\n仪表盘中安全气囊是否显示工作正常\n轮胎胎纹是否达到最低厚度要求？表面是否光滑、完整？\n 车内各项按钮、开关是否正常工作？如大灯开关、转向开关、雨刷开关、空调开关、车窗起降开关、后视镜调整开关、音响系统开关等\n 点烟器、AUX接口、ipod接口等附件是否正常工作\n" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/blue"
+                android:text="试驾问题" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="刹车是否灵敏？\n转向是否正常？\n 发动机是否有异响？加速是否平顺？ "/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="12dip"
+                android:background="@drawable/btn"
+                android:text="下载"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

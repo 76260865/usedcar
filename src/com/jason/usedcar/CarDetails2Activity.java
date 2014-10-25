@@ -35,6 +35,9 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
         carDetailsViewModel = new CarDetailsViewModel(productId, type, this);
         initContentView(R.layout.activity_car_details2, carDetailsViewModel);
         carDetailsViewModel.loadData();
+        WebView webView = (WebView)findViewById(R.id.webview);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
     }
 
     @Override
