@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import android.webkit.WebView;
 import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.presentation_model.CarDetailsView;
 import com.jason.usedcar.presentation_model.CarDetailsViewModel;
 import com.jason.usedcar.presentation_model.MenuDetailsViewModel;
-import com.jason.usedcar.response.CarResponse3;
 import org.robobinding.MenuBinder;
+import org.robobinding.ViewBinder;
+import org.robobinding.binder.BinderFactoryBuilder;
 
 /**
  * @author t77yq @2014-09-29.
@@ -47,13 +47,9 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected ViewBinder createViewBinder() {
+        return new BinderFactoryBuilder().mapView(WebView.class, new WebViewBinding())
+                .build().createViewBinder(this, true);
     }
 
     @Override
@@ -62,11 +58,10 @@ public class CarDetails2Activity extends AbsActivity implements CarDetailsView {
     }
 
     @Override
-    public void openCalculator(Double carPrice) {
-        MessageToast.makeText(this, "敬请期待...").show();
-//        Intent intent = new Intent(this, CalculatorActivity.class);
-//        intent.putExtra("car_price", carPrice);
-//        startActivity(intent);
+    public void openCalculator(String carPrice) {
+        Intent intent = new Intent(this, CalculatorActivity.class);
+        intent.putExtra("car_price", carPrice);
+        startActivity(intent);
     }
 
     @Override

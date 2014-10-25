@@ -14,8 +14,14 @@ public class Product implements Serializable {
     private String purchaseDate;
     private String price;
     private String odometer;
-    private Object regularImage;
-    private Boolean identified;
+    private String regularImage;
+    private String smallImage;
+    private String largeImage;
+    private String thumbNailImage;
+    private String jumboImage;
+    private String priceType;
+    private int paymentMethod;
+    private Boolean manufacturerVerified;
 
     public String getProductId() {
         return productId;
@@ -73,20 +79,68 @@ public class Product implements Serializable {
         this.odometer = odometer;
     }
 
-    public Object getRegularImage() {
+    public String getRegularImage() {
         return regularImage;
     }
 
-    public void setRegularImage(Object regularImage) {
+    public void setRegularImage(String regularImage) {
         this.regularImage = regularImage;
     }
 
-    public Boolean getIdentified() {
-        return identified;
+    public String getSmallImage() {
+        return smallImage;
     }
 
-    public void setIdentified(Boolean identified) {
-        this.identified = identified;
+    public void setSmallImage(String smallImage) {
+        this.smallImage = smallImage;
+    }
+
+    public String getLargeImage() {
+        return largeImage;
+    }
+
+    public void setLargeImage(String largeImage) {
+        this.largeImage = largeImage;
+    }
+
+    public String getThumbNailImage() {
+        return thumbNailImage;
+    }
+
+    public void setThumbNailImage(String thumbNailImage) {
+        this.thumbNailImage = thumbNailImage;
+    }
+
+    public String getJumboImage() {
+        return jumboImage;
+    }
+
+    public void setJumboImage(String jumboImage) {
+        this.jumboImage = jumboImage;
+    }
+
+    public String getPriceType() {
+        return priceType;
+    }
+
+    public void setPriceType(String priceType) {
+        this.priceType = priceType;
+    }
+
+    public int getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(int paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Boolean getManufacturerVerified() {
+        return manufacturerVerified;
+    }
+
+    public void setManufacturerVerified(Boolean manufacturerVerified) {
+        this.manufacturerVerified = manufacturerVerified;
     }
 
 }

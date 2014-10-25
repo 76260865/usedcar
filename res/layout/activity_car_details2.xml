@@ -13,7 +13,7 @@
             bind:visibility="{contentVisibility}">
         <LinearLayout
                 android:orientation="vertical"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:context="com.jason.usedcar.CarDetailsActivity">
             <TextView
@@ -157,6 +157,10 @@
                         android:textSize="20sp"
                         bind:onClick="addToCart"/>
             </LinearLayout>
+            <android.webkit.WebView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    bind:url="{url}"/>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

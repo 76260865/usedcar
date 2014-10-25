@@ -32,11 +32,11 @@ public class CarItemPresentationModel extends AbstractPresentationModel implemen
     }
 
     public String getPayType() {
-        return "";
+        return product.getPaymentMethod() == 0 ? "可贷款" : "全款付";
     }
 
     public int getPayTypeVisibility() {
-        return View.VISIBLE;
+        return View.GONE;
     }
 
     @Override
