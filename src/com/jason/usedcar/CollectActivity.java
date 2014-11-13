@@ -6,9 +6,9 @@ import android.view.Menu;
 import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.fragment.LoadingFragment;
 import com.jason.usedcar.model.data.Product;
-import com.jason.usedcar.presentation_model.MenuCollectionViewModel;
-import com.jason.usedcar.presentation_model.ViewCollectionPresentationModel;
-import com.jason.usedcar.presentation_model.ViewCollectionView;
+import com.jason.usedcar.pm.CollectionPM;
+import com.jason.usedcar.pm.menu.MenuCollectionPM;
+import com.jason.usedcar.pm.view.ViewCollectionView;
 import org.robobinding.MenuBinder;
 
 /**
@@ -16,9 +16,9 @@ import org.robobinding.MenuBinder;
  */
 public class CollectActivity extends AbsActivity implements ViewCollectionView {
 
-    private ViewCollectionPresentationModel viewModel;
+    private CollectionPM viewModel;
 
-    private MenuCollectionViewModel menuCollectionViewModel;
+    private MenuCollectionPM menuCollectionViewModel;
 
     private boolean isEditable = false;
 
@@ -27,11 +27,12 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("我的收藏");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
         getSupportActionBar().setIcon(android.R.color.transparent);
-        viewModel = new ViewCollectionPresentationModel(this);
+        viewModel = new CollectionPM(this);
         initContentView(R.layout.activity_collection, viewModel);
         viewModel.loadData();
     }
@@ -44,7 +45,7 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        menuCollectionViewModel = new MenuCollectionViewModel(this);
+        menuCollectionViewModel = new MenuCollectionPM(this);
         MenuBinder menuBinder = createMenuBinder(menu, getMenuInflater());
         menuBinder.inflateAndBind(R.menu.collection_menu, menuCollectionViewModel);
         return super.onCreateOptionsMenu(menu);
@@ -53,7 +54,7 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
     @Override
     public void viewCollectionItem(Product product) {
         if (!isEditable) {
-            Intent detailsIntent = new Intent(getContext(), CarDetails2Activity.class);
+            Intent detailsIntent = new Intent(getContext(), CarDetailsActivity.class);
             detailsIntent.putExtra("product_id", product.getProductId());
             detailsIntent.putExtra("type", Constants.CarDetailsType.OTHER);
             startActivity(detailsIntent);
@@ -63,7 +64,7 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
     @Override
     public void edit() {
         isEditable = true;
-        viewModel.setEditable(true);
+        viewModel.s1etEditable(true);
         viewModel.refreshCollection();
         menuCollectionViewModel.refresh();
     }
@@ -71,7 +72,7 @@ public class CollectActivity extends AbsActivity implements ViewCollectionView {
     @Override
     public void save() {
         isEditable = false;
-        viewModel.setEditable(false);
+        viewModel.s1etEditable(false);
         viewModel.refreshCollection();
         menuCollectionViewModel.refresh();
     }

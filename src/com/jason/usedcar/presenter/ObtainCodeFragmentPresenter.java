@@ -22,8 +22,8 @@ public class ObtainCodeFragmentPresenter extends BasePresenter<ObtainCodeFragmen
 
     private static final String TAG = ObtainCodeFragmentPresenter.class.getSimpleName();
 
-    public void obtainCode(Fragment fragment, final ObtainCodeRequest param) {
-        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取短信验证码&#8230;");
+    public void obtainCode(final Fragment fragment, final ObtainCodeRequest param) {
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取短信验证码...");
         loadingFragment.show(fragment.getFragmentManager());
         new RestClient().obtainCode(param, new Callback<ObtainCodeResponse>() {
             @Override
@@ -32,6 +32,7 @@ public class ObtainCodeFragmentPresenter extends BasePresenter<ObtainCodeFragmen
                 if (response.isExecutionResult()) {
                     getUi().onCodeObtained(response.getCode());
                 }
+                MessageToast.makeText(fragment.getActivity(), response.getMessage()).show();
             }
 
             @Override

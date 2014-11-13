@@ -2,7 +2,11 @@ package com.jason.usedcar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Base64;
+import com.jason.usedcar.response.LoginResponse;
+import com.jason.usedcar.service.InitService;
 import com.jason.usedcar.util.AccessTokenUtil;
 import java.security.NoSuchAlgorithmException;
 import org.robobinding.binder.BinderFactory;
@@ -12,19 +16,18 @@ public class Application extends com.activeandroid.app.Application {
 
     public static final String TAG = "UsedCarApplication";
 
-    private String accessToken;
-
-    public int userId;
-
-    public boolean isReseller;
-
     public static String sampleAccessToken;
 
-    public String username;
+    private LoginResponse loginResponse;
 
-    public String password;
+    private BinderFactory reusableBinderFactory
+            = new BinderFactoryBuilder().build();
 
-    private BinderFactory reusableBinderFactory = new BinderFactoryBuilder().build();
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        startService(new Intent(this, InitService.class));
+    }
 
     public static Application fromContext(Context context) {
         if (context instanceof Activity) {
@@ -51,15 +54,35 @@ public class Application extends com.activeandroid.app.Application {
         return null;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public LoginResponse getLoginResponse() {
+        return loginResponse;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setLoginResponse(LoginResponse loginResponse) {
+        this.loginResponse = loginResponse;
+    }
+
+    public String getAccessToken() {
+        return loginResponse == null ? null : loginResponse.getAccessToken();
     }
 
     public BinderFactory getReusableBinderFactory() {
         return reusableBinderFactory;
+    }
+
+    public boolean isLogin() {
+        return !TextUtils.isEmpty(getAccessToken());
+    }
+
+    public boolean isReseller() {
+        return loginResponse != null && loginResponse.getAccountType() == 2;
+    }
+
+    public String getUsername() {
+        return loginResponse == null ? "" : loginResponse.getUsername();
+    }
+
+    public String getPassword() {
+        return loginResponse == null ? "" : loginResponse.getPassword();
     }
 }

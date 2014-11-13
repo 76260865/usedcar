@@ -9,7 +9,7 @@
         style="@style/EditText"
         android:id="@+id/register_reseller_name"
         android:hint="@string/txt_dealer_name"/>
-    <EditText
+    <TextView
         style="@style/EditText"
         android:id="@+id/register_reseller_address"
         android:layout_marginTop="5dip"

@@ -12,10 +12,10 @@ import com.jason.usedcar.interfaces.Ui;
 public class PersonalCenterFragmentPresenter extends Presenter<Ui> {
 
     public void myInfo(Activity activity) {
-        if (Application.fromActivity(activity).getAccessToken() == null) {
-            activity.startActivity(new Intent(activity, LoginActivity.class));
+        if (Application.fromActivity(activity).isLogin()) {
+            activity.startActivity(new Intent(activity, InfoActivity.class));
         } else {
-            activity.startActivity(new Intent(activity, Info2Activity.class));
+            activity.startActivity(new Intent(activity, LoginActivity.class));
         }
     }
 

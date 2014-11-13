@@ -18,6 +18,7 @@ import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.request.CityRequest;
 import com.jason.usedcar.request.CountyRequest;
 import com.jason.usedcar.request.Request;
+import com.jason.usedcar.util.CollectionUtils;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ObjectAnimator;
 import java.util.ArrayList;
@@ -59,10 +60,27 @@ public class DealPlaceActivity extends BaseActivity {
 
     private int width;
 
+    private int[] openProvince;
+
+    private int[] openCity;
+
+    private boolean isSellingCar;
+
+    private boolean isResellerRegister;
+
+    private int level = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deal_place);
+        isSellingCar = getIntent().getBooleanExtra("isSellingCar", false);
+        isResellerRegister = getIntent().getBooleanExtra("isResellerRegister", false);
+        level = getIntent().getIntExtra("level", 3);
+        if (isSellingCar || isResellerRegister) {
+            openProvince = getResources().getIntArray(R.array.open_province);
+            openCity = getResources().getIntArray(R.array.open_city);
+        }
         width = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getWidth();
         provinceListView = getView(R.id.listProvince);
         cityListView = getView(R.id.listCity);
@@ -127,6 +145,15 @@ public class DealPlaceActivity extends BaseActivity {
 //                    animator.start();
                     return;
                 }
+                if (level == 1) {
+                    Intent data = new Intent();
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(provinceList.get(position).getProvinceId()).append(';');
+                    data.putExtra("data", builder.toString());
+                    setResult(RESULT_OK, data);
+                    finish();
+                    return;
+                }
                 if (position != provinceListView.getSelectedItemPosition()) {
                     province = provinceList.get(position);
                     queryCities(province.getProvinceId());
@@ -164,6 +191,16 @@ public class DealPlaceActivity extends BaseActivity {
         cityListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                if (level == 2) {
+                    Intent data = new Intent();
+                    StringBuilder builder = new StringBuilder();
+                    builder.append(province.getProvinceId()).append(";");
+                    builder.append(cityList.get(position).getCityId());
+                    data.putExtra("data", builder.toString());
+                    setResult(RESULT_OK, data);
+                    finish();
+                    return;
+                }
                 if (position != cityListView.getSelectedItemPosition()) {
                     city = cityList.get(position);
                     queryCounties(city.getCityId());
@@ -255,8 +292,21 @@ public class DealPlaceActivity extends BaseActivity {
     }
 
     private void queryProvinces() {
+        provinceList.clear();
+        provinceListView.setAdapter(provinceAdapter);
         List<Province> provinceList2 = new Select().from(Province.class).execute();
-        if (provinceList2 != null && !provinceList2.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(provinceList2)) {
+            for (int i = provinceList2.size() - 1; i >= 0; i--) {
+                if (openProvince == null || openProvince.length == 0) {
+                    break;
+                }
+                for (int provinceId : openProvince) {
+                    if (provinceList2.get(i).getProvinceId() != provinceId) {
+                        provinceList2.remove(i);
+                        break;
+                    }
+                }
+            }
             provinceList.clear();
             provinceList.addAll(provinceList2);
             Collections.sort(provinceList, new Comparator<Province>() {
@@ -269,25 +319,35 @@ public class DealPlaceActivity extends BaseActivity {
             return;
         }
         Request request = new Request();
-        //request.setAccessToken(Application.accessToken(this));
         new RestClient().getProvinces(request, new Callback<List<Province>>() {
             @Override
             public void success(List<Province> provinceList1, Response response) {
-                provinceList.clear();
-                provinceList.addAll(provinceList1);
-                Collections.sort(provinceList, new Comparator<Province>() {
+                Collections.sort(provinceList1, new Comparator<Province>() {
                     @Override
                     public int compare(final Province lhs, final Province rhs) {
                         return lhs.getProvinceId() - rhs.getProvinceId();
                     }
                 });
-                provinceListView.setAdapter(provinceAdapter);
                 ActiveAndroid.beginTransaction();
-                for (Province province : provinceList1) {
+                for (int i = provinceList1.size() - 1; i >= 0; i--) {
+                    Province province = provinceList1.get(i);
                     province.save();
+                    if (openProvince == null || openProvince.length == 0) {
+                        continue;
+                    }
+                    for (int provinceId : openProvince) {
+                        if (province.getProvinceId() != provinceId) {
+                            provinceList1.remove(i);
+                            break;
+                        }
+                    }
                 }
+
                 ActiveAndroid.setTransactionSuccessful();
                 ActiveAndroid.endTransaction();
+                provinceList.clear();
+                provinceList.addAll(provinceList1);
+                provinceListView.setAdapter(provinceAdapter);
             }
 
             @Override
@@ -298,12 +358,29 @@ public class DealPlaceActivity extends BaseActivity {
     }
 
     private void queryCities(int provinceId) {
+        cityList.clear();
+        cityListView.setAdapter(cityAdapter);
         if (cityListView.getVisibility() != View.VISIBLE) {
             cityListView.setVisibility(View.VISIBLE);
             ObjectAnimator.ofFloat(cityListView, "translationX", width, width * 2 / 5).setDuration(500).start();
         }
-        List<City> cityList1 = new Select().from(City.class).where("remote_id = ?", provinceId).execute();
-        if (cityList1 != null && !cityList1.isEmpty()) {
+        if (cityListView.getVisibility() != View.VISIBLE) {
+            cityListView.setVisibility(View.VISIBLE);
+            ObjectAnimator.ofFloat(cityListView, "translationX", width, width * 2 / 5).setDuration(500).start();
+        }
+        final List<City> cityList1 = new Select().from(City.class).where("province_id = ?", provinceId).execute();
+        if (CollectionUtils.isNotEmpty(cityList1)) {
+            for (int i = cityList1.size() - 1; i >= 0; i--) {
+                if (openCity == null || openCity.length == 0) {
+                    break;
+                }
+                for (int cityId : openCity) {
+                    if (cityList1.get(i).getCityId() != cityId) {
+                        cityList1.remove(i);
+                        break;
+                    }
+                }
+            }
             cityList.clear();
             cityList.addAll(cityList1);
             Collections.sort(cityList, new Comparator<City>() {
@@ -313,27 +390,38 @@ public class DealPlaceActivity extends BaseActivity {
                 }
             });
             cityListView.setAdapter(cityAdapter);
+            return;
         }
         final CityRequest request = new CityRequest();
         request.setProvinceId(provinceId);
         new RestClient().getCities(request, new Callback<List<City>>() {
             @Override
             public void success(final List<City> cityList2, final Response response) {
-                cityList.clear();
-                cityList.addAll(cityList2);
-                Collections.sort(cityList, new Comparator<City>() {
+                Collections.sort(cityList2, new Comparator<City>() {
                     @Override
                     public int compare(final City lhs, final City rhs) {
                         return lhs.getCityId() - rhs.getCityId();
                     }
                 });
-                cityListView.setAdapter(cityAdapter);
                 ActiveAndroid.beginTransaction();
-                for (City city : cityList) {
+                for (int i = cityList2.size() - 1; i >= 0; i--) {
+                    City city = cityList2.get(i);
                     city.save();
+                    if (openCity == null || openCity.length == 0) {
+                        continue;
+                    }
+                    for (int cityId : openCity) {
+                        if (city.getCityId() != cityId) {
+                            cityList2.remove(i);
+                            break;
+                        }
+                    }
                 }
                 ActiveAndroid.setTransactionSuccessful();
                 ActiveAndroid.endTransaction();
+                cityList.clear();
+                cityList.addAll(cityList2);
+                cityListView.setAdapter(cityAdapter);
             }
 
             @Override
@@ -352,8 +440,8 @@ public class DealPlaceActivity extends BaseActivity {
             ObjectAnimator.ofFloat(cityListView, "translationX", width * 2 / 5, 0).setDuration(500).start();
             ObjectAnimator.ofFloat(countyListView, "translationX", width, width * 2 / 5).setDuration(500).start();
         }
-        List<County> countyList1 = new Select().from(County.class).where("remote_id = ?", cityId).execute();
-        if (countyList1 != null && !countyList1.isEmpty()) {
+        List<County> countyList1 = new Select().from(County.class).where("city_id = ?", cityId).execute();
+        if (CollectionUtils.isNotEmpty(countyList1)) {
             countyList.clear();
             countyList.addAll(countyList1);
             countyListView.setAdapter(countyAdapter);

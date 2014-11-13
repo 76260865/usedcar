@@ -102,7 +102,7 @@ public class ChangePasswordActivity extends BaseActivity {
     }
 
     public void obtainCode(final ObtainCodeRequest param) {
-        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取手机验证码&#8230;");
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取手机验证码...");
         loadingFragment.show(getSupportFragmentManager());
         new RestClient().obtainCode(param, new Callback<ObtainCodeResponse>() {
             @Override

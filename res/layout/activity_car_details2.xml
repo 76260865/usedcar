@@ -26,14 +26,12 @@
                     android:textSize="18sp"
                     bind:text="{carName}"
                     tools:text="大众polo"/>
-            <ImageView
-                    android:id="@+id/imageCarShow"
+            <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
                     android:layout_width="match_parent"
                     android:layout_height="120dip"
                     android:layout_marginBottom="6dip"
-                    android:background="#56efefef"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/xianjian04"/>
+                    android:background="#56efefef"/>
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -165,10 +163,13 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="优卡报(Used Car Report)"/>
             <android.webkit.WebView
+                    android:id="@+id/webview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                android:id="@+id/webview"
-                    bind:url="{url}"/>
+                    android:scrollbars="none"
+                    bind:url="{url}"
+                    bind:useWideViewPort="{useWideViewPort}"
+                    bind:overviewMode="{overviewMode}"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -209,16 +210,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="刹车是否灵敏？\n转向是否正常？\n 发动机是否有异响？加速是否平顺？ "/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="12dip"
-                android:background="@drawable/btn"
-                android:text="下载"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"/>
         </LinearLayout>
     </ScrollView>
     <LinearLayout

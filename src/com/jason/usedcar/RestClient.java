@@ -5,7 +5,6 @@ import com.jason.usedcar.model.data.Brand;
 import com.jason.usedcar.model.data.CarModel;
 import com.jason.usedcar.model.data.City;
 import com.jason.usedcar.model.data.County;
-import com.jason.usedcar.model.data.FacetSeries;
 import com.jason.usedcar.model.data.Province;
 import com.jason.usedcar.model.data.Series;
 import com.jason.usedcar.request.CarRequest;
@@ -19,7 +18,6 @@ import com.jason.usedcar.request.ModelRequest;
 import com.jason.usedcar.request.ObtainCodeRequest;
 import com.jason.usedcar.request.PagedRequest;
 import com.jason.usedcar.request.PhoneRequest;
-import com.jason.usedcar.request.PublishUsedCarRequest;
 import com.jason.usedcar.request.RegisterRequest;
 import com.jason.usedcar.request.RegisterResellerRequest;
 import com.jason.usedcar.request.Request;
@@ -35,11 +33,13 @@ import com.jason.usedcar.request.UpgradeRequest;
 import com.jason.usedcar.request.UserInfoRequest;
 import com.jason.usedcar.response.CarListResponse;
 import com.jason.usedcar.response.CarResponse;
-import com.jason.usedcar.response.CarResponse3;
 import com.jason.usedcar.response.CartResponse;
 import com.jason.usedcar.response.FavoriteListResponse;
+import com.jason.usedcar.response.SearchFilterResponse;
 import com.jason.usedcar.response.LoginResponse;
 import com.jason.usedcar.response.ObtainCodeResponse;
+import com.jason.usedcar.response.OrderListResponse;
+import com.jason.usedcar.response.OrderResponse;
 import com.jason.usedcar.response.PasswordResponse;
 import com.jason.usedcar.response.Response;
 import com.jason.usedcar.response.SearchProductResponse;
@@ -49,6 +49,7 @@ import com.jason.usedcar.response.TokenGenerateResponse;
 import com.jason.usedcar.response.Upgrade2Response;
 import com.jason.usedcar.response.UpgradeResponse;
 import com.jason.usedcar.response.UploadImageResponse;
+import com.jason.usedcar.response.UploadImageResponse2;
 import com.jason.usedcar.response.UserAuthInfo;
 import com.jason.usedcar.response.UserInfoResponse;
 import java.util.ArrayList;
@@ -106,7 +107,8 @@ public class RestClient {
                         request.addHeader("Accept", "application/json");
                         request.addHeader("User-Agent", Config.USER_AGENT);
                     }
-                }).setLogLevel(RestAdapter.LogLevel.FULL);
+                });
+                //.setLogLevel(RestAdapter.LogLevel.FULL);
     }
 
     interface ILogin {
@@ -217,20 +219,16 @@ public class RestClient {
     }
 
     interface IGetUsedCar {
-        @POST("/product/getUsedCar.json")
-        void getUsedCar(
-                @Body CarRequest request,
-                Callback<CarResponse> callback);
         @Multipart
         @POST("/product/getUsedCar.json")
         void getUsedCar(
                 @Part("productId") String productId,
                 @Part("accessToken") String accessToken,
                 @Part("deviceId") String deviceId,
-                Callback<CarResponse3> callback);
+                Callback<CarResponse> callback);
     }
 
-    public void getUsedCar(CarRequest request, Callback<CarResponse3> callback) {
+    public void getUsedCar(CarRequest request, Callback<CarResponse> callback) {
 //        createService("getUsedCar", POOL, IGetUsedCar.class)
 //                .getUsedCar(request, callback);
         createService("getUsedCar", POOL, IGetUsedCar.class).getUsedCar(
@@ -341,11 +339,21 @@ public class RestClient {
                 @Field("accessToken") String accessToken,
                 @Field("deviceId") String deviceId,
                 Callback<List<Province>> callback);
+
+        @FormUrlEncoded
+        @POST("/address/getProvinces")
+        List<Province> getProvinces(
+                @Field("accessToken") String accessToken,
+                @Field("deviceId") String deviceId);
     }
 
     public void getProvinces(Request request, Callback<List<Province>> callback) {
         createService("getProvinces", POOL, IGetProvinces.class)
                 .getProvinces(request.getAccessToken(), request.getDeviceId(), callback);
+    }
+
+    public List<Province> getProvinces() {
+        return createService("getProvinces", POOL, IGetProvinces.class).getProvinces(null, null);
     }
 
     interface IGetCities {
@@ -356,12 +364,21 @@ public class RestClient {
                 @Field("accessToken") String accessToken,
                 @Field("deviceId") String deviceId,
                 Callback<List<City>> callback);
+        @FormUrlEncoded
+        @POST("/address/getCities")
+        List<City> getCities(
+                @Field("provinceId") int provinceId);
+
     }
 
     public void getCities(CityRequest request, Callback<List<City>> callback) {
         createService("getCities", POOL, IGetCities.class)
                 .getCities(request.getProvinceId(), request.getAccessToken(),
                         request.getDeviceId(), callback);
+    }
+
+    public List<City> getCities(int provinceId) {
+        return createService("getCities", POOL, IGetCities.class).getCities(provinceId);
     }
 
     interface IGetCounties {
@@ -372,12 +389,20 @@ public class RestClient {
                 @Field("accessToken") String accessToken,
                 @Field("deviceId") String deviceId,
                 Callback<List<County>> callback);
+        @FormUrlEncoded
+        @POST("/address/getCounties")
+        List<County> getCounties(
+                @Field("cityId") int cityId);
     }
 
     public void getCounties(CountyRequest request, Callback<List<County>> callback) {
         createService("getCounties", POOL, IGetCounties.class)
                 .getCounties(request.getCityId(), request.getAccessToken(),
                         request.getDeviceId(), callback);
+    }
+
+    public List<County> getCounties(int cityId) {
+        return createService("getCounties", POOL, IGetCounties.class).getCounties(cityId);
     }
 
     interface IImageUpload {
@@ -391,6 +416,21 @@ public class RestClient {
         @Multipart
         @POST("/product/imageUpload.json")
         UploadImageResponse uploadImage(
+                @Part("image") TypedByteArray image,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId);
+        @Multipart
+        @POST("/account/imageUpload.json")
+        void uploadImage2(
+                @Part("type") int type,
+                @Part("image") TypedByteArray image,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
+                Callback<UploadImageResponse2> callback);
+        @Multipart
+        @POST("/account/imageUpload.json")
+        UploadImageResponse2 uploadImage2(
+                @Part("type") int type,
                 @Part("image") TypedByteArray image,
                 @Part("accessToken") String accessToken,
                 @Part("deviceId") String deviceId);
@@ -420,6 +460,30 @@ public class RestClient {
                         request.getDeviceId(), callback);
     }
 
+    public UploadImageResponse2 uploadImage2(ImageUploadRequest request) {
+        TypedByteArray image = new TypedByteArray("image/png", request.getImage()) {
+            @Override
+            public String fileName() {
+                return "test.png";
+            }
+        };
+        return createService("uploadImage2", POOL, IImageUpload.class)
+                .uploadImage2(0, image, request.getAccessToken(),
+                        request.getDeviceId());
+    }
+
+    public void uploadImage2(ImageUploadRequest request, Callback<UploadImageResponse2> callback) {
+        TypedByteArray image = new TypedByteArray("image/png", request.getImage()) {
+            @Override
+            public String fileName() {
+                return "test.png";
+            }
+        };
+        createService("uploadImage2", POOL, IImageUpload.class)
+                .uploadImage2(0, image, request.getAccessToken(),
+                        request.getDeviceId(), callback);
+    }
+
     interface IPublishUsedCar {
         @Multipart
         @POST("/product/publishUsedCar.json")
@@ -446,40 +510,32 @@ public class RestClient {
                 @Part("accessToken") String accessToken,
                 @Part("deviceId") String deviceId,
                 Callback<Response> callback);
-
-        @POST("/product/publishUsedCar.json")
-        void publishUsedCar(
-                @Body PublishUsedCarRequest request,
-                Callback<Response> callback);
     }
 
-    public void publishUsedCar(PublishUsedCarRequest request, Callback<Response> callback) {
-//        createService("publishUsedCar", POOL, IPublishUsedCar.class)
-//            .publishUsedCar(request, callback);
-        createService("publishUsedCar", POOL, IPublishUsedCar.class)
-                .publishUsedCar(
-                        request.getModelId(),
-                        request.getSeriesId(),
-                        request.getBrandId(),
-                        request.getImageIds(),
-                        request.getLicenseImageIds(),
-                        request.getCertificateImageId(),
-                        request.getPurchaseDate(),
-                        request.getOdometer(),
-                        request.getListPrice(),
-                        request.getPriceType(),
-                        request.getPaymentMethod(),
-                        request.getCarVin(),
-                        request.getCarContact(),
-                        request.getContactPhone(),
-                        request.getProvinceId(),
-                        request.getCityId(),
-                        request.getCountyId(),
-                        request.getStreet(),
-                        request.getAcceptTerm(),
-                        request.getAccessToken(),
-                        request.getDeviceId(),
-                        callback);
+    public void publishUsedCar(CarInfo carInfo, String accessToken, String deviceId, Callback<Response> callback) {
+        createService("publishUsedCar", POOL, IPublishUsedCar.class).publishUsedCar(
+                carInfo.getModelId(),
+                carInfo.getSeriesId(),
+                carInfo.getBrandId(),
+                carInfo.getImageIdString(),
+                carInfo.getLicenseImageIdStr(),
+                carInfo.certificateImageId,
+                carInfo.purchaseDate,
+                carInfo.odometer,
+                carInfo.listPrice,
+                carInfo.priceType,
+                carInfo.paymentMethod,
+                carInfo.carVin,
+                carInfo.carContact,
+                carInfo.contactPhone,
+                carInfo.getProvinceId(),
+                carInfo.getCityId(),
+                carInfo.getCountyId(),
+                carInfo.street,
+                carInfo.acceptTerm,
+                accessToken,
+                deviceId,
+                callback);
     }
 
     interface IShoppingCarList {
@@ -568,7 +624,7 @@ public class RestClient {
 
     interface IResetPasswordByPhone {
         @FormUrlEncoded
-        @POST("/account/resetPasswordByPhone.json")
+        @POST("/resetPasswordByPhone.json")
         void resetPasswordByPhone(
                 @Field("phone") String phone,
                 @Field("code") String activeCode,
@@ -655,17 +711,17 @@ public class RestClient {
     }
 
     interface ISaleUsedCarList {
-        @FormUrlEncoded
-        @POST("/product/SaleUsedCarList")
+        @Multipart
+        @POST("/account/order/saleHistory.json")
         void saleUsedCarList(
-                @Field("pageIndex") int pageIndex,
-                @Field("pageSize") int pageSize,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
-                Callback<CarListResponse> callback);
+                @Part("pageIndex") int pageIndex,
+                @Part("pageSize") int pageSize,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
+                Callback<OrderListResponse> callback);
     }
 
-    public void saleUsedCarList(PagedRequest request, Callback<CarListResponse> callback) {
+    public void saleUsedCarList(PagedRequest request, Callback<OrderListResponse> callback) {
         createService("saleUsedCarList", POOL, ISaleUsedCarList.class)
                 .saleUsedCarList(request.getPageIndex(), request.getPageSize(),
                         request.getAccessToken(), request.getDeviceId(), callback);
@@ -673,28 +729,28 @@ public class RestClient {
 
     interface IBuyUsedCarList {
         @Multipart
-        @POST("/product/BuyUsedCarList.json")
+        @POST("/account/order/orderHistory.json")
         void buyUsedCarList(
                 @Part("pageIndex") int pageIndex,
                 @Part("pageSize") int pageSize,
                 @Part("accessToken") String accessToken,
                 @Part("deviceId") String deviceId,
-                Callback<CarListResponse> callback);
+                Callback<OrderListResponse> callback);
     }
 
-    public void buyUsedCarList(PagedRequest request, Callback<CarListResponse> callback) {
+    public void buyUsedCarList(PagedRequest request, Callback<OrderListResponse> callback) {
         createService("buyUsedCarList", POOL, IBuyUsedCarList.class)
                 .buyUsedCarList(request.getPageIndex(), request.getPageSize(),
                         request.getAccessToken(), request.getDeviceId(), callback);
     }
 
     interface IDeleteUsedCar {
-        @FormUrlEncoded
-        @POST("/product/deleteusedcar")
+        @Multipart
+        @POST("/product/deleteUsedCar.json")
         void deleteUsedCar(
-                @Field("productId") String productId,
-                @Field("accessToken") String accessToken,
-                @Field("deviceId") String deviceId,
+                @Part("productId") String productId,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
                 Callback<Response> callback);
     }
 
@@ -767,9 +823,12 @@ public class RestClient {
     }
 
     interface ISearchFilter {
-        @FormUrlEncoded
         @POST("/searchFilter.json")
-        void searchFilter(Callback<String> s);
+        void searchFilter(Callback<SearchFilterResponse> callback);
+    }
+
+    public void searchFilter(Callback<SearchFilterResponse> callback) {
+        createService("addToFavorite", POOL, ISearchFilter.class).searchFilter(callback);
     }
 
     interface ISearchProductList {
@@ -891,21 +950,52 @@ public class RestClient {
         @Multipart
         @POST("/account/authenticateUser.json")
         public void authenticateUser(@Part("realName") String name,
-                                     @Part("certificateType") int certificateType,
+                                     @Part("certificateType") Integer certificateType,
                                      @Part("certificateNumber") String certificateNumber,
+                                     @Part("bankType") int bankType,
                                      @Part("bankName") String bankName,
                                      @Part("bankAccount") String bankAccount,
+                                     @Part("bankAccountName") String bankAccountName,
+                                     @Part("bankProvince") String bankProvince,
+                                     @Part("bankCity") String bankCity,
+                                     @Part("accessToken") String accessToken,
+                                     @Part("deviceId") String deviceId,
+                                     Callback<Response> callback);
+        @Multipart
+        @POST("/account/authenticateUser.json")
+        public void authenticateUser2(@Part("bankType") int bankType,
+                                     @Part("bankName") String bankName,
+                                     @Part("bankAccount") String bankAccount,
+                                     @Part("bankAccountName") String bankAccountName,
+                                     @Part("bankProvince") String bankProvince,
+                                     @Part("bankCity") String bankCity,
                                      @Part("accessToken") String accessToken,
                                      @Part("deviceId") String deviceId,
                                      Callback<Response> callback);
     }
 
     public void authenticateUser(String name, int certificateType, String certificateNumber,
-                                 String bankName, String bankAccount, String accessToken,
-                                 String deviceId, Callback<Response> callback) {
+                                 int bankType, String bankName, String bankAccount,
+                                 String bankAccountName, String bankProvince, String bankCity,
+                                 String accessToken, String deviceId, Callback<Response> callback) {
         createService("authenticateUser", POOL, IAuthenticateUser.class)
-                .authenticateUser(name, certificateType, certificateNumber, bankName,
-                        bankAccount, accessToken, deviceId, callback);
+                .authenticateUser(name, certificateType, certificateNumber, bankType, bankName,
+                        bankAccount, bankAccountName, bankProvince, bankCity, accessToken, deviceId, callback);
+    }
+
+    public void authenticateUser(UserAuthInfo userAuthInfo, String accessToken, String deviceId, Callback<Response> callback) {
+        if (userAuthInfo.getRealName() == null || userAuthInfo.getRealName().length() <= 0) {
+            createService("authenticateUser", POOL, IAuthenticateUser.class)
+                    .authenticateUser2(userAuthInfo.getBankType(), userAuthInfo.getBankName(),
+                            userAuthInfo.getBankAccount(), userAuthInfo.getBankAccountName(), userAuthInfo.getBankProvince(),
+                            userAuthInfo.getBankCity(), accessToken, deviceId, callback);
+        } else {
+            createService("authenticateUser", POOL, IAuthenticateUser.class)
+                    .authenticateUser(userAuthInfo.getRealName(), userAuthInfo.getRealName() == null ? null : userAuthInfo.getCertificateType(),
+                            userAuthInfo.getCertificateNumber(), userAuthInfo.getBankType(), userAuthInfo.getBankName(),
+                            userAuthInfo.getBankAccount(), userAuthInfo.getBankAccountName(), userAuthInfo.getBankProvince(),
+                            userAuthInfo.getBankCity(), accessToken, deviceId, callback);
+        }
     }
 
     interface IGetUserAuthInfo {
@@ -919,5 +1009,36 @@ public class RestClient {
     public void getUserAuthInfo(String accessToken, String deviceId, Callback<UserAuthInfo> callback) {
         createService("getUserAuthInfo", POOL, IGetUserAuthInfo.class)
                 .getUserAuthInfo(accessToken, deviceId, callback);
+    }
+
+    interface IGenerateOrder {
+        @Multipart
+        @POST("/checkout/generateOrder.json")
+        public void generateOrder(
+                @Part("productId") String productId,
+                @Part("paymentType") int paymentType,
+                @Part("accessToken") String token,
+                @Part("deviceId") String deviceId,
+                Callback<OrderResponse> callback);
+    }
+
+    public void generateOrder(String productId, int paymentType, String token, String deviceId, Callback<OrderResponse> callback) {
+        createService("generateOrder", POOL, IGenerateOrder.class)
+                .generateOrder(productId, paymentType, token, deviceId, callback);
+    }
+
+    interface IDeleteOrder {
+        @Multipart
+        @POST("/account/order/deleteOrder.json")
+        void deleteOrder(
+                @Part("orderId") String orderId,
+                @Part("accessToken") String accessToken,
+                @Part("deviceId") String deviceId,
+                Callback<Response> callback);
+    }
+
+    public void deleteOrder(String orderId, String accessToken, String deviceId, Callback<Response> callback) {
+        createService("deleteOrder", POOL, IDeleteOrder.class)
+                .deleteOrder(orderId, accessToken, deviceId, callback);
     }
 }

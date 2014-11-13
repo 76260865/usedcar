@@ -3,241 +3,207 @@ package com.jason.usedcar.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.jason.usedcar.*;
-import com.jason.usedcar.adapter.BuyCarAdapter;
+import com.jason.usedcar.CarDetailsActivity;
+import com.jason.usedcar.FindUsedActivity;
+import com.jason.usedcar.MessageToast;
+import com.jason.usedcar.R;
+import com.jason.usedcar.RestClient;
+import com.jason.usedcar.constants.Constants;
 import com.jason.usedcar.model.SaleCarModel;
-import com.jason.usedcar.model.UsedCar;
-import com.jason.usedcar.request.*;
-import com.jason.usedcar.presenter.BuyCarFragmentPresenter;
-import com.jason.usedcar.presenter.BuyCarFragmentPresenter.CallButtonUi;
-import com.jason.usedcar.response.*;
-import com.jason.usedcar.view.DropDownListView;
-import com.mobsandgeeks.saripaar.Rule;
-import com.mobsandgeeks.saripaar.annotation.Required;
+import com.jason.usedcar.model.data.BrandFilterEntity;
+import com.jason.usedcar.model.data.FilterEntity;
+import com.jason.usedcar.model.data.Product;
+import com.jason.usedcar.pm.BuyCarPM;
+import com.jason.usedcar.pm.menu.MenuBuyCarPM;
+import com.jason.usedcar.pm.view.ViewBuyCarView;
+import com.jason.usedcar.request.SearchProductRequest;
+import com.jason.usedcar.response.SearchProductResponse;
+import org.robobinding.MenuBinder;
+import org.robobinding.binder.BinderFactoryBuilder;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * @author t77yq @2014-09-17.
+ */
+public class BuyCarFragment extends AbsFragment implements ViewBuyCarView {
 
-public class BuyCarFragment extends
-    BaseFragment<BuyCarFragmentPresenter, CallButtonUi> implements
-    CallButtonUi, OnClickListener {
+    private SaleCarModel model;
 
-    @Required(order = 1)
-    private EditText filterText;
+    private BuyCarPM presentationModel;
 
-    private SaleCarModel saleCarModel = new SaleCarModel();
+    private String facetSelections;
 
-    private DropDownListView saleCarlList;
+    private String queryStr;
+
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        getActivity().setTitle("我要买车");
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_buy_car, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getPresenter().login(getActivity());
-        filterText = getView(view, R.id.textSaleCarFilter);
-//        filterText.setOnClickListener(this);
-        getView(view, R.id.saleCarFilterButton).setOnClickListener(this);
-        saleCarlList = getView(view, R.id.usedCarList);
-        saleCarlList.setOnDropDownListener(new DropDownListView.OnDropDownListener() {
-            @Override
-            public void onDropDown() {
-                SearchProductRequest searchProductRequest = new SearchProductRequest();
-                searchProductRequest.setPageSize(SaleCarModel.PAGE_SIZE);
-                new RestClient().searchProduct(searchProductRequest, new Callback<SearchProductResponse>() {
-                    @Override
-                    public void success(final SearchProductResponse response, final Response response2) {
-                        if (response != null && response.isExecutionResult()) {
-                            saleCarModel.add(response.getProductList());
-                            saleCarModel.notifyDataSetInvalidated();
-                        }
-                    }
-
-                    @Override
-                    public void failure(final RetrofitError error) {
-                    }
-                });
-            }
-        });
-        saleCarlList.setOnBottomListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SearchProductRequest searchProductRequest = new SearchProductRequest();
-                searchProductRequest.setPageSize(SaleCarModel.PAGE_SIZE);
-                searchProductRequest.setStartPage(saleCarModel.getPageSize());
-                new RestClient().searchProduct(searchProductRequest, new Callback<SearchProductResponse>() {
-                    @Override
-                    public void success(final SearchProductResponse response, final Response response2) {
-                        if (response != null && response.isExecutionResult()) {
-                            if (response.getNumFound() < SaleCarModel.PAGE_SIZE) {
-                                saleCarlList.setHasMore(false);
-                            }
-                            saleCarModel.add(response.getProductList());
-                            saleCarModel.notifyDataSetInvalidated();
-                        }
-                    }
-
-                    @Override
-                    public void failure(final RetrofitError error) {
-                    }
-                });
-            }
-        });
-        saleCarlList.setAdapter(new BuyCarAdapter(getActivity(), saleCarModel));
-        saleCarlList.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getPresenter().clickItem(getActivity(), saleCarModel.get(position));
-            }
-        });
         getActivity().setTitle(R.string.buy_car_text);
+        model = new SaleCarModel();
+    }
+
+    private void loadData(final int startPage, String facetSelections, String queryStr) {
+        model.setLoading(true);
         SearchProductRequest searchProductRequest = new SearchProductRequest();
+        searchProductRequest.setStartPage(startPage);
         searchProductRequest.setPageSize(SaleCarModel.PAGE_SIZE);
+        searchProductRequest.setFacetSelections(facetSelections);
+        searchProductRequest.setQueryString(queryStr);
+        if (startPage == 1) {
+            presentationModel.load();
+        }
         new RestClient().searchProduct(searchProductRequest, new Callback<SearchProductResponse>() {
             @Override
             public void success(final SearchProductResponse response, final Response response2) {
+                boolean hasMore = false;
                 if (response != null && response.isExecutionResult()) {
-                    saleCarModel.add(response.getProductList());
-                    saleCarModel.notifyDataSetInvalidated();
+                    hasMore = response.getNumFound() >= startPage * SaleCarModel.PAGE_SIZE;
+                    model.add(response.getProductList());
+                    presentationModel.refreshProducts();
+                }
+                model.setLoading(false);
+                model.setHasMore(hasMore);
+                presentationModel.refreshFooter();
+                if (startPage == 1) {
+                    presentationModel.finish();
                 }
             }
 
             @Override
             public void failure(final RetrofitError error) {
+                if (startPage == 1) {
+                    presentationModel.error();
+                }
+                model.setLoading(false);
+                model.setHasMore(false);
             }
         });
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_buy_car, menu);
+    public void onActivityCreated(final Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        listView = findViewById(R.id.usedCarList);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(final AbsListView lv, final int scrollState) {
+            }
+
+            @Override
+            public void onScroll(final AbsListView view, final int firstVisibleItem,
+                                 final int visibleItemCount, final int totalItemCount) {
+                if (model.hasMore() && !model.isLoading()
+                        && firstVisibleItem + visibleItemCount == totalItemCount) {
+                    loadData(model.getPageSize() + 1, facetSelections, queryStr);
+                }
+            }
+        });
+        if (model.isEmpty()) {
+            loadData(1, facetSelections, null);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        MenuBuyCarPM menuBuyCarViewModel = new MenuBuyCarPM(this);
+        MenuBinder menuBinder = new BinderFactoryBuilder().build().createMenuBinder(menu, inflater, getActivity());
+        menuBinder.inflateAndBind(R.menu.menu_buy_car, menuBuyCarViewModel);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                startActivityForResult(new Intent(getActivity(), FindUsedActivity.class), 1000);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected int layoutId() {
+        return R.layout.fragment_buy_car2;
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected Object presentationModel() {
+        return presentationModel = new BuyCarPM(model, this);
+    }
 
+    @Override
+    public void fillFilter() {
+        startActivityForResult(new Intent(getActivity(), FindUsedActivity.class), 1000);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 1000) {
-                String filter = data.getStringExtra("filter");
-                getPresenter().filterCar(getActivity(), filter);
-                filerUsedCarList(filter, null);
+            switch (requestCode) {
+                case 1000:
+                    if (data != null) {
+                        BrandFilterEntity brandFilterEntity = (BrandFilterEntity) data.getSerializableExtra("brandFilter");
+                        presentationModel.updateBrandFilterEntity(brandFilterEntity);
+                        FilterEntity priceFilterEntity = (FilterEntity) data.getSerializableExtra("priceFilter");
+                        FilterEntity mileFilterEntity = (FilterEntity) data.getSerializableExtra("mileFilter");
+                        FilterEntity ageFilterEntity = (FilterEntity) data.getSerializableExtra("ageFilter");
+                        facetSelections = brandFilterEntity.getFacetSelection() + ","
+                                + priceFilterEntity.getFacetSelection() + ","
+                                + mileFilterEntity.getFacetSelection() + ","
+                                + ageFilterEntity.getFacetSelection();
+                        presentationModel.setFilter(brandFilterEntity.getName());
+                    }
+                    break;
+                case 1001:
+                    if (data != null) {
+                        facetSelections = data.getStringExtra("filter");
+                        if (!TextUtils.isEmpty(facetSelections)) {
+                            queryStr = null;
+                            model.setData(null);
+                            presentationModel.setFilter(null);
+                            presentationModel.refreshProducts();
+                            loadData(1, facetSelections, null);
+                        }
+                    }
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    private void filerUsedCarList(String filter, String queryString) {
-        SearchProductRequest searchProductRequest = new SearchProductRequest();
-        searchProductRequest.setPageSize(SaleCarModel.PAGE_SIZE);
-        if(!TextUtils.isEmpty(filter)){
-            searchProductRequest.setFacetSelections(filter);
-        }
-        if(!TextUtils.isEmpty(queryString)){
-            searchProductRequest.setQueryString(queryString);
-        }
-        new RestClient().searchProduct(searchProductRequest, new Callback<SearchProductResponse>() {
-            @Override
-            public void success(final SearchProductResponse response, final Response response2) {
-                if (response != null && response.isExecutionResult()) {
-                    saleCarModel.clearAll();
-                    saleCarModel.add(response.getProductList());
-                    saleCarModel.notifyDataSetInvalidated();
-                }
-            }
-
-            @Override
-            public void failure(final RetrofitError error) {
-            }
-        });
-    }
-
-    @Override
-    public void setEnabled(boolean on) {
-    }
-
-    @Override
-    public BuyCarFragmentPresenter createPresenter() {
-        return new BuyCarFragmentPresenter();
-    }
-
-    @Override
-    public CallButtonUi getUi() {
-        return this;
-    }
-
-    @Override
-    public void login(String response) {
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.textSaleCarFilter:
-                break;
-            case R.id.saleCarFilterButton:
-//                getValidator().validate();
-                filerUsedCarList(null, filterText.getText().toString());
-                break;
         }
     }
 
     @Override
-    public void onValidationSucceeded() {
-        startActivity(new Intent(getActivity(), FindUsedActivity.class));
-//        getPresenter().filterCar(getActivity(), String.valueOf(filterText.getText()));
+    public void search(String query) {
+        queryStr = query;
+        facetSelections = null;
+        model.setData(null);
+        loadData(1, null, queryStr);
     }
 
     @Override
-    public void onValidationFailed(View view, Rule<?> rule) {
-        switch (view.getId()) {
-            case R.id.textSaleCarFilter:
-                Toast.makeText(getActivity(), "请选择筛选条件", Toast.LENGTH_SHORT).show();
-                break;
-        }
+    public void search2(final String where) {
+        startActivityForResult(new Intent(getActivity(), FindUsedActivity.class), 1001);
+    }
+
+    @Override
+    public void viewProductDetails(Product product) {
+        Intent viewCarDetails = new Intent(getActivity(), CarDetailsActivity.class);
+        viewCarDetails.putExtra("product_id", product.getProductId());
+        viewCarDetails.putExtra("type", Constants.CarDetailsType.BUY);
+        startActivity(viewCarDetails);
+    }
+
+    @Override
+    public void showMessage(final int messageId) {
+        showMessage(getString(messageId));
+    }
+
+    @Override
+    public void showMessage(final String message) {
+        MessageToast.makeText(getActivity(), message).show();
+    }
+
+    @Override
+    public boolean isFull() {
+        return !model.hasMore();
     }
 }

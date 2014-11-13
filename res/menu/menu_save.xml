@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://robobinding.org/android"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.jason.usedcar.CarDetails2Activity"
+        tools:context="com.jason.usedcar.CarDetailsActivity"
         tools:ignorePrefix="true">
     <item
             android:id="@+id/action_save"

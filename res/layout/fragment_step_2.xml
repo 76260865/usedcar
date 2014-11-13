@@ -53,7 +53,9 @@
                     android:background="#69C4C4C4"
                     android:scaleType="centerInside"
                     android:src="@drawable/tips_upload"
-                    bind:src="{frontPhoto}"/>
+                    bind:onClick="url1"
+                    bind:src2="{frontPhoto}"
+                    bind:url="{url1}"/>
         </LinearLayout>
         <View
                 android:layout_width="1dip"
@@ -80,7 +82,9 @@
                     android:background="#69C4C4C4"
                     android:scaleType="centerInside"
                     android:src="@drawable/tips_upload"
-                    bind:src="{leftPhoto}"/>
+                    bind:onClick="url2"
+                    bind:src2="{leftPhoto}"
+                    bind:url="{url2}"/>
         </LinearLayout>
         <View
                 android:layout_width="1dip"
@@ -107,7 +111,9 @@
                     android:background="#69C4C4C4"
                     android:scaleType="centerInside"
                     android:src="@drawable/tips_upload"
-                    bind:src="{rightPhoto}"/>
+                    bind:onClick="url3"
+                    bind:src2="{rightPhoto}"
+                    bind:url="{url3}"/>
         </LinearLayout>
         <TextView
                 android:layout_width="match_parent"
@@ -126,7 +132,9 @@
                 android:background="#69C4C4C4"
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
-                bind:src="{otherPhoto1}"/>
+                bind:onClick="url4"
+                bind:src2="{otherPhoto1}"
+                bind:url="{url4}"/>
         <View
                 android:layout_width="1dip"
                 android:layout_height="1dip"/>
@@ -138,7 +146,9 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
                 android:visibility="gone"
-                bind:src="{otherPhoto2}"/>
+                bind:onClick="url5"
+                bind:src2="{otherPhoto2}"
+                bind:url="{url5}"/>
         <View
                 android:layout_width="1dip"
                 android:layout_height="1dip"/>
@@ -150,6 +160,8 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/tips_upload"
                 android:visibility="gone"
-                bind:src="{otherPhoto3}"/>
+                bind:onClick="url6"
+                bind:src2="{otherPhoto3}"
+                bind:url="{url6}"/>
     </LinearLayout>
 </ScrollView>

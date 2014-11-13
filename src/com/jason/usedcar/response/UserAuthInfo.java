@@ -6,11 +6,15 @@ package com.jason.usedcar.response;
 public class UserAuthInfo extends Response {
 
     private String realName;
-    private String certificateType;
+    private int certificateType;
     private String certificateNumber;
     private String imageUrl;
+    private int bankType;
     private String bankName;
     private String bankAccount;
+    private String bankAccountName;
+    private String bankProvince;
+    private String bankCity;
 
     public String getRealName() {
         return realName;
@@ -20,11 +24,11 @@ public class UserAuthInfo extends Response {
         this.realName = realName;
     }
 
-    public String getCertificateType() {
+    public int getCertificateType() {
         return certificateType;
     }
 
-    public void setCertificateType(String certificateType) {
+    public void setCertificateType(int certificateType) {
         this.certificateType = certificateType;
     }
 
@@ -44,6 +48,14 @@ public class UserAuthInfo extends Response {
         this.imageUrl = imageUrl;
     }
 
+    public int getBankType() {
+        return bankType;
+    }
+
+    public void setBankType(int bankType) {
+        this.bankType = bankType;
+    }
+
     public String getBankName() {
         return bankName;
     }
@@ -60,4 +72,27 @@ public class UserAuthInfo extends Response {
         this.bankAccount = bankAccount;
     }
 
+    public String getBankAccountName() {
+        return bankAccountName;
+    }
+
+    public void setBankAccountName(String bankAccountName) {
+        this.bankAccountName = bankAccountName;
+    }
+
+    public String getBankProvince() {
+        return bankProvince;
+    }
+
+    public void setBankProvince(String bankProvince) {
+        this.bankProvince = bankProvince;
+    }
+
+    public String getBankCity() {
+        return bankCity;
+    }
+
+    public void setBankCity(String bankCity) {
+        this.bankCity = bankCity;
+    }
 }

@@ -1,50 +1,120 @@
 package com.jason.usedcar.response;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class CarResponse extends Response {
+/**
+ * @author t77yq @2014-10-03.
+ */
+public class CarResponse extends Response implements Serializable {
 
     private String productName;
-
     private String brandName;
-
     private String seriesName;
-
     private String modelDisplayName;
-
-    private List<String> imageUrls;
-
-    private List<String> licenseImages;
-
-    private String certificateImage;
-
+    private List<CarImage> carImages = new ArrayList<CarImage>();
+    private List<String> imageIds = new ArrayList<String>();
+    private List<LicenseImage> licenseImages = new ArrayList<LicenseImage>();
+    private List<String> licenseImageIds = new ArrayList<String>();
+    private CertificateImage certificateImage;
+    private String certificateImageId;
     private String purchaseDate;
-
-    private Double odometer;
-
-    private String listPrice;
-
-    private int priceType;
-
-    private int paymentMethod;
-
+    private double odometer;
+    private double listPrice;
+    private Integer priceType;
+    private Integer paymentMethod;
     private String carVin;
-
     private String carContact;
-
     private String contactPhone;
-
-    private int status;
-
+    private Integer status;
     private String updateTime;
-
     private String province;
-
     private String city;
-
     private String county;
-
     private String street;
+    private String carBasicInfoUrl;
+    private String productId;
+    private int brandId;
+    private int seriesId;
+    private int modelId;
+    private int provinceId;
+    private int cityId;
+    private int countyId;
+    private boolean inCart;
+    private boolean inFavoriteList;
+
+    public int getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
+    }
+
+    public int getSeriesId() {
+        return seriesId;
+    }
+
+    public void setSeriesId(int seriesId) {
+        this.seriesId = seriesId;
+    }
+
+    public int getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
+    }
+
+    public int getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public int getCountyId() {
+        return countyId;
+    }
+
+    public void setCountyId(int countyId) {
+        this.countyId = countyId;
+    }
+
+    public boolean isInCart() {
+        return inCart;
+    }
+
+    public void setInCart(boolean inCart) {
+        this.inCart = inCart;
+    }
+
+    public boolean isInFavoriteList() {
+        return inFavoriteList;
+    }
+
+    public void setInFavoriteList(boolean inFavoriteList) {
+        this.inFavoriteList = inFavoriteList;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public String getProductName() {
         return productName;
@@ -78,28 +148,52 @@ public class CarResponse extends Response {
         this.modelDisplayName = modelDisplayName;
     }
 
-    public List<String> getImageUrls() {
-        return imageUrls;
+    public List<CarImage> getCarImages() {
+        return carImages;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
+    public void setCarImages(List<CarImage> carImages) {
+        this.carImages = carImages;
     }
 
-    public List<String> getLicenseImages() {
+    public List<String> getImageIds() {
+        return imageIds;
+    }
+
+    public void setImageIds(List<String> imageIds) {
+        this.imageIds = imageIds;
+    }
+
+    public List<LicenseImage> getLicenseImages() {
         return licenseImages;
     }
 
-    public void setLicenseImages(List<String> licenseImages) {
+    public void setLicenseImages(List<LicenseImage> licenseImages) {
         this.licenseImages = licenseImages;
     }
 
-    public String getCertificateImage() {
+    public List<String> getLicenseImageIds() {
+        return licenseImageIds;
+    }
+
+    public void setLicenseImageIds(List<String> licenseImageIds) {
+        this.licenseImageIds = licenseImageIds;
+    }
+
+    public CertificateImage getCertificateImage() {
         return certificateImage;
     }
 
-    public void setCertificateImage(String certificateImage) {
+    public void setCertificateImage(CertificateImage certificateImage) {
         this.certificateImage = certificateImage;
+    }
+
+    public String getCertificateImageId() {
+        return certificateImageId;
+    }
+
+    public void setCertificateImageId(String certificateImageId) {
+        this.certificateImageId = certificateImageId;
     }
 
     public String getPurchaseDate() {
@@ -110,35 +204,35 @@ public class CarResponse extends Response {
         this.purchaseDate = purchaseDate;
     }
 
-    public Double getOdometer() {
+    public double getOdometer() {
         return odometer;
     }
 
-    public void setOdometer(Double odometer) {
+    public void setOdometer(double odometer) {
         this.odometer = odometer;
     }
 
-    public String getListPrice() {
+    public double getListPrice() {
         return listPrice;
     }
 
-    public void setListPrice(String listPrice) {
+    public void setListPrice(double listPrice) {
         this.listPrice = listPrice;
     }
 
-    public int getPriceType() {
+    public Integer getPriceType() {
         return priceType;
     }
 
-    public void setPriceType(int priceType) {
+    public void setPriceType(Integer priceType) {
         this.priceType = priceType;
     }
 
-    public int getPaymentMethod() {
+    public Integer getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(int paymentMethod) {
+    public void setPaymentMethod(Integer paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
@@ -166,11 +260,11 @@ public class CarResponse extends Response {
         this.contactPhone = contactPhone;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -214,7 +308,11 @@ public class CarResponse extends Response {
         this.street = street;
     }
 
-    public String getPlaceDetails() {
-        return province + city + county + street;
+    public String getCarBasicInfoUrl() {
+        return carBasicInfoUrl;
+    }
+
+    public void setCarBasicInfoUrl(String carBasicInfoUrl) {
+        this.carBasicInfoUrl = carBasicInfoUrl;
     }
 }

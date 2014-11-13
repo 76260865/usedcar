@@ -1,103 +1,108 @@
 package com.jason.usedcar;
 
+import android.widget.RadioButton;
+import com.jason.usedcar.fragment.OrderListFragment;
+import com.jason.usedcar.fragment.SaleCarFragment;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import com.jason.usedcar.fragment.BuyCarHistoryFragment;
-import com.jason.usedcar.fragment.SellCarHistoryFragment;
-import com.jason.usedcar.model.UsedCar;
-import java.util.List;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
 
+public class HistoryActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
-public class HistoryActivity extends BaseActivity implements
-        ActionBar.OnNavigationListener,
-        BuyCarHistoryFragment.Data,
-        SellCarHistoryFragment.Data {
+    private static final int FRAGMENT_ORDER = 0;
 
-    private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
+    private static final int FRAGMENT_SALE = 1;
 
-    private List<UsedCar> buyCarHistory;
+    private ViewPager mViewPager;
+
+    private RadioButton historyOrderRadio;
+
+    private RadioButton historySaleRadio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_history2);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.history_ab);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        historyOrderRadio = (RadioButton) findViewById(R.id.left);
+        historySaleRadio = (RadioButton) findViewById(R.id.right);
 
-        actionBar.setListNavigationCallbacks(new ArrayAdapter<String>(
-                getApplicationContext(),
-                R.layout.text1,
-                android.R.id.text1,
-                new String[] {
-                    getString(R.string.activity_history_car_bought),
-                    getString(R.string.activity_history_car_sold)
-                }),
-            this);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(sectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(this);
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-            getSupportActionBar().setSelectedNavigationItem(
-                savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
-            getSupportActionBar().getSelectedNavigationIndex());
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(int position, long id) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        switch (position) {
-            case 0:
-                ft.replace(R.id.container, new BuyCarHistoryFragment()).commit();
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.left:
+                mViewPager.setCurrentItem(FRAGMENT_ORDER);
                 break;
-            case 1:
-                ft.replace(R.id.container, new SellCarHistoryFragment()).commit();
+            case R.id.right:
+                mViewPager.setCurrentItem(FRAGMENT_SALE);
                 break;
         }
-        return true;
     }
 
     @Override
-    public List<UsedCar> getData(Fragment fragment) {
-        if (fragment instanceof BuyCarHistoryFragment) {
-            return buyCarHistory;
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        //
+    }
+
+    @Override
+    public void onPageSelected(final int position) {
+        if (position == FRAGMENT_ORDER) {
+            historyOrderRadio.setChecked(true);
         }
-        return null;
+        else if (position == FRAGMENT_SALE) {
+            historySaleRadio.setChecked(true);
+        }
     }
 
     @Override
-    public void setData(Fragment fragment, final List<UsedCar> data) {
-        if (fragment instanceof BuyCarHistoryFragment) {
-            buyCarHistory = data;
+    public void onPageScrollStateChanged(final int state) {
+        //
+    }
+
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == FRAGMENT_ORDER) {
+                return new OrderListFragment();
+            } else if (position == FRAGMENT_SALE) {
+                return new SaleCarFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.history_order);
+                case 1:
+                    return getResources().getString(R.string.history_sale);
+            }
+            return null;
         }
     }
 }

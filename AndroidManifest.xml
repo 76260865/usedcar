@@ -1,120 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.jason.usedcar"
-          android:versionCode="1"
-          android:versionName="1.0" >
+<manifest
+        package="com.jason.usedcar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:versionCode="1"
+        android:versionName="1.0">
 
     <uses-sdk
             android:minSdkVersion="13"
-            android:targetSdkVersion="19" />
+            android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <application
-            android:name=".Application"
+            android:name="com.jason.usedcar.Application"
             android:allowBackup="true"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@drawable/logo"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
-        <activity android:name=".MainTabActivity"
-                  android:configChanges="orientation|screenSize|keyboardHidden"
-                  android:label="@string/app_name" >
+            android:theme="@style/AppTheme">
+        <activity
+                android:name="com.jason.usedcar.MainTabActivity"
+                android:configChanges="orientation|screenSize|keyboardHidden"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme2">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-                  android:label="@string/title_login"
-                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+        <activity
+                android:name="com.jason.usedcar.LoginActivity"
+                android:label="@string/title_login"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
-        <activity android:name=".RegisterActivity"
-                  android:label=""
-                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+        <activity
+                android:name="com.jason.usedcar.RegisterActivity"
+                android:label=""
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
-        <activity android:name=".ResetPasswordActivity"
-                  android:label="@string/title_reset_password"
-                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+        <activity
+                android:name="com.jason.usedcar.ResetPasswordActivity"
+                android:label="@string/title_reset_password"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
-        <activity android:name=".InfoActivity"
-                  android:label="个人中心"
-                  android:windowSoftInputMode="adjustResize">
+        <activity
+                android:name=".InfoActivity"
+                android:label="个人中心"
+                android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".Info2Activity"
-                  android:label="个人中心"
-                  android:windowSoftInputMode="adjustResize">
+        <activity
+                android:name="com.jason.usedcar.SellCarActivity"
+                android:label="我要卖车"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
-        <activity android:name=".SellCarActivity"
-                  android:label="我要卖车"
-                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+        <activity
+                android:name="com.jason.usedcar.ChangePasswordActivity"
+                android:label="修改密码"
+                android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".ChangePasswordActivity"
-                  android:label="修改密码"
-                  android:windowSoftInputMode="adjustResize">
+        <activity
+                android:name="com.jason.usedcar.BindPhoneActivity"
+                android:label="修改绑定手机"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
-        <activity android:name=".BindPhoneActivity"
-                  android:label="修改绑定手机"
-                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-        </activity>
-        <activity android:name=".BindEmailActivity"
-                  android:label="修改绑定邮箱"
-                  android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-        </activity>
-        <activity android:name=".HistoryActivity"
-                  android:theme="@style/AppTheme2">
+        <activity
+                android:name="com.jason.usedcar.BindEmailActivity"
+                android:label="修改绑定邮箱"
+                android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
         </activity>
         <activity
                 android:name=".CarDetailsActivity"
-                android:label="汽车详情"
-                android:theme="@style/AppTheme2">
-        </activity>
-        <activity android:name=".CarDetails2Activity"
-                  android:label="汽车详情">
+                android:label="汽车详情">
         </activity>
         <activity
-                android:name=".CalculatorActivity"
+                android:name="com.jason.usedcar.CalculatorActivity"
                 android:label="车贷计算器"
                 android:theme="@style/AppTheme2">
-
         </activity>
         <activity
-                android:name=".DealPlaceActivity"
+                android:name="com.jason.usedcar.DealPlaceActivity"
                 android:label="交易地点"
                 android:theme="@style/AppTheme2">
-
         </activity>
         <activity
-                android:name=".CarPickerActivity"
+                android:name="com.jason.usedcar.CarPickerActivity"
                 android:label="车辆选择"
                 android:theme="@style/AppTheme2">
-
         </activity>
         <activity
-                android:name=".FeedbackActivity"
+                android:name="com.jason.usedcar.FeedbackActivity"
                 android:theme="@style/AppTheme"
                 android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-                android:name=".AboutActivity"
+                android:name="com.jason.usedcar.AboutActivity"
                 android:theme="@style/AppTheme">
         </activity>
         <activity
-                android:name=".CollectActivity"
+                android:name="com.jason.usedcar.CollectActivity"
                 android:theme="@style/AppTheme">
         </activity>
 
-        <meta-data android:name="AA_DB_NAME" android:value="car.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
-        <activity android:name=".FindUsedActivity">
+        <meta-data
+                android:name="AA_DB_NAME"
+                android:value="car.db"/>
+        <meta-data
+                android:name="AA_DB_VERSION"
+                android:value="1"/>
+
+        <activity android:name="com.jason.usedcar.FindUsedActivity">
         </activity>
-        <activity android:name=".AuthorizeActivity">
+        <activity android:name="com.jason.usedcar.AuthorizeActivity">
         </activity>
+        <activity
+                android:name=".HistoryActivity"
+                android:label="@string/title_activity_history_activity2"
+                android:theme="@style/AppTheme">
+        </activity>
+        <activity
+                android:name=".OrderConfirmActivity">
+        </activity>
+        <activity android:name=".ShoppingConfirmActivity">
+        </activity>
+        <service android:name=".service.InitService"/>
     </application>
 
 </manifest>

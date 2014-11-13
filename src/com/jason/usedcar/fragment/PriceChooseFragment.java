@@ -15,10 +15,11 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import java.util.List;
 
 public class PriceChooseFragment extends SearchConditionChooseFragment {
 
-	public PriceChooseFragment(ArrayList<FilterEntity> filters) {
+	public PriceChooseFragment(List<FilterEntity> filters) {
 		super(filters);
 	}
 

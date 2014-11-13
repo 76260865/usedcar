@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://robobinding.org/android"
         xmlns:tools="http://schemas.android.com/tools"
-        xmlns:ett="http://schemas.android.com/apk/res/com.jason.usedcar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".fragment.ResellerInfoFragment">
@@ -38,7 +39,10 @@
                         android:layout_gravity="center"
                         android:background="#69C4C4C4"
                         android:scaleType="centerInside"
-                        android:src="@drawable/tips_upload"/>
+                        android:src="@drawable/tips_upload"
+                        bind:src2="{src1}"
+                        bind:onClick="click1"
+                        bind:url="{url1}"/>
                 <ImageView
                         android:id="@+id/car_info_id_photo2"
                         android:layout_width="128dip"
@@ -48,7 +52,10 @@
                         android:layout_gravity="center"
                         android:background="#69C4C4C4"
                         android:scaleType="centerInside"
-                        android:src="@drawable/tips_upload"/>
+                        android:src="@drawable/tips_upload"
+                        bind:src2="{src2}"
+                        bind:onClick="click2"
+                        bind:url="{url2}"/>
             </LinearLayout>
         </LinearLayout>
         <View
@@ -57,16 +64,21 @@
                 style="@style/Info.Item"
                 android:id="@+id/carContact"
                 android:padding="10dip"
-                ett:prefix="联系人姓名:"
-                ett:prefixColor="#555555"
-                ett:prefixSize="16sp"/>
+                app:prefix="联系人姓名:"
+                app:prefixColor="#555555"
+                app:prefixSize="16sp"
+                bind:text="${contact}"/>
         <com.jason.usedcar.view.ExtendedEditText
                 style="@style/Info.Item"
                 android:id="@+id/carContactPhone"
                 android:padding="10dip"
-                ett:prefix="联系人手机:"
-                ett:prefixColor="#555555"
-                ett:prefixSize="16sp"/>
+                android:inputType="phone"
+                android:maxLength="11"
+                android:digits="0123456789"
+                app:prefix="联系人手机:"
+                app:prefixColor="#555555"
+                app:prefixSize="16sp"
+                bind:text="${contactPhone}"/>
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,7 +107,10 @@
                         android:layout_gravity="center"
                         android:background="#69C4C4C4"
                         android:scaleType="centerInside"
-                        android:src="@drawable/tips_upload"/>
+                        android:src="@drawable/tips_upload"
+                        bind:src2="{src3}"
+                        bind:onClick="click3"
+                        bind:url="{url3}"/>
                 <ImageView
                         android:id="@+id/car_info_id_photo4"
                         android:layout_width="128dip"
@@ -103,6 +118,7 @@
                         android:layout_weight="1"
                         android:layout_margin="6dip"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         android:background="#69C4C4C4"
                         android:scaleType="centerInside"
                         android:src="@drawable/tips_upload"/>
@@ -112,7 +128,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dip"
-                    android:text="我已阅读并同意《服务条款》"/>
+                    android:text="我已阅读并同意《服务条款》"
+                    bind:checked="${check}"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

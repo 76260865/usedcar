@@ -11,8 +11,6 @@ public class WebViewAttribute implements PropertyViewAttribute<WebView, CharSequ
 
     @Override
     public void updateView(final WebView view, final CharSequence newValue) {
-        view.getSettings().setUseWideViewPort(true);
-        view.getSettings().setJavaScriptEnabled(true);
         view.loadUrl(String.valueOf(newValue));
     }
 }

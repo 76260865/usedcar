@@ -16,6 +16,7 @@ import com.jason.usedcar.adapter.holder.BrandChooseViewHolder;
 import com.jason.usedcar.model.UsedCarModel;
 import com.jason.usedcar.model.data.Brand;
 import com.jason.usedcar.model.data.BrandFilterEntity;
+import java.util.List;
 
 public class BrandSearchFilterAdapter extends BaseAdapter implements
 		StickyListHeadersAdapter {
@@ -24,10 +25,10 @@ public class BrandSearchFilterAdapter extends BaseAdapter implements
 
 	private LayoutInflater mInflater;
 
-	private ArrayList<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
+	private List<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
 
 	public BrandSearchFilterAdapter(Context context,
-			ArrayList<BrandFilterEntity> brandsFilters) {
+			List<BrandFilterEntity> brandsFilters) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		this.brandsFilters = brandsFilters;

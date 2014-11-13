@@ -42,9 +42,8 @@ public class CalculatorActivity extends BaseActivity
         rentText = getView(R.id.textRent);
         monthlyPayText = getView(R.id.textMonthlyPay);
         dailyPayText = getView(R.id.textDailyPay);
-        String carPrice = getIntent().getStringExtra("car_price");
-        carPrice = carPrice.substring(0, carPrice.indexOf("万元"));
-        priceEdit.setText(carPrice);
+        double carPrice = getIntent().getDoubleExtra("car_price", 0);
+        priceEdit.setText(String.valueOf(carPrice));
     }
 
     public void onClick(View view) {

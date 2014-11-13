@@ -33,7 +33,7 @@
     </style>
 
     <style name="MyActionBar" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">#2C52B0</item>
+        <item name="android:background">#134ffe</item>
         <item name="titleTextStyle">@style/myTheme.ActionBar.Text</item>
         <item name="android:titleTextStyle">@style/myTheme.ActionBar.Text</item>
         <item name="android:displayOptions">showTitle|showHome</item>
@@ -41,10 +41,12 @@
     </style>
 
     <style name="MyActionBar2" parent="Widget.AppCompat.ActionBar">
-        <item name="android:background">#2C52B0</item>
+        <item name="android:background">#134ffe</item>
         <item name="titleTextStyle">@style/myTheme.ActionBar.Text</item>
+        <item name="android:title">我要买车</item>
         <item name="android:titleTextStyle">@style/myTheme.ActionBar.Text</item>
-        <item name="android:homeAsUpIndicator">@drawable/back</item>
+        <item name="android:homeAsUpIndicator">@android:color/transparent</item>
+        <item name="homeAsUpIndicator">@android:color/transparent</item>
         <item name="android:icon">@android:color/transparent</item>
         <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
     </style>
@@ -54,7 +56,7 @@
     </style>
 
     <style name="ActionBarTabStyle" parent="Widget.AppCompat.ActionBar.TabView">
-        <item name="android:background">#2C52B0</item>
+        <item name="android:background">#134ffe</item>
         <item name="android:padding">0dp</item>
     </style>
 

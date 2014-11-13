@@ -18,12 +18,13 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+import java.util.List;
 
 public class SearchConditionChooseFragment extends DialogFragment {
 	protected SearchConditionAdapter mAdapter;
-	private ArrayList<FilterEntity> filters = new ArrayList<FilterEntity>();
+	private List<FilterEntity> filters = new ArrayList<FilterEntity>();
 
-	public SearchConditionChooseFragment(ArrayList<FilterEntity> filters) {
+	public SearchConditionChooseFragment(List<FilterEntity> filters) {
 		this.filters = filters;
 	}
 

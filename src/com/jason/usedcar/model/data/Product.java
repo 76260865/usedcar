@@ -1,5 +1,6 @@
 package com.jason.usedcar.model.data;
 
+import android.view.View;
 import java.io.Serializable;
 
 /**
@@ -22,6 +23,26 @@ public class Product implements Serializable {
     private String priceType;
     private int paymentMethod;
     private Boolean manufacturerVerified;
+    private boolean mark;
+    private boolean check;
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public boolean isMark() {
+        return mark;
+    }
+
+    public void setMark(boolean mark) {
+        this.mark = mark;
+    }
+
+    public int visibility = View.GONE;
 
     public String getProductId() {
         return productId;

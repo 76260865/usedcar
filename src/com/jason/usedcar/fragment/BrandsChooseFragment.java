@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.jason.usedcar.R;
 import com.jason.usedcar.adapter.BrandSearchFilterAdapter;
 import com.jason.usedcar.model.data.BrandFilterEntity;
+import java.util.List;
 
 public class BrandsChooseFragment extends DialogFragment {
 	private static final String TAG = "BrandsChooseFragment";
@@ -24,7 +25,7 @@ public class BrandsChooseFragment extends DialogFragment {
 
 	private BrandSearchFilterAdapter mAdapter;
 
-	private ArrayList<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
+	private List<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
 
 	/**
 	 * 实现这个接口的类需要实现这两个方法
@@ -33,7 +34,7 @@ public class BrandsChooseFragment extends DialogFragment {
 		void onBrandChoosed(BrandFilterEntity brand);
 	}
 
-	public BrandsChooseFragment(ArrayList<BrandFilterEntity> brandsFilters) {
+	public BrandsChooseFragment(List<BrandFilterEntity> brandsFilters) {
 		this.brandsFilters = brandsFilters;
 	}
 
