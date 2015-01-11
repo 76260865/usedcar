@@ -1,7 +1,5 @@
 package com.jason.usedcar;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBarActivity;
@@ -10,21 +8,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
-import com.jason.usedcar.fragment.BuyCarFragment2;
-import com.jason.usedcar.fragment.MoreFragment;
+import com.jason.usedcar.fragment.BuyCarFragment;
 import com.jason.usedcar.fragment.PersonalCenterFragment;
-import com.jason.usedcar.fragment.SellCarFragment2;
-import com.jason.usedcar.fragment.ShoppingCar2Fragment;
+import com.jason.usedcar.fragment.SellCarFragment;
 import com.jason.usedcar.fragment.ShoppingCarFragment;
-import java.io.ByteArrayOutputStream;
 
 public class MainTabActivity extends ActionBarActivity {
     private FragmentTabHost mTabHost;
 
     private LayoutInflater layoutInflater;
 
-    private Class<?> fragmentArray[] = { BuyCarFragment2.class, SellCarFragment2.class,
-            ShoppingCar2Fragment.class, PersonalCenterFragment.class };
+    private Class<?> fragmentArray[] = { BuyCarFragment.class, SellCarFragment.class,
+            ShoppingCarFragment.class, PersonalCenterFragment.class };
 
     private int mImageViewArray[] = { R.drawable.tab_buy_car_btn, R.drawable.tab_sell_car_btn,
             R.drawable.tab_shop_car_btn, R.drawable.tab_personal_car_btn,
@@ -38,6 +33,7 @@ public class MainTabActivity extends ActionBarActivity {
         setContentView(R.layout.main_tab_layout);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
         getSupportActionBar().setIcon(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         initView();
     }
 

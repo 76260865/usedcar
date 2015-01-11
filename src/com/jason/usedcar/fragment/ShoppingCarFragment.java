@@ -1,110 +1,115 @@
 package com.jason.usedcar.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.jason.usedcar.Application;
-import com.jason.usedcar.LoginActivity;
+import com.jason.usedcar.CarDetailsActivity;
 import com.jason.usedcar.R;
-import com.jason.usedcar.RestClient;
-import com.jason.usedcar.adapter.ShoppingCarAdapter;
-import com.jason.usedcar.fragment.BaseFragment;
-import com.jason.usedcar.model.ShoppingCarModel;
-import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter;
-import com.jason.usedcar.presenter.ShoppingCarFragmentPresenter.CallButtonUi;
-import com.jason.usedcar.request.PagedRequest;
-import com.jason.usedcar.response.CarListResponse;
-import com.jason.usedcar.response.CartResponse;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import com.jason.usedcar.constants.Constants;
+import com.jason.usedcar.model.data.Product;
+import com.jason.usedcar.pm.ShoppingPM;
+import com.jason.usedcar.pm.view.ShoppingCarView;
 
-public class ShoppingCarFragment extends
-        BaseFragment<ShoppingCarFragmentPresenter, CallButtonUi>
-        implements ShoppingCarFragmentPresenter.CallButtonUi {
+/**
+ * @author t77yq @2014-09-29.
+ */
+public class ShoppingCarFragment extends AbsFragment implements ShoppingCarView {
 
-    private ListView mShoppingCarListView;
-
-    private ShoppingCarModel shoppingCarModel = new ShoppingCarModel();
+    private ShoppingPM shoppingCarViewModel;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_shoping_car, null);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(R.string.txt_shopping_car_str);
-        if (Application.fromActivity(getActivity()).getAccessToken() == null) {
-            startActivityForResult(new Intent(getActivity(), LoginActivity.class), 10);
-            return;
-        }
-        new RestClient().cart(Application.fromActivity(getActivity()).getAccessToken(),
-                Build.SERIAL, new Callback<CartResponse>() {
+        shoppingCarViewModel.loadData();
+        ListView listView = (ListView) getView().findViewById(R.id.usedCarList);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void success(final CartResponse response, final Response response2) {
-                if (response != null && response.isExecutionResult()) {
-                    shoppingCarModel.add(response.getCartList());
-                    shoppingCarModel.notifyDataSetInvalidated();
-                }
-            }
-
-            @Override
-            public void failure(final RetrofitError error) {
-                //
+            public boolean onItemLongClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+                shoppingCarViewModel.longClick(position);
+                return true;
             }
         });
     }
 
     @Override
-    public void onViewCreated(final View view, final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mShoppingCarListView = getView(view, R.id.list_shopping_car);
-        mShoppingCarListView.setAdapter(new ShoppingCarAdapter(getActivity(), shoppingCarModel));
-    }
-
-    @Override
-    public void setEnabled(boolean on) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public ShoppingCarFragmentPresenter createPresenter() {
-        return new ShoppingCarFragmentPresenter();
+    public void onResume() {
+        super.onResume();
+        shoppingCarViewModel.refreshProducts();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_shopping_car, menu);
+        inflater.inflate(R.menu.menu_add_to_cart, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public CallButtonUi getUi() {
-        return this;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_addToCart:
+                shoppingCarViewModel.confirmShopping();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void login(String response) {
-        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_CANCELED) {
+            switch (requestCode) {
+                case Constants.REQUEST_LOGIN:
+                    shoppingCarViewModel.end();
+                    break;
+            }
+        } else if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case Constants.REQUEST_LOGIN:
+                    shoppingCarViewModel.loadData();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected int layoutId() {
+        return R.layout.fragment_shopping_car2;
+    }
+
+    @Override
+    protected Object presentationModel() {
+        if (shoppingCarViewModel == null) {
+            shoppingCarViewModel = new ShoppingPM(this);
+        }
+        return shoppingCarViewModel;
+    }
+
+    @Override
+    public void viewProductDetails(final Product product) {
+        Intent detailsIntent = new Intent(getContext(), CarDetailsActivity.class);
+        detailsIntent.putExtra("product_id", product.getProductId());
+        detailsIntent.putExtra("type", Constants.CarDetailsType.OTHER);
+        startActivity(detailsIntent);
+    }
+
+    @Override
+    public void delete(final Product product) {
+        shoppingCarViewModel.delete(product);
+    }
+
+    @Override
+    public void check(Product product) {
+        shoppingCarViewModel.check(product);
+    }
+
+    @Override
+    public void confirmShopping(Product product) {
     }
 }

@@ -1,54 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://robobinding.org/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:prefixIgnore="true">
     <ImageView
             android:id="@+id/car_image"
             android:layout_width="match_parent"
             android:layout_height="100dip"
             android:scaleType="centerInside"
-            android:src="@drawable/xianjian02"/>
+            tools:src="@drawable/xianjian02"
+            bind:url="{url}"/>
     <TextView
-            android:id="@+id/history_car_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/history_car_info"/>
+            android:background="#858585"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="4dip"
+            android:paddingBottom="4dip"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            bind:text="{productName}"
+            tools:text="商品名：捷豹路虎2014款1.4T"/>
     <TextView
-            android:id="@+id/order_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/history_order_number"/>
-    <TextView
-            android:id="@+id/order_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/history_order_price"/>
-    <TextView
-            android:id="@+id/order_pay_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/history_order_pay_time"/>
-    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#4D4D4D"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="4dip"
+            android:paddingBottom="2dip"
+            android:textColor="@android:color/white"
+            bind:text="{productVinCode}"
+            tools:text="车辆识别码/VIN：110101100011101"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#4D4D4D"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="2dip"
+            android:paddingBottom="4dip"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            bind:text="{info}"
+            tools:text="贷款金额：100万元\t商品价格：100元\t交易服务费：100元"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="6dip"
+            android:paddingBottom="3dip"
+            android:textColor="#202020"
+            android:textSize="16sp"
+            bind:text="{orderNumber}"
+            tools:text="订单号：110101100011101"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="3dip"
+            android:paddingBottom="3dip"
+            android:textColor="#202020"
+            android:textSize="16sp"
+            bind:text="{orderDate}"
+            tools:text="下单日期：2014年3月3日 22:15"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="3dip"
+            android:paddingBottom="3dip"
+            android:textColor="#202020"
+            android:textSize="16sp"
+            bind:text="{sellerName}"
+            tools:text="卖家信息：李小双"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="3dip"
+            android:paddingBottom="3dip"
+            android:textColor="#202020"
+            android:textSize="16sp"
+            bind:text="{sellerId}"
+            tools:text="身份证：110101100011101"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="3dip"
+            android:paddingBottom="1dip"
+            android:textColor="#202020"
+            android:textSize="16sp"
+            bind:text="{orderPrice}"
+            tools:text="订单金额：10000000元"/>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:paddingTop="1dip"
+            android:paddingBottom="3dip"
+            android:textColor="#5B5B5B"
+            android:textSize="12sp"
+            android:text="(订单金额 = 商品价格 ＋ 交易服务费)"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F9F9F9"
+            android:gravity="center"
+            android:orientation="horizontal">
         <TextView
-                android:id="@+id/order_state"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/order_action"
-                android:text="@string/history_order_state"/>
+                android:layout_weight="1"
+                android:paddingLeft="6dip"
+                android:paddingRight="6dip"
+                android:paddingTop="3dip"
+                android:paddingBottom="6dip"
+                android:textColor="#224FA8"
+                android:textSize="16sp"
+                bind:text="{orderState}"
+                tools:text="订单状态：未付款"/>
         <TextView
                 android:id="@+id/order_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/rect_bg"
-                android:padding="4dip"
-                android:text="未付款"/>
-    </RelativeLayout>
+                android:layout_marginRight="6dip"
+                android:background="@drawable/rect_bg3"
+                android:padding="6dip"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:text="立即付款"/>
+    </LinearLayout>
 </LinearLayout>

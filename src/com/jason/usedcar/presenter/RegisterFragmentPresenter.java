@@ -46,7 +46,7 @@ public class RegisterFragmentPresenter extends BasePresenter<RegisterFragmentUi>
     }
 
     public void obtainCode(Fragment fragment, final ObtainCodeRequest param) {
-        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取验证码&#8230;");
+        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取验证码...");
         loadingFragment.show(fragment.getFragmentManager());
         new RestClient().obtainCode(param, new Callback<ObtainCodeResponse>() {
             @Override

@@ -2,13 +2,13 @@ package com.jason.usedcar.response;
 
 public class UploadImageResponse extends Response {
 
-    private int imageId;
+    private String imageId;
 
-    public int getImageId() {
+    public String getImageId() {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
+    public void setImageId(String imageId) {
         this.imageId = imageId;
     }
 }

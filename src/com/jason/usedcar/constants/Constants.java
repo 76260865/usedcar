@@ -37,4 +37,6 @@ public final class Constants {
 
         public static final int OTHER = 2;
     }
+
+    public static String URL_BASE = "http://112.124.62.114:80";
 }

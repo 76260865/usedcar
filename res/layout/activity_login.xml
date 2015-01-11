@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://robobinding.org/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:paddingLeft="20dip"
-        android:paddingRight="20dip"
-        android:orientation="vertical">
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dip"
-            android:layout_marginBottom="40dp"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
-            android:src="@drawable/used_car_logo"/>
+        android:background="#FFFFFF"
+        android:scrollbars="none"
+        tools:ignorePrefix="true">
     <LinearLayout
-            android:id="@+id/login_area "
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="20dip"
+            android:paddingRight="20dip"
             android:orientation="vertical">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:src="@drawable/welcome"/>
         <EditText
                 style="@style/Phone.EditText"
                 android:id="@+id/login_edit_username"
                 android:drawableLeft="@drawable/avatar_icon"
                 android:drawablePadding="10dip"
                 android:inputType="phone"
-                android:src="@drawable/avatar_icon"/>
+                android:src="@drawable/avatar_icon"
+                bind:text="${username}"/>
         <EditText
                 style="@style/EditText"
                 android:id="@+id/login_edit_password"
@@ -35,54 +37,28 @@
                 android:drawablePadding="10dip"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:src="@drawable/password_icon"/>
-    </LinearLayout>
-    <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/chk_save_user_name_text"/>
-    <RadioGroup
-            android:id="@+id/userTypeRadioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dip"
-            android:layout_marginBottom="5dip"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-        <RadioButton
-                android:id="@+id/radioPersonal"
-                android:layout_width="0dip"
+                android:src="@drawable/password_icon"
+                bind:text="${password}"/>
+        <CheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:checked="true"
-                android:text="个人"
-                android:textColor="#666666"/>
-        <RadioButton
-                android:id="@+id/radioReseller"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:layout_marginLeft="20dip"
-                android:text="经销商"
-                android:textColor="#666666"/>
-    </RadioGroup>
-    <Button
-            style="@style/Button"
-            android:id="@+id/login_btn_login"
-            android:layout_marginTop="10dip"
-            android:onClick="onClick"
-            android:text="@string/btn_login_text"/>
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="20dip"
-            android:gravity="center">
+                android:visibility="gone"
+                android:text="@string/chk_save_user_name_text"/>
+        <Button
+                style="@style/Button"
+                android:id="@+id/login_btn_login"
+                android:layout_marginTop="10dip"
+                android:onClick="onClick"
+                android:text="@string/btn_login_text"
+                bind:enabled="{valid}"
+                bind:onClick="login"
+                tools:enabled="false"/>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
+                android:layout_weight="1"
+                android:gravity="bottom">
             <Button
                     android:id="@+id/login_btn_register"
                     android:layout_width="0dip"
@@ -90,14 +66,11 @@
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
-                    android:onClick="onClick"
+                    android:gravity="left|center_vertical"
                     android:padding="10dip"
-                    android:text="@string/txt_register"/>
-            <View
-                    android:layout_width="1px"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dip"
-                    android:background="@drawable/divider_v"/>
+                    android:text="@string/txt_register"
+                    android:textColor="#555555"
+                    bind:onClick="register"/>
             <Button
                     android:id="@+id/login_btn_reset_password"
                     android:layout_width="0dip"
@@ -105,9 +78,11 @@
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
-                    android:onClick="onClick"
+                    android:gravity="right|center_vertical"
                     android:padding="10dip"
-                    android:text="@string/txt_forgot_pwd"/>
+                    android:text="@string/txt_forgot_pwd"
+                    android:textColor="#555555"
+                    bind:onClick="resetPassword"/>
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

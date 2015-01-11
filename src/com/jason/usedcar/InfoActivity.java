@@ -4,46 +4,37 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.*;
-import android.widget.DatePicker;
+import com.activeandroid.query.Select;
 import com.jason.usedcar.fragment.LoadingFragment;
-import com.jason.usedcar.request.*;
-import com.jason.usedcar.request.Request;
-import com.jason.usedcar.response.*;
-import com.jason.usedcar.response.Response;
-import com.jason.usedcar.view.ExtendedEditText;
-import retrofit.*;
+import com.jason.usedcar.model.data.City;
+import com.jason.usedcar.model.data.County;
+import com.jason.usedcar.model.data.Province;
+import com.jason.usedcar.pm.InfoPM;
+import com.jason.usedcar.pm.view.InfoView;
 
 /**
- * @author t77yq @2014.06.14
+ * @author t77yq @2014-09-29.
  */
-public class InfoActivity extends BaseActivity implements OnClickListener, DatePickerDialog.OnDateSetListener {
+public class InfoActivity extends AbsActivity implements InfoView, DatePickerDialog.OnDateSetListener {
 
-    private static final int LOGIN = 10001;
+    private static final int ADDRESS = 100;
 
-    private boolean editMode = false;
+    private InfoPM infoViewModel;
 
-    private InfoActivityHolder activityHolder;
-
-    private UserInfoRequest userInfoParam;
+    private LoadingFragment loadingFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info);
-        userInfoParam = new UserInfoRequest();
-        userInfoParam.setAccessToken(Application.fromActivity(this).getAccessToken());
-        activityHolder = new InfoActivityHolder(this);
-        activityHolder.changePasswordText.setOnClickListener(this);
-        activityHolder.changePhoneButton.setOnClickListener(this);
-        //activityHolder.bindEmailText.setOnClickListener(this);
-        activityHolder.birthdayText.setOnClickListener(this);
-        viewUserInfo();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
+        getSupportActionBar().setIcon(android.R.color.transparent);
+        infoViewModel = new InfoPM(this);
+        initContentView(R.layout.activity_info2, infoViewModel);
+        infoViewModel.loadData();
     }
 
     @Override
@@ -55,7 +46,7 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.clear();
-        getMenuInflater().inflate(editMode ? R.menu.menu_my_info_save : R.menu.menu_my_info_edit, menu);
+        getMenuInflater().inflate(infoViewModel.getEditMode() ? R.menu.menu_my_info_save : R.menu.menu_my_info_edit, menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -63,216 +54,80 @@ public class InfoActivity extends BaseActivity implements OnClickListener, DateP
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit:
-                editMode = true;
                 supportInvalidateOptionsMenu();
-                edit();
+                infoViewModel.setEditMode(true);
                 break;
             case R.id.action_save:
-                if (validate()) {
-                    updateUserInfo();
-                }
+                infoViewModel.save();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void viewUserInfo() {
-        final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取个人资料&#8230;");
-        loadingFragment.show(getSupportFragmentManager());
-        Request viewUserInfoRequest = new Request();
-//        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
-//        viewUserInfoRequest.setAccessToken(Application.getEncryptedToken(Application.fromActivity(this).userId,
-//                Application.fromActivity(this).getAccessToken()));
-        viewUserInfoRequest.setAccessToken(Application.fromActivity(this).getAccessToken());
-        new RestClient().viewUserInfo(viewUserInfoRequest, new Callback<UserInfoResponse>() {
-            @Override
-            public void success(final UserInfoResponse response, final retrofit.client.Response response2) {
-                loadingFragment.dismiss();
-                if (response.isExecutionResult()) {
-                    userInfoParam.setNickname(response.getNickname());
-                    userInfoParam.setSex(response.getSex());
-                    userInfoParam.setProvince(response.getProvince());
-                    userInfoParam.setCity(response.getCity());
-                    userInfoParam.setCounty(response.getCounty());
-                    userInfoParam.setStreet(response.getStreet());
-                    activityHolder.nicknameText.setText(response.getNickname());
-                    activityHolder.changePasswordText.setText("");
-                    activityHolder.bindPhoneText.setText(response.getPhone());
-                    activityHolder.bindEmailText.setText(response.getEmail());
-                    String address = "";
-                    if (!TextUtils.isEmpty(response.getProvince())) {
-                        address += response.getProvince();
-                    }
-                    if (!TextUtils.isEmpty(response.getCity())) {
-                        address += response.getCity();
-                    }
-                    if (!TextUtils.isEmpty(response.getCounty())) {
-                        address += response.getCounty();
-                    }
-                    if (!TextUtils.isEmpty(response.getStreet())) {
-                        address += response.getStreet();
-                    }
-                    activityHolder.addressText.setText(address);
-                }
-            }
-
-            @Override
-            public void failure(final RetrofitError error) {
-                loadingFragment.dismiss();
-            }
-        });
-    }
-
-    private void updateUserInfo() {
-        userInfoParam.setNickname(String.valueOf(activityHolder.nicknameText.getText()));
-        userInfoParam.setRealName(String.valueOf(activityHolder.nameText.getText()));
-        userInfoParam.setCertificateNumber(String.valueOf(activityHolder.identifyText.getText()));
-        userInfoParam.setStreet(String.valueOf(activityHolder.addressText.getText()));
-        userInfoParam.setSex(activityHolder.radioTypeMale.isChecked() ? 0 : 1);
-        userInfoParam.setProvince("xxx");
-        userInfoParam.setCity("yyy");
-        userInfoParam.setStreet("zzz");
-        userInfoParam.setAccessToken(Application.fromActivity(this).getAccessToken());
-        final LoadingFragment loadingFragment = LoadingFragment.newInstance("更新个人资料&#8230;");
-        loadingFragment.show(getSupportFragmentManager());
-        new RestClient().updateUserInfo(userInfoParam, new Callback<Response>() {
-            @Override
-            public void success(final Response response, final retrofit.client.Response response2) {
-                loadingFragment.dismiss();
-                editMode = false;
-                supportInvalidateOptionsMenu();
-                save();
-            }
-
-            @Override
-            public void failure(final RetrofitError error) {
-                loadingFragment.dismiss();
-            }
-        });
-    }
-
-    private boolean validate() {
-        if (TextUtils.isEmpty(activityHolder.nicknameText.getText())) {
-            MessageToast.makeText(this, "请设置用户名").show();
-            return false;
-        }
-        if (TextUtils.isEmpty(activityHolder.nameText.getText())) {
-            MessageToast.makeText(this, "请设置姓名").show();
-            return false;
-        }
-        if (TextUtils.isEmpty(activityHolder.birthdayText.getText())) {
-            MessageToast.makeText(this, "请设置出生年月").show();
-            return false;
-        }
-        if (TextUtils.isEmpty(activityHolder.identifyText.getText())) {
-            MessageToast.makeText(this, "请设置证件号码").show();
-            return false;
-        }
-        if (TextUtils.isEmpty(activityHolder.addressText.getText())) {
-            MessageToast.makeText(this, "请设置所在地").show();
-            return false;
-        }
-        return true;
-    }
-
-    private void edit() {
-        activityHolder.nicknameText.setEnabled(true);
-        activityHolder.changePasswordText.setEnabled(true);
-        activityHolder.bindPhoneText.setEnabled(true);
-        activityHolder.changePhoneButton.setEnabled(true);
-        activityHolder.bindEmailText.setEnabled(true);
-        activityHolder.nameText.setEnabled(true);
-        activityHolder.birthdayText.setEnabled(true);
-        activityHolder.identifyText.setEnabled(true);
-        activityHolder.addressText.setEnabled(true);
-    }
-
-    private void save() {
-        activityHolder.nicknameText.setEnabled(false);
-        activityHolder.changePasswordText.setEnabled(false);
-        activityHolder.bindPhoneText.setEnabled(false);
-        activityHolder.changePhoneButton.setEnabled(false);
-        activityHolder.bindEmailText.setEnabled(false);
-        activityHolder.nameText.setEnabled(false);
-        activityHolder.birthdayText.setEnabled(false);
-        activityHolder.identifyText.setEnabled(false);
-        activityHolder.addressText.setEnabled(false);
-    }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case LOGIN:
-                    viewUserInfo();
+                case ADDRESS:
+                    String area = data.getStringExtra("data");
+                    String[] areaList = area.split(";");
+                    Province province = new Select().from(Province.class).where("remote_id = ?", areaList[0]).executeSingle();
+                    City city = new Select().from(City.class).where("remote_id = ?", areaList[1]).executeSingle();
+                    County county = new Select().from(County.class).where("remote_id = ?", areaList[2]).executeSingle();
+                    infoViewModel.setProvince(province, city, county);
                     break;
             }
         }
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.info_password:
-                Intent changePassword = new Intent(this, ChangePasswordActivity.class);
-                changePassword.putExtra("phone", activityHolder.bindPhoneText.getText());
-                startActivity(changePassword);
-                break;
-            case R.id.info_change_phone:
-                startActivity(new Intent(this, BindPhoneActivity.class));
-                break;
-            case R.id.info_bind_email:
-                startActivity(new Intent(this, BindEmailActivity.class));
-                break;
-            case R.id.info_birthday:
-                new com.jason.usedcar.DatePicker().setListener(this).show(getSupportFragmentManager(), "");
-                break;
+    public void changePassword(String phoneNumber) {
+        Intent changePassword = new Intent(this, ChangePasswordActivity.class);
+        changePassword.putExtra("phone", phoneNumber);
+        startActivity(changePassword);
+    }
+
+    @Override
+    public void changePhone(String phoneNumber) {
+        startActivity(new Intent(this, BindPhoneActivity.class));
+    }
+
+    @Override
+    public void pickTime() {
+        new com.jason.usedcar.DatePicker().setListener(this).show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void pickAddress() {
+        startActivityForResult(new Intent(this, DealPlaceActivity.class), ADDRESS);
+    }
+
+    @Override
+    public void start() {
+        loadingFragment = LoadingFragment.newInstance("");
+        loadingFragment.show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void stop() {
+        if (loadingFragment != null) {
+            loadingFragment.dismiss();
         }
     }
 
     @Override
-    public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
-        String date = year + "年" + (monthOfYear+1) + "月" + dayOfMonth + "日";
-        userInfoParam.setBirthyear(String.valueOf(year));
-        userInfoParam.setBirthmonth(String.valueOf(monthOfYear + 1));
-        userInfoParam.setBirthday(String.valueOf(dayOfMonth));
-        activityHolder.birthdayText.setText(date);
+    public void tell(final String msg) {
+        MessageToast.makeText(this, msg).show();
     }
 
-    private static class InfoActivityHolder {
+    @Override
+    public boolean isReseller() {
+        return Application.fromActivity(this).isReseller();
+    }
 
-        public final ExtendedEditText nicknameText;
-
-        public final Button changePasswordText;
-
-        public final TextView bindPhoneText;
-
-        public final Button changePhoneButton;
-
-        public final TextView bindEmailText;
-
-        public final ExtendedEditText nameText;
-
-        public final TextView birthdayText;
-
-        public final ExtendedEditText identifyText;
-
-        public final ExtendedEditText addressText;
-
-        public final RadioButton radioTypeMale;
-
-        public InfoActivityHolder(Activity activity) {
-            nicknameText = (ExtendedEditText) activity.findViewById(R.id.info_nickname);
-            changePasswordText = (Button) activity.findViewById(R.id.info_password);
-            bindPhoneText = (TextView) activity.findViewById(R.id.info_bind_phone);
-            changePhoneButton = (Button) activity.findViewById(R.id.info_change_phone);
-            bindEmailText = (TextView) activity.findViewById(R.id.info_bind_email);
-            nameText = (ExtendedEditText) activity.findViewById(R.id.info_name);
-            birthdayText = (TextView) activity.findViewById(R.id.info_birthday);
-            identifyText = (ExtendedEditText) activity.findViewById(R.id.info_id);
-            addressText = (ExtendedEditText) activity.findViewById(R.id.info_address);
-            radioTypeMale = (RadioButton) activity.findViewById(R.id.radioTypeMale);
-        }
+    @Override
+    public void onDateSet(final android.widget.DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+        infoViewModel.setBirthday(String.format("%04d-%02d-%02d", year, monthOfYear + 1, dayOfMonth));
     }
 }

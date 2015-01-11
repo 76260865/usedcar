@@ -28,25 +28,30 @@
                         android:layout_width="0dip"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:padding="10dp"
                         android:background="@drawable/radio_sex"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="男"
                         android:textColor="@android:color/white"
                         bind:checked="{male}"
-                        bind:enabled="{editMode}"/>
+                        bind:enabled="{editMode}"
+                        bind:text="{leftType}"
+                        tools:checked="true"
+                        tools:text="男"/>
                 <RadioButton
                         android:id="@+id/radioTypeFemale"
                         android:layout_width="0dip"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
+                        android:padding="10dp"
                         android:background="@drawable/radio_sex"
                         android:button="@null"
                         android:gravity="center"
-                        android:text="女"
                         android:textColor="@android:color/white"
                         bind:checked="{female}"
-                        bind:enabled="{editMode}"/>
+                        bind:enabled="{editMode}"
+                        bind:text="{rightType}"
+                        tools:text="女"/>
             </RadioGroup>
             <com.jason.usedcar.view.CircleImageView
                     android:id="@+id/info_avatar"
@@ -86,9 +91,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dip"
                         android:layout_gravity="center_vertical"
+                        android:background="@drawable/circle_bg"
+                        android:padding="8dp"
                         android:text="修改密码"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
+                        android:textColor="#666666"
+                        android:textSize="16sp"
                         bind:onClick="changePassword"/>
             </LinearLayout>
             <LinearLayout
@@ -118,9 +125,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="10dip"
+                        android:background="@drawable/circle_bg"
+                        android:padding="8dp"
                         android:text="修改绑定"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
+                        android:textColor="#666666"
+                        android:textSize="16sp"
                         bind:onClick="changePhone"/>
             </LinearLayout>
             <com.jason.usedcar.view.ExtendedTextView
@@ -164,20 +173,22 @@
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
                     tools:text="41111111111111111111111"/>
-            <com.jason.usedcar.view.ExtendedEditText
+            <com.jason.usedcar.view.ExtendedTextView
                     style="@style/Info.Item"
                     android:id="@+id/info_province"
                     android:textColor="@color/notice_color"
-                    res:prefix="省份:"
+                    res:prefix="地址:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
-                    bind:text="${province}"
+                    bind:text="{province}"
+                    bind:onClick="pickAddress"
                     tools:text="四川省成都市双流县航空港"/>
             <com.jason.usedcar.view.ExtendedEditText
                     style="@style/Info.Item"
                     android:id="@+id/info_city"
                     android:textColor="@color/notice_color"
+                    android:visibility="gone"
                     res:prefix="城市:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
@@ -188,10 +199,12 @@
                     style="@style/Info.Item"
                     android:id="@+id/info_county"
                     android:textColor="@color/notice_color"
+                    android:visibility="gone"
                     res:prefix="区/县:"
                     res:prefixColor="#222222"
                     res:prefixSize="20sp"
                     bind:enabled="{editMode}"
+                    bind:onClick="pickAddress"
                     bind:text="${county}"
                     tools:text="四川省成都市双流县航空港"/>
             <com.jason.usedcar.view.ExtendedEditText

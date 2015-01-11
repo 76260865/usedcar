@@ -7,14 +7,14 @@
             android:layout_height="match_parent"
             tools:prefixIgnore="true">
     <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dip"
                 android:layout_marginBottom="6dip"
+                android:layout_marginTop="2dip"
                 android:background="@drawable/edit_bg"
                 android:text="重要提示，以下用于确保交易过程中的资金和车辆安全，请务必确保信息真实准确。"
                 android:textColor="#ff0000"/>
@@ -22,104 +22,151 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:text="姓名"
+                android:text="用户姓名"
                 bind:visibility="{normal}"/>
         <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dip"
+                android:layout_height="48dip"
                 android:layout_marginBottom="6dip"
+                android:layout_marginTop="2dip"
                 android:background="@drawable/edit_bg"
-                bind:text="${name}"
+                bind:text="${username}"
                 bind:visibility="{normal}"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:text="证件类别"
+                android:text="证件号码"
                 bind:visibility="{normal}"/>
         <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dip"
                 android:layout_marginBottom="6dip"
-                android:background="@drawable/edit_bg"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:orientation="horizontal"
                 android:addStatesFromChildren="true"
+                android:background="@drawable/edit_bg"
+                android:orientation="horizontal"
+                android:paddingBottom="0dp"
+                android:paddingRight="0dp"
+                android:paddingTop="0dp"
                 bind:visibility="{normal}">
             <EditText
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_marginTop="2dip"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     bind:text="${certificateNumber}"/>
             <Spinner
                     android:id="@+id/spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@android:color/transparent"/>
+                    android:layout_margin="0dp"
+                    android:padding="0dp"
+                    bind:dropdownLayout="@android:layout/simple_spinner_dropdown_item"
+                    bind:dropdownMapping="[text1.text:{id}]"
+                    bind:itemLayout="@android:layout/simple_spinner_item"
+                    bind:itemMapping="[text1.text:{id}]"
+                    bind:selectedItemPosition="${selectedIdIndex}"
+                    bind:source="{idList}"/>
         </LinearLayout>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:text="成立时间"
-                android:visibility="gone"/>
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/edit_bg"
-                android:gravity="center_vertical"
-                android:visibility="gone"/>
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
                 android:layout_marginBottom="6dip"
-                android:text="证件照片"
-                android:visibility="gone"/>
+                android:layout_marginLeft="10dip"
+                android:text="证件照\t\t[点击上传]"
+                bind:visibility="{normal}"/>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dip"
                 android:layout_marginBottom="6dip"
+                android:layout_marginTop="2dip"
                 android:background="@drawable/edit_bg"
-                android:paddingTop="0dp"
+                android:gravity="center"
+                android:maxHeight="100dp"
+                android:maxWidth="100dip"
+                android:minHeight="64dp"
                 android:paddingBottom="0dip"
-                android:visibility="gone">
+                android:paddingTop="0dp"
+                bind:visibility="{normal}">
             <ImageView
+                    android:id="@+id/pic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="40dp"
-                    android:maxWidth="40dip"
-                    android:maxHeight="100dp"/>
+                    android:background="@drawable/add_pic"
+                    bind:url="{picUrl}"
+                    bind:onClick="loadPic"
+                    bind:src2="{pic}"/>
         </LinearLayout>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:text="收款银行"/>
-        <EditText
+                android:text="银行类别"/>
+        <Spinner
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dip"
-                android:layout_marginBottom="6dip"
-                android:background="@drawable/edit_bg"
-                bind:text="${bankName}"/>
+                android:layout_height="48dip"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                bind:dropdownLayout="@android:layout/simple_spinner_dropdown_item"
+                bind:dropdownMapping="[text1.text:{bank}]"
+                bind:itemLayout="@android:layout/simple_spinner_item"
+                bind:itemMapping="[text1.text:{bank}]"
+                bind:selectedItemPosition="${selectedBankTypeIndex}"
+                bind:source="{bankTypeList}"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:text="银行账号"/>
+                android:text="银行名称"/>
+        <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="48dip"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                bind:dropdownLayout="@android:layout/simple_spinner_dropdown_item"
+                bind:dropdownMapping="[text1.text:{bank}]"
+                bind:itemLayout="@android:layout/simple_spinner_item"
+                bind:itemMapping="[text1.text:{bank}]"
+                bind:selectedItemPosition="${selectedBankIndex}"
+                bind:source="{bankList}"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="银行卡号"/>
         <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dip"
+                android:layout_height="48dip"
                 android:layout_marginBottom="6dip"
+                android:layout_marginTop="2dip"
                 android:background="@drawable/edit_bg"
                 bind:text="${bankAccount}"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="账户名称"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="48dip"
+                android:layout_marginBottom="6dip"
+                android:layout_marginTop="2dip"
+                android:background="@drawable/edit_bg"
+                bind:text="${bankAccountName}"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="开户行所在地"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dip"
+                android:layout_marginBottom="6dip"
+                android:layout_marginTop="2dip"
+                android:background="@drawable/edit_bg"
+                bind:onClick="pickBankAddress"
+                bind:text="{originBankAddress}"/>
         <Button
                 style="@style/Button"
                 android:layout_margin="10dip"

@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
 import com.jason.usedcar.R;
 import com.jason.usedcar.adapter.holder.BrandChooseViewHolder;
 import com.jason.usedcar.model.UsedCarModel;
+import com.jason.usedcar.model.data.FacetSeries;
+import com.jason.usedcar.model.data.FilterEntity;
 import com.jason.usedcar.model.data.Series;
 
 public class SeriersAdapter extends BaseAdapter {
@@ -18,9 +19,9 @@ public class SeriersAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 
-	private UsedCarModel<Series> mBrandModel;
+	private UsedCarModel<FilterEntity> mBrandModel;
 
-	public SeriersAdapter(Context context, UsedCarModel<Series> model) {
+	public SeriersAdapter(Context context, UsedCarModel<FilterEntity> model) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mBrandModel = model;
@@ -43,7 +44,7 @@ public class SeriersAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public Series getItem(int position) {
+	public FilterEntity getItem(int position) {
 		return mBrandModel == null ? null : mBrandModel.get(position);
 	}
 
@@ -65,8 +66,8 @@ public class SeriersAdapter extends BaseAdapter {
 			viewHolder = new BrandChooseViewHolder(convertView);
 			convertView.setTag(viewHolder);
 		}
-		Series param = getItem(position);
-		viewHolder.txtBrandName.setText(param.getSeriesName());
+		FilterEntity param = getItem(position);
+		viewHolder.txtBrandName.setText(param.getName());
 		return convertView;
 	}
 }

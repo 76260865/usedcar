@@ -16,8 +16,9 @@
         android:scaleType="centerInside"
         android:src="@drawable/pic"/>
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,12 +63,15 @@
             android:visibility="gone"
             tools:text="一口价"
             tools:visibility="visible"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ssss"
-                android:layout_gravity="right|center_vertical"
-                robo:onClick="delete"
-                robo:visibility="{visibility}"/>
     </FrameLayout>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dip"
+            android:text="删除"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/btn_delete_bg"
+            android:textColor="@android:color/white"
+            robo:onClick="delete"
+            robo:visibility="{visibility}"/>
 </LinearLayout>

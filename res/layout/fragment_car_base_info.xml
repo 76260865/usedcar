@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:ett="http://schemas.android.com/apk/res-auto"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://robobinding.org/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,44 +16,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#C4C4C4"
-                android:padding="10dip"
+                android:paddingLeft="10dip"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:text="基本信息"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"/>
         <com.jason.usedcar.view.ExtendedTextView
                 style="@style/Info.Item"
                 android:id="@+id/car_info_address"
-                android:textColor="#555555"
+                android:textColor="#333333"
                 android:scrollHorizontally="true"
                 bind:text="{address}"
-                ett:prefix="交易地点:"
-                ett:prefixColor="#555555"
-                ett:prefixSize="20sp"/>
+                bind:onClick="pickAddress"
+                app:prefix="交易地点:"
+                app:prefixColor="#333333"
+                app:prefixSize="20sp"/>
         <com.jason.usedcar.view.ExtendedEditText
                 style="@style/Info.Item"
                 android:id="@+id/car_info_street"
-                android:textColor="#555555"
+                android:textColor="#333333"
                 bind:text="${street}"
-                ett:prefix="街道地址:"
-                ett:prefixColor="#555555"
-                ett:prefixSize="20sp"/>
+                app:prefix="街道地址:"
+                app:prefixColor="#333333"
+                app:prefixSize="20sp"/>
         <com.jason.usedcar.view.ExtendedTextView
                 style="@style/Info.Item"
                 android:id="@+id/car_info_type"
-                android:textColor="#555555"
+                android:textColor="#333333"
                 android:scrollHorizontally="true"
                 bind:text="{car}"
-                ett:prefix="车辆选择:"
-                ett:prefixColor="#555555"
-                ett:prefixSize="20sp"/>
+                bind:onClick="pickCar"
+                app:prefix="车辆选择:"
+                app:prefixColor="#333333"
+                app:prefixSize="20sp"/>
         <com.jason.usedcar.view.ExtendedTextView
                 style="@style/Info.Item"
                 android:id="@+id/car_info_time_bought"
-                android:textColor="#555555"
+                android:textColor="#333333"
                 bind:text="{time}"
-                ett:prefix="购买时间:"
-                ett:prefixColor="#555555"
-                ett:prefixSize="20sp"/>
+                bind:onClick="pickDate"
+                app:prefix="购买时间:"
+                app:prefixColor="#333333"
+                app:prefixSize="20sp"/>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,20 +68,21 @@
                     android:id="@+id/car_info_distance"
                     android:layout_weight="1"
                     android:scrollHorizontally="true"
-                    android:numeric="decimal"
+                    android:inputType="numberDecimal"
                     android:singleLine="true"
-                    android:textColor="#555555"
+                    android:textColor="#333333"
+                    android:maxLength="5"
                     bind:text="${distance}"
-                    ett:prefix="表显里程:"
-                    ett:prefixColor="#555555"
-                    ett:prefixSize="20sp"/>
+                    app:prefix="表显里程:"
+                    app:prefixColor="#333333"
+                    app:prefixSize="20sp"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="1dip"
                     android:layout_marginRight="4dip"
                     android:text="万公里"
-                    android:textColor="#555555"
+                    android:textColor="#333333"
                     android:textSize="20sp"/>
         </LinearLayout>
         <LinearLayout
@@ -92,20 +98,21 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:scrollHorizontally="true"
-                    android:numeric="decimal"
+                    android:inputType="numberDecimal"
                     android:singleLine="true"
-                    android:textColor="#555555"
+                    android:textColor="#333333"
+                    android:maxLength="8"
                     bind:text="${price}"
-                    ett:prefix="预售价格:"
-                    ett:prefixColor="#555555"
-                    ett:prefixSize="20sp"/>
+                    app:prefix="预售价格:"
+                    app:prefixColor="#333333"
+                    app:prefixSize="20sp"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="1dip"
                     android:layout_marginRight="4dip"
                     android:text="万"
-                    android:textColor="#555555"
+                    android:textColor="#333333"
                     android:textSize="20sp"/>
             <CheckBox
                     android:id="@+id/price_check"
@@ -129,10 +136,10 @@
                     android:id="@+id/car_deal_type"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
-                    android:textColor="#555555"
-                    ett:prefix="交易方式:"
-                    ett:prefixColor="#555555"
-                    ett:prefixSize="20sp"/>
+                    android:textColor="#333333"
+                    app:prefix="交易方式:"
+                    app:prefixColor="#333333"
+                    app:prefixSize="20sp"/>
             <CheckBox
                     android:id="@+id/type_check"
                     android:layout_width="wrap_content"
@@ -155,11 +162,14 @@
                     android:id="@+id/car_info_vin"
                     android:background="@android:color/transparent"
                     android:paddingBottom="4dip"
-                    android:textColor="#555555"
+                    android:maxLength="17"
+                    android:singleLine="true"
+                    android:textColor="#333333"
+                    android:digits="qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
                     bind:text="${vin}"
-                    ett:prefix="车辆识别码/VIN:"
-                    ett:prefixColor="#555555"
-                    ett:prefixSize="20sp"/>
+                    app:prefix="车辆识别码/VIN:"
+                    app:prefixColor="#333333"
+                    app:prefixSize="20sp"/>
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

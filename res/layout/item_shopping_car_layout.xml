@@ -14,7 +14,8 @@
         android:scaleType="centerInside"
         android:src="@drawable/pic"/>
     <FrameLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="wrap_content"
@@ -59,12 +60,10 @@
             tools:text="一口价"
             tools:visibility="visible"/>
     </FrameLayout>
-    <ViewStub
-        android:id="@+id/stubCheck"
+    <CheckBox
+        android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="10dip"
-        android:inflatedId="@+id/checkBox"
-        android:layout="@layout/check"/>
+        android:layout_margin="10dip"/>
 </LinearLayout>

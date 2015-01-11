@@ -35,9 +35,8 @@ public class ResetPasswordFragmentPresenter extends BasePresenter<ResetPasswordF
                 loadingFragment.dismiss();
                 if (response.isExecutionResult()) {
                     getUi().onPasswordReset();
-                } else {
-                    Toast.makeText(fragment.getActivity(), "密码找回失败", Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(fragment.getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -48,13 +47,14 @@ public class ResetPasswordFragmentPresenter extends BasePresenter<ResetPasswordF
         });
     }
 
-    public void obtainCode(Fragment fragment, ObtainCodeRequest request) {
+    public void obtainCode(final Fragment fragment, final ObtainCodeRequest request) {
         final LoadingFragment loadingFragment = LoadingFragment.newInstance("获取手机验证码&38230;");
         loadingFragment.show(fragment.getFragmentManager());
         new RestClient().obtainCode(request, new Callback<ObtainCodeResponse>() {
             @Override
             public void success(final ObtainCodeResponse response, final Response response2) {
                 loadingFragment.dismiss();
+                MessageToast.makeText(fragment.getActivity(), response.getMessage()).show();
             }
 
             @Override

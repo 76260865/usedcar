@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+        <RadioButton
+                android:id="@+id/left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="6dip"
+                android:background="@drawable/btn_history_buy"
+                android:checked="true"
+                android:onClick="onClick"
+                android:text="@string/history_order"
+                android:textColor="@color/btn_history"
+                android:textSize="20sp"
+                android:button="@null"/>
+        <RadioButton
+                android:id="@+id/right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dip"
+                android:background="@drawable/btn_history_buy"
+                android:onClick="onClick"
+                android:text="@string/history_sale"
+                android:textColor="@color/btn_history"
+                android:textSize="20sp"
+                android:button="@null"/>
+    </RadioGroup>
+</RelativeLayout>

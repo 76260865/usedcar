@@ -56,8 +56,8 @@ public abstract class SimpleCallbackImpl2<T> extends SimpleCallbackImpl<T> {
                     if (activity != null || fragment != null) {
                         final Context context = (activity == null) ? fragment.getActivity() : activity;
                         LoginRequest loginRequest = new LoginRequest();
-                        loginRequest.setPhoneOrEmail(Application.fromContext(context).username);
-                        loginRequest.setPassword(Application.fromContext(context).password);
+                        loginRequest.setPhoneOrEmail(Application.fromContext(context).getUsername());
+                        loginRequest.setPassword(Application.fromContext(context).getPassword());
                         final SimpleCallbackImpl2<T> callback = this;
                         new RestClient().login(loginRequest, new Callback<LoginResponse>() {
                             @Override

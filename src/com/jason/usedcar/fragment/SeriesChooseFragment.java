@@ -1,15 +1,12 @@
 package com.jason.usedcar.fragment;
 
 import android.support.v4.app.FragmentManager;
-import com.jason.usedcar.Action;
 import com.jason.usedcar.R;
 import com.jason.usedcar.RestClient;
-import com.jason.usedcar.adapter.SeriersAdapter2;
-import com.jason.usedcar.model.data.FacetSeries;
+import com.jason.usedcar.adapter.SeriersAdapter;
 import com.jason.usedcar.model.data.FilterEntity;
 import com.jason.usedcar.request.*;
 import com.jason.usedcar.response.SeriesResponse;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -22,10 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.jason.usedcar.adapter.SeriersAdapter;
-import com.jason.usedcar.db.DBHelper;
 import com.jason.usedcar.model.UsedCarModel;
-import com.jason.usedcar.model.data.Series;
 import retrofit.*;
 
 public class SeriesChooseFragment extends DialogFragment {
@@ -34,11 +28,9 @@ public class SeriesChooseFragment extends DialogFragment {
     // 使用这个接口的实例提供行动的事件
     private SeriersChooseDialogListener mChooseListener;
 
-    private DBHelper mDbHelper;
-
     private UsedCarModel<FilterEntity> mSeriersModel = new UsedCarModel<FilterEntity>();
 
-    private SeriersAdapter2 mAdapter;
+    private SeriersAdapter mAdapter;
 
     public  String facetSelection;
 
@@ -68,8 +60,7 @@ public class SeriesChooseFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mDbHelper = new DBHelper(getActivity());
-        mAdapter = new SeriersAdapter2(getActivity(), mSeriersModel);
+        mAdapter = new SeriersAdapter(getActivity(), mSeriersModel);
             SeriesRequest seriesRequest = new SeriesRequest();
             seriesRequest.setFacetSelections(facetSelection);
             new RestClient().getSeriesByBrandSelection(seriesRequest, new Callback<SeriesResponse>() {

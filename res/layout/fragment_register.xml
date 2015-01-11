@@ -1,63 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:scrollbars="none">
-    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://robobinding.org/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingLeft="16dip"
-        android:paddingRight="16dip"
-        android:paddingBottom="10dip">
+        android:scrollbars="none"
+        tools:ignorePrefix="true">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="10dip"
+            android:paddingLeft="16dip"
+            android:paddingRight="16dip">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:layout_marginBottom="15dip"
-            android:text="所有注册信息均按照相关服务条款受到法律保护"
-            android:textColor="#134EFD"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dip"
+                android:layout_marginTop="20dip"
+                android:text="所有注册信息均按照相关服务条款受到法律保护"
+                android:textColor="#134EFD"/>
         <EditText
-            style="@style/EditText"
-            android:id="@+id/register_account"
-            android:layout_marginTop="5dp"
-            android:inputType="phone"
-            android:hint="@string/hint_phone"/>
+                android:id="@+id/register_account"
+                style="@style/EditText"
+                android:layout_marginTop="5dp"
+                android:hint="@string/hint_phone"
+                android:inputType="phone"
+                bind:text="${phoneNumber}"/>
         <EditText
-            style="@style/EditText"
-            android:id="@+id/register_password"
-            android:layout_marginTop="5dp"
-            android:inputType="textVisiblePassword"
-            android:hint="@string/hint_password"/>
+                android:id="@+id/register_password"
+                style="@style/EditText"
+                android:layout_marginTop="5dp"
+                android:hint="@string/hint_password"
+                android:inputType="textVisiblePassword"
+                bind:text="${password}"/>
         <EditText
-            style="@style/EditText"
-            android:id="@+id/register_password_confirm"
-            android:layout_marginTop="5dp"
-            android:inputType="textVisiblePassword"
-            android:hint="@string/hint_password"/>
-        <com.jason.usedcar.view.VerifyCodeView
-            android:layout_width="match_parent"
-            android:layout_height="56dip"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dip"/>
-        <ViewStub
-            android:id="@+id/reseller_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout="@layout/view_stub_reseller_info"/>
+                android:id="@+id/register_password_confirm"
+                style="@style/EditText"
+                android:layout_marginTop="5dp"
+                android:hint="@string/hint_password"
+                android:inputType="textVisiblePassword"
+                bind:text="${passwordConfirm}"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dip"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dip"
+                android:orientation="horizontal">
+            <EditText
+                    android:id="@+id/edit_verify_code"
+                    style="@style/EditText"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:hint="验证码"
+                    android:inputType="number"
+                    bind:text="${securityCode}"/>
+            <Button
+                    android:id="@+id/btn_obtain_code"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dip"
+                    android:padding="6dp"
+                    android:text="获取验证码"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    bind:enabled="{requestSecurityCodeEnabled}"
+                    bind:onClick="requestSecurityCode"
+                    tools:layout_height="wrap_content"/>
+        </LinearLayout>
         <CheckBox
-            style="@style/register.agreement"
-            android:id="@+id/register_agreement_check"
-            android:layout_marginBottom="5dip"
-            android:button="@null"
-            android:drawableLeft="@drawable/radio"
-            android:drawablePadding="4dip"/>
+                android:id="@+id/register_agreement_check"
+                style="@style/register.agreement"
+                android:layout_marginBottom="10dip"
+                android:button="@null"
+                android:drawableLeft="@drawable/radio"
+                android:drawablePadding="4dip"
+                bind:checked="${checked}"/>
         <Button
-            style="@style/Button"
-            android:id="@+id/register_register"
-            android:text="注册"/>
+                android:id="@+id/register_register"
+                style="@style/Button"
+                android:text="注册"
+                bind:enabled="{registerEnabled}"
+                bind:onClick="register"/>
     </LinearLayout>
 </ScrollView>

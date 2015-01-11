@@ -46,21 +46,21 @@ public class PersonalCenterFragment extends
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.info_center_bought_cars_history:
-                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                if (!Application.fromContext(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 getPresenter().tradeHistory(getActivity());
                 break;
             case R.id.info_center_identify:
-                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                if (!Application.fromContext(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 getPresenter().identify(getActivity());
                 break;
             case R.id.info_center_my_collect_cars:
-                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                if (!Application.fromContext(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
@@ -70,7 +70,7 @@ public class PersonalCenterFragment extends
                 getPresenter().myInfo(getActivity());
                 break;
             case R.id.info_center_sale_car:
-                if (Application.fromContext(getActivity()).getAccessToken() == null) {
+                if (!Application.fromContext(getActivity()).isLogin()) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }

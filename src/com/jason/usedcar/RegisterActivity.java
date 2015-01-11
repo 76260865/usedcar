@@ -7,7 +7,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import com.jason.usedcar.fragment.RegisterFragment;
+import com.jason.usedcar.fragment.RegisterResellerFragment;
 import com.jason.usedcar.fragment.ResellerRegisterFragment;
 import java.util.Locale;
 
@@ -21,7 +24,19 @@ public class RegisterActivity extends BaseActivity implements ActionBar.TabListe
         setContentView(R.layout.activity_main);
 
         final ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.register_actionbar);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        ((RadioGroup) findViewById(R.id.radioGroup)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(final RadioGroup group, final int checkedId) {
+                if (checkedId == R.id.left) {
+                    mViewPager.setCurrentItem(0);
+                } else if (checkedId == R.id.right) {
+                    mViewPager.setCurrentItem(1);
+                }
+            }
+        });
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -31,7 +46,14 @@ public class RegisterActivity extends BaseActivity implements ActionBar.TabListe
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
+                //actionBar.setSelectedNavigationItem(position);
+                if (position == 0) {
+                    ((RadioButton) findViewById(R.id.left)).setChecked(true);
+                    ((RadioButton) findViewById(R.id.right)).setChecked(false);
+                } else {
+                    ((RadioButton) findViewById(R.id.left)).setChecked(false);
+                    ((RadioButton) findViewById(R.id.right)).setChecked(true);
+                }
             }
         });
 
@@ -66,7 +88,7 @@ public class RegisterActivity extends BaseActivity implements ActionBar.TabListe
             if (position == 0) {
                 fragment = new RegisterFragment();
             } else {
-                fragment = new ResellerRegisterFragment();
+                fragment = new RegisterResellerFragment();
             }
             return fragment;
         }

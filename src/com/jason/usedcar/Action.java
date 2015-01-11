@@ -7,5 +7,5 @@ import android.support.v4.app.Fragment;
  */
 public interface Action {
 
-    public void action(Fragment fragment, Object... objects);
+    void action(Fragment fragment);
 }

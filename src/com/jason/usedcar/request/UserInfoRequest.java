@@ -4,7 +4,7 @@ public class UserInfoRequest extends Request {
 
     private String resellerName;
 
-    private int resellerType;
+    private Integer resellerType;
 
     public String getResellerName() {
         return resellerName;
@@ -14,11 +14,11 @@ public class UserInfoRequest extends Request {
         this.resellerName = resellerName;
     }
 
-    public int getResellerType() {
+    public Integer getResellerType() {
         return resellerType;
     }
 
-    public void setResellerType(final int resellerType) {
+    public void setResellerType(final Integer resellerType) {
         this.resellerType = resellerType;
     }
 

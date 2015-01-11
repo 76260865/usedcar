@@ -1,12 +1,9 @@
 package com.jason.usedcar;
 
 import android.content.Intent;
+import com.jason.usedcar.response.SearchFilterResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,15 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jason.usedcar.fragment.BrandsChooseFragment;
 import com.jason.usedcar.fragment.BrandsChooseFragment.BrandsChooseDialogListener;
 import com.jason.usedcar.fragment.CarAgeChooseFragment;
@@ -38,7 +26,8 @@ import com.jason.usedcar.fragment.PriceChooseFragment.PriceChooseDialogListener;
 import com.jason.usedcar.fragment.SeriesChooseFragment;
 import com.jason.usedcar.model.data.BrandFilterEntity;
 import com.jason.usedcar.model.data.FilterEntity;
-import com.jason.usedcar.util.HttpUtil;
+import retrofit.Callback;
+import retrofit.RetrofitError;
 
 /**
  * 筛选活动
@@ -70,14 +59,15 @@ public class FindUsedActivity extends BaseActivity implements
     private FilterEntity selectedCarMile;
     private FilterEntity selectedCarAge;
 
-    private ArrayList<BrandFilterEntity> brandsFilters = new ArrayList<BrandFilterEntity>();
-    private ArrayList<FilterEntity> prices = new ArrayList<FilterEntity>();
-    private ArrayList<FilterEntity> odometers = new ArrayList<FilterEntity>();
-    private ArrayList<FilterEntity> ages = new ArrayList<FilterEntity>();
+    private List<BrandFilterEntity> brandFilter = new ArrayList<BrandFilterEntity>();
+    private List<FilterEntity> priceFilter = new ArrayList<FilterEntity>();
+    private List<FilterEntity> odometerFilter = new ArrayList<FilterEntity>();
+    private List<FilterEntity> ageFilter = new ArrayList<FilterEntity>();
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        setTitle("筛选");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayUseLogoEnabled(false);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_ab_up_white);
@@ -142,76 +132,30 @@ public class FindUsedActivity extends BaseActivity implements
     }
 
     private void initializeSearchFilter() {
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST,
-                HttpUtil.SEARCH_FILTER_URI, null, mResponseListener,
-                mErrorListener) {
+        new RestClient().searchFilter(new Callback<SearchFilterResponse>() {
+            @Override
+            public void success(SearchFilterResponse response, retrofit.client.Response response2) {
+                if (response != null && response.isExecutionResult()) {
+                    brandFilter = response.getBrand();
+                    priceFilter = response.getPrice();
+                    odometerFilter = response.getOdometer();
+                    ageFilter = response.getAge();
+                }
+            }
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-                headers.put("User-Agent", Config.USER_AGENT);
-                return headers;
+            public void failure(RetrofitError error) {
+                error.getMessage();
             }
-        };
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(request);
+        });
     }
-
-    private Response.Listener<JSONObject> mResponseListener = new Response.Listener<JSONObject>() {
-
-        @Override
-        public void onResponse(JSONObject jsonObject) {
-            Log.d(TAG, jsonObject.toString());
-            try {
-                Gson gson = new Gson();
-                String brandArray = jsonObject.getString("brand");
-                brandsFilters = gson.fromJson(brandArray,
-                        new TypeToken<ArrayList<BrandFilterEntity>>() {
-                        }.getType());
-                Log.d(TAG, "brandsFilters.size():" + brandsFilters.size());
-
-                String priceArray = jsonObject.getString("price");
-                prices = gson.fromJson(priceArray,
-                        new TypeToken<ArrayList<FilterEntity>>() {
-                        }.getType());
-                Log.d(TAG, "prices.size():" + prices.size());
-
-                String odometer = jsonObject.getString("odometer");
-                odometers = gson.fromJson(odometer,
-                        new TypeToken<ArrayList<FilterEntity>>() {
-                        }.getType());
-                Log.d(TAG, "odometers.size():" + odometers.size());
-
-                String age = jsonObject.getString("age");
-                ages = gson.fromJson(age,
-                        new TypeToken<ArrayList<FilterEntity>>() {
-                        }.getType());
-                Log.d(TAG, "ages.size():" + ages.size());
-
-            } catch (NumberFormatException e) {
-                Log.e(TAG, e.getMessage());
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
-            }
-        }
-
-    };
-
-    private Response.ErrorListener mErrorListener = new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            // error
-            Log.e(TAG, error.getMessage());
-        }
-    };
 
     private OnClickListener mOnTxtAgeClickListener = new OnClickListener() {
 
         @Override
         public void onClick(View v) {
             if (mCarAgeChooseFragment == null) {
-                mCarAgeChooseFragment = new CarAgeChooseFragment(ages);
+                mCarAgeChooseFragment = new CarAgeChooseFragment(ageFilter);
                 mCarAgeChooseFragment
                         .setCarAgeChooseDialogListener(FindUsedActivity.this);
             }
@@ -224,7 +168,7 @@ public class FindUsedActivity extends BaseActivity implements
         @Override
         public void onClick(View v) {
             if (mCarMilesChooseFragment == null) {
-                mCarMilesChooseFragment = new CarMilesChooseFragment(odometers);
+                mCarMilesChooseFragment = new CarMilesChooseFragment(odometerFilter);
                 mCarMilesChooseFragment
                         .setCarMilesChooseDialogListener(FindUsedActivity.this);
             }
@@ -238,7 +182,7 @@ public class FindUsedActivity extends BaseActivity implements
         @Override
         public void onClick(View v) {
             if (mPriceChooseFragment == null) {
-                mPriceChooseFragment = new PriceChooseFragment(prices);
+                mPriceChooseFragment = new PriceChooseFragment(priceFilter);
                 mPriceChooseFragment
                         .setPriceChooseDialogListener(FindUsedActivity.this);
             }
@@ -268,7 +212,7 @@ public class FindUsedActivity extends BaseActivity implements
         @Override
         public void onClick(View v) {
             if (mBrandsChooseFragment == null) {
-                mBrandsChooseFragment = new BrandsChooseFragment(brandsFilters);
+                mBrandsChooseFragment = new BrandsChooseFragment(brandFilter);
                 mBrandsChooseFragment
                         .setBrandsChooseDialogListener(FindUsedActivity.this);
             }

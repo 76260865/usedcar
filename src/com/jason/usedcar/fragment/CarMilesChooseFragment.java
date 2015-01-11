@@ -13,10 +13,11 @@ import android.widget.ListView;
 
 import com.jason.usedcar.R;
 import com.jason.usedcar.model.data.FilterEntity;
+import java.util.List;
 
 public class CarMilesChooseFragment extends SearchConditionChooseFragment {
 
-	public CarMilesChooseFragment(ArrayList<FilterEntity> filters) {
+	public CarMilesChooseFragment(List<FilterEntity> filters) {
 		super(filters);
 	}
 
